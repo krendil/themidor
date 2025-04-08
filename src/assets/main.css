@@ -18,6 +18,10 @@ body {
     flex-direction: column;
 }
 
+.monospace {
+    font-family: 'Courier New', Courier, monospace;
+}
+
 
 .align-center {
     text-align: center;

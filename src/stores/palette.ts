@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { defaultPalette, type PaletteMember, type Palette } from '@/models/palette';
 import { oklch, type Color } from 'culori';
 import type { Tag } from '@/models/tag';
+import { chain, split } from 'lodash';
 
 export const usePaletteStore = defineStore("palette", () => {
   const palette = ref(defaultPalette() as Palette);
@@ -29,6 +30,19 @@ export const usePaletteStore = defineStore("palette", () => {
       } else {
         return getColour.value(...palette.value.tags[tag]);
       }
+    }
+  );
+
+  const getCurrentColourTags = computed(
+    (): Tag[] => {
+      return chain( palette.value.tags )
+        .toPairs()
+        .filter( ([_, [hue, shade]]) => hue == selectedHue.value && shade == selectedShade.value )
+        .map( ([key, _]) => {
+          const parts = split(key, ':');
+          return { namespace: parts[0], value: parts[1] }
+        })
+        .value();
     }
   );
 
@@ -99,6 +113,8 @@ export const usePaletteStore = defineStore("palette", () => {
     addHue,
     addShade,
     getColour,
+    getColourByTag,
+    getCurrentColourTags,
     loadPalette,
     palette,
     selectedHue,
