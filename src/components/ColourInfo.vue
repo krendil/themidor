@@ -21,6 +21,12 @@ const hex = reactive({
   get: computed(() => formatHex(paletteStore.selectedColour?.colour)),
 
   set: function(value: string) {
+    // Don't parse hex colours of less than 6 digits (seven including the #)
+    // These could be valid 12-bit RGB or 16-bit RGBA colours, but are probably
+    // someone editing or entering a 24-bit RGB by hand
+    if(!!value && value[0] == '#' && value.length < 7) {
+      return;
+    }
     const newColor = parse(value);
     if(!!newColor) {
       paletteStore.setColour(paletteStore.selectedHue, paletteStore.selectedShade, newColor);
