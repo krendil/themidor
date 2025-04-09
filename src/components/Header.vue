@@ -8,7 +8,7 @@ const paletteStore = usePaletteStore();
 
 <template>
   <header class="colour-transition">
-    Simple Palette And Theme Editor
+    Themidor
   </header>
 </template>
 

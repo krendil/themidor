@@ -1,25 +1,20 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 import CommonPane from './components/CommonPane.vue';
 import TabContainer from './components/TabContainer.vue';
 import Header from './components/Header.vue';
 import { usePaletteStore } from './stores/palette';
-import { reactive } from 'vue';
-import { formatCss, oklch } from 'culori';
+import { formatCss, } from 'culori';
 
 
 const paletteStore = usePaletteStore();
 
-const mainStyle = reactive({
-  backgroundColor: formatCss(paletteStore.theme.bg.colour ),
-  color: formatCss(paletteStore.theme.fg.colour)
-});
 
 </script>
 
 <template>
   <Header></Header>
-  <main id="main" :style="mainStyle">
+  <main id="main" class="colour-transition">
     <CommonPane></CommonPane>
     <TabContainer>
       <RouterView />
@@ -33,5 +28,8 @@ const mainStyle = reactive({
   grid-template-columns: 3fr 7fr;
 
   flex-grow: 1;
+
+  background-color: v-bind('formatCss(paletteStore.theme.bg.colour)');
+  color: v-bind('formatCss(paletteStore.theme.fg.colour)');
 }
 </style>

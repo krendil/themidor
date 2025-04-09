@@ -123,7 +123,8 @@ export function defaultPalette(): Palette {
       "spate:darkfg": [1, 1], // A Foreground that is dark, not dark-mode foreground
       "spate:hifg": [1, 0],
       "spate:hibg": [0, 1],
-      "spate:grey": [0, 0]
+      "spate:grey": [0, 0],
+      "spate:border": [0, 0]
     }
   };
 }

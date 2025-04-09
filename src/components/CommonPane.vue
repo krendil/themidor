@@ -17,7 +17,8 @@ import ColourInfo from './ColourInfo.vue';
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 7fr 3fr;
-  gap: 0.5rem;
+  gap: 0.5em;
+  padding-bottom: 0.5em;
 }
 
 </style>

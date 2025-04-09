@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { usePaletteStore } from '@/stores/palette';
-import { computed } from 'vue';
-import { formatCss } from 'culori';
+import { computed, reactive } from 'vue';
+import { formatCss, formatHex, getMode, parse, type Color } from 'culori';
+import LabelledInput from './LabelledInput.vue';
+import { filter } from 'lodash';
 
 
 const paletteStore = usePaletteStore();
@@ -15,6 +17,40 @@ const name = computed(() => {
   }
 });
 
+const hex = reactive({
+  get: computed(() => formatHex(paletteStore.selectedColour?.colour)),
+
+  set: function(value: string) {
+    const newColor = parse(value);
+    if(!!newColor) {
+      paletteStore.setColour(paletteStore.selectedHue, paletteStore.selectedShade, newColor);
+    }
+  }
+});
+
+const channels = computed(() => filter(getMode(paletteStore.colourMode).channels, c => c != 'alpha'));
+
+const getChannel = function(channel: string): number | string | undefined {
+  return paletteStore.selectedColour?.colour[channel];
+}
+
+const setChannel = function(channel: string, text: string) {
+  const selectedColour = paletteStore.selectedColour?.colour;
+  if(!selectedColour) {
+    return;
+  }
+  const value = parseFloat(text);
+  if(isNaN(value)) {
+    return;
+  }
+
+  paletteStore.setColour(
+    paletteStore.selectedHue,
+    paletteStore.selectedShade,
+    {...paletteStore.selectedColour?.colour, [channel]: value}
+  );
+
+}
 
 </script>
 
@@ -27,10 +63,8 @@ const name = computed(() => {
     </div>
   </div>
   <div class="values">
-    <input id="hex"></input>
-    <input class="component"></input>
-    <input class="component"></input>
-    <input class="component"></input>
+    <LabelledInput size="7" :value="hex.get" @input="hex.set($event.target.value)">HEX</LabelledInput>
+    <LabelledInput v-for="channel of channels" size="3" :value="getChannel(channel)" @input="setChannel(channel, $event.target.value)">{{  channel.toUpperCase() }}</LabelledInput>
   </div>
 </template>
 
@@ -63,6 +97,12 @@ const name = computed(() => {
   border-radius: 2px;
   padding: 0.1em;
   color: v-bind('formatCss(paletteStore.theme.currentColourFg.colour)');
-  /* background-color: v-bind('formatCss(paletteStore.theme.tagbg.colour)'); */
+}
+
+.values {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr 1fr;
+  gap: 0.5em;
+  padding: 0 0.5em;
 }
 </style>

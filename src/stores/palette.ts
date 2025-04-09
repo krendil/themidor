@@ -11,8 +11,10 @@ export const usePaletteStore = defineStore("palette", () => {
   const selectedHue = ref(0);
   const selectedShade = ref(0);
 
+  const colourMode = ref(<'oklch'>'oklch');
+
   const selectedColour = computed(
-    () => palette.value.colours[selectedHue.value][selectedShade.value]
+    () => palette.value.colours[selectedHue.value][selectedShade.value],
   );
 
   const getColour = computed(
@@ -98,6 +100,7 @@ export const usePaletteStore = defineStore("palette", () => {
     hifg: computed( () => getColourByTag.value("spate:hifg") ?? {colour: {mode: 'oklch', l: 0, c: 0, h: 0} as const}),
     hibg: computed( () => getColourByTag.value("spate:hibg") ?? {colour: {mode: 'oklch', l: 0.9, c: 0, h: 0} as const}),
     grey: computed( () => getColourByTag.value("spate:grey") ?? {colour: {mode: 'oklch', l: 0.5, c: 0, h: 0} as const}),
+    border: computed( () => getColourByTag.value("spate:border") ?? {colour: {mode: 'oklch', l: 0.5, c: 0, h: 0} as const}),
 
     currentColourFg: computed( (): PaletteMember => {
       const currentL = oklch(selectedColour.value?.colour)?.l ?? 0;
@@ -112,6 +115,7 @@ export const usePaletteStore = defineStore("palette", () => {
   return {
     addHue,
     addShade,
+    colourMode,
     getColour,
     getColourByTag,
     getCurrentColourTags,
