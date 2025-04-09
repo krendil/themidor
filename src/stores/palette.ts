@@ -1,7 +1,7 @@
 import { ref, computed, reactive } from 'vue'
 import { defineStore } from 'pinia'
 import { defaultPalette, type PaletteMember, type Palette } from '@/models/palette';
-import { oklch, type Color } from 'culori';
+import { converter, oklch, type Color } from 'culori';
 import type { Tag } from '@/models/tag';
 import { chain, split } from 'lodash';
 
@@ -12,6 +12,8 @@ export const usePaletteStore = defineStore("palette", () => {
   const selectedShade = ref(0);
 
   const colourMode = ref(<'oklch'>'oklch');
+
+  const colourModeConverter = computed(() => converter(colourMode.value));
 
   const selectedColour = computed(
     () => palette.value.colours[selectedHue.value][selectedShade.value],
@@ -116,6 +118,7 @@ export const usePaletteStore = defineStore("palette", () => {
     addHue,
     addShade,
     colourMode,
+    colourModeConverter,
     getColour,
     getColourByTag,
     getCurrentColourTags,

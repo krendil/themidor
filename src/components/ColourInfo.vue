@@ -27,7 +27,7 @@ const hex = reactive({
     if(!!value && value[0] == '#' && value.length < 7) {
       return;
     }
-    const newColor = parse(value);
+    const newColor = paletteStore.colourModeConverter(value);
     if(!!newColor) {
       paletteStore.setColour(paletteStore.selectedHue, paletteStore.selectedShade, newColor);
     }
@@ -36,12 +36,13 @@ const hex = reactive({
 
 const channels = computed(() => filter(getMode(paletteStore.colourMode).channels, c => c != 'alpha'));
 
-const getChannel = function(channel: string): number | string | undefined {
-  return paletteStore.selectedColour?.colour[channel];
+const getChannel = function(channel: string): number | undefined {
+  const convertedColour = paletteStore.colourModeConverter(paletteStore.selectedColour?.colour);
+  return !!convertedColour ? convertedColour[channel] : undefined;
 }
 
 const setChannel = function(channel: string, text: string) {
-  const selectedColour = paletteStore.selectedColour?.colour;
+  const selectedColour = paletteStore.colourModeConverter(paletteStore.selectedColour?.colour);
   if(!selectedColour) {
     return;
   }
@@ -53,7 +54,7 @@ const setChannel = function(channel: string, text: string) {
   paletteStore.setColour(
     paletteStore.selectedHue,
     paletteStore.selectedShade,
-    {...paletteStore.selectedColour?.colour, [channel]: value}
+    {...selectedColour, [channel]: value}
   );
 
 }
