@@ -36,7 +36,7 @@ function selectColour() {
 
 <template>
     <div v-if="paletteItem === null" class="empty" @click="createColour">
-        +
+        ➕
     </div>
     <div v-else class="full" :class="{ selected }" @click="selectColour">
         
@@ -53,4 +53,20 @@ function selectColour() {
     border-color: v-bind('borderColour');
     border-style: solid;
 }
+
+.empty {
+    text-align: center;
+    align-content: center;
+
+    border-style: dashed;
+    border-width: 1px;
+    border-color: v-bind('formatCss(paletteStore.theme.border.colour)');
+    border-radius: 4px;
+    margin: 2px;
+}
+
+.empty:hover {
+  background-color: v-bind('formatCss(paletteStore.theme.hibg.colour)');
+}
+
 </style>
