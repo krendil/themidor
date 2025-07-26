@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { usePaletteStore } from '@/stores/palette';
-import { computed, reactive } from 'vue';
+import { computed, reactive, useTemplateRef } from 'vue';
 import SwatchItem from './SwatchItem.vue';
 import { formatCss } from 'culori';
+import ConfirmModal from '../ConfirmModal.vue';
 
 const paletteStore = usePaletteStore();
 const palette = paletteStore.palette;
@@ -11,6 +12,8 @@ const gridStyle = reactive({
   gridTemplateRows: computed(() => `2em repeat(${palette.hues.length}, minmax(2em, 1fr))`),
   gridTemplateColumns: computed(() => `auto repeat(${palette.shades.length}, minmax(3em, 1fr))`)
 });
+
+const confirmModal = useTemplateRef("confirmModal");
 
 function addShade(event: Event) {
   paletteStore.addShade("New shade");
@@ -21,11 +24,13 @@ function addHue(event: Event) {
 }
 
 function deleteHue(hueIndex: number) {
-  paletteStore.deleteHue(hueIndex);
+  const hueName = palette.hues[hueIndex];
+  confirmModal.value?.showConfirmModal(`Are you sure you want to delete the '${hueName}' hue?`, () => paletteStore.deleteHue(hueIndex) );
 }
 
 function deleteShade(shadeIndex: number) {
-  paletteStore.deleteShade(shadeIndex);
+  const shadeName = palette.shades[shadeIndex];
+  confirmModal.value?.showConfirmModal(`Are you sure you want to delete the '${shadeName}' shade?`, () => paletteStore.deleteShade(shadeIndex) );
 }
 
 function renameShade(index: number, name: string) {
@@ -65,9 +70,9 @@ function renameHue(index: number, name: string) {
     <div class="add row-header sticky-left" style="grid-row: -1; grid-column: 1">
       <button @click="addHue">➕</button>
     </div>
-
-
   </div>
+
+  <ConfirmModal ref="confirmModal"></ConfirmModal>
 </template>
 
 <style scoped>
