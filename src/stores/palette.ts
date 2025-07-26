@@ -77,6 +77,18 @@ export const usePaletteStore = defineStore("palette", () => {
     }
   }
 
+  function deleteHue(index: number) {
+    palette.value.hues.splice(index, 1);
+    palette.value.colours.splice(index, 1);
+  }
+  
+  function deleteShade(index: number) {
+    palette.value.shades.splice(index, 1);
+    for(let row of palette.value.colours) {
+      row.splice(index, 1);
+    }
+  }
+
   function selectColour(hue: number, shade: number) {
     selectedHue.value = hue;
     selectedShade.value = shade;
@@ -119,6 +131,8 @@ export const usePaletteStore = defineStore("palette", () => {
     addShade,
     colourMode,
     colourModeConverter,
+    deleteHue,
+    deleteShade,
     getColour,
     getColourByTag,
     getCurrentColourTags,

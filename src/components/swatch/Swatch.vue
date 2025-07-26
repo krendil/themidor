@@ -20,6 +20,14 @@ function addHue(event: Event) {
   paletteStore.addHue("New hue");
 }
 
+function deleteHue(hueIndex: number) {
+  paletteStore.deleteHue(hueIndex);
+}
+
+function deleteShade(shadeIndex: number) {
+  paletteStore.deleteShade(shadeIndex);
+}
+
 function renameShade(index: number, name: string) {
   paletteStore.palette.shades[index] = name;
 }
@@ -37,13 +45,15 @@ function renameHue(index: number, name: string) {
     <div class="row-header column-header"><!--Empty space for top corner--></div>
 
     <div v-for="(shade, shadeIndex) in palette.shades" class="column-header align-middle colour-transition sticky-top" :class="{ selectedHeader: paletteStore.selectedShade == shadeIndex }">
-      <input class="align-center colour-transition invisible"  :value="shade"></input>
+      <input class="align-center colour-transition invisible"  :value="shade" @input="renameShade(shadeIndex, $event?.target?.value)" ></input>
+      <div class="delete-button" @click="deleteShade(shadeIndex)">➖</div>
     </div>
 
     <template v-for="(row, hueIndex) in palette.colours">
       <div class="row-header align-middle colour-transition sticky-left" :class="{ selectedHeader: paletteStore.selectedHue == hueIndex }">
         <input class="align-right colour-transition invisible ghost-scale" :value="palette.hues[hueIndex]" @input="renameHue(hueIndex, $event?.target?.value)" size="1"></input>
         <div class="ghost-measure">{{palette.hues[hueIndex]}}</div>
+        <div class="delete-button" @click="deleteHue(hueIndex)">➖</div>
       </div>
       <SwatchItem v-for="(item, shadeIndex) in row" :hue="hueIndex" :shade="shadeIndex" class="colour-transition"></SwatchItem>
     </template>
@@ -72,7 +82,7 @@ function renameHue(index: number, name: string) {
   position: sticky;
   left: 0;
   background-color: v-bind('formatCss(paletteStore.theme.bg.colour)');
-  input,div {
+  input {
     padding: 0.1em 1em;
   }
 }
@@ -82,7 +92,7 @@ function renameHue(index: number, name: string) {
   top: 0;
   background-color: v-bind('formatCss(paletteStore.theme.bg.colour)');
 
-  input,div {
+  input {
     padding: 0.1em;
   }
 }
@@ -100,11 +110,30 @@ function renameHue(index: number, name: string) {
 
 .ghost-measure {
   visibility: collapse;
-  padding-right: 1.2em;
+  padding: 0.1em 1.2em 0.1em 1em;
 }
 
 .ghost-scale {
   width: 100%;
+}
+
+
+.delete-button {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: smaller;
+  cursor: pointer;
+  padding: 0.1em;
+}
+
+.delete-button:hover {
+  background-color: v-bind('formatCss(paletteStore.theme.hibg.colour)');
+  clip-path: circle(closest-side);
+}
+
+:not(:hover) > .delete-button {
+  display: none;
 }
 
 </style>
