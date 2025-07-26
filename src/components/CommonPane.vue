@@ -14,6 +14,7 @@ import ColourInfo from './ColourInfo.vue';
 
 .common-pane {
   height: 100%;
+  min-height: 0;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 7fr 3fr;

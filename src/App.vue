@@ -22,14 +22,31 @@ const paletteStore = usePaletteStore();
   </main>
 </template>
 
-<style scoped>
+<style>
 #main {
   display: grid;
   grid-template-columns: 3fr 7fr;
 
   flex-grow: 1;
+  min-height: 0;
 
   background-color: v-bind('formatCss(paletteStore.theme.bg.colour)');
   color: v-bind('formatCss(paletteStore.theme.fg.colour)');
 }
+
+input {
+    background-color: v-bind('formatCss(paletteStore.theme.bg.colour)');
+    color: v-bind('formatCss(paletteStore.theme.fg.colour)');
+    border-color: v-bind('formatCss(paletteStore.theme.border.colour)');
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 2px;
+}
+
+input.invisible:not(:hover, :focus, :active) {
+    border-color: #ffffff00;
+    color: inherit;
+    background-color: inherit;
+}
+
 </style>

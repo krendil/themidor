@@ -39,9 +39,6 @@ const paletteStore = usePaletteStore();
 .labelled-input input {
     flex-grow: 1;
     padding: 0.2em 0.5em;
-    border-color: v-bind('formatCss(paletteStore.theme.border.colour)');
-    border-width: 1px;
-    border-style: solid;
     border-radius: 0 2px 2px 0; /* Top right and bottom right */
 }
 </style>
