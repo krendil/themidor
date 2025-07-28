@@ -8,7 +8,7 @@ const paletteStore = usePaletteStore();
 
 <template>
   <header class="colour-transition">
-    Themidor
+    Themidor – {{paletteStore.palette.name}}
   </header>
 </template>
 
