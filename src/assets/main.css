@@ -18,6 +18,10 @@ body {
     flex-direction: column;
 }
 
+a {
+    color: inherit;
+}
+
 .monospace {
     font-family: 'Courier New', Courier, monospace;
 }

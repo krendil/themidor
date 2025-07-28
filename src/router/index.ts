@@ -9,6 +9,10 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      redirect: '/edit'
+    },
+    {
+      path: '/edit',
       name: 'edit',
       component: EditView,
     },
