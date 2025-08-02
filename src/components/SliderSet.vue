@@ -66,7 +66,14 @@ function isSelected(i: number): boolean {
     return i == props.hue;
   }
 }
-  
+
+function selectColour(i: number) {
+  if(props.axis == 'hues') {
+    paletteStore.selectColour(props.hue, i);
+  } else {
+    paletteStore.selectColour(i, props.shade);
+  }
+}
 
 </script>
 
@@ -76,6 +83,7 @@ function isSelected(i: number): boolean {
     <div class="slider-set">
       <div v-for="(colour, index) in getColours()" :key="index" class="slider"
         :class="{'selected': isSelected(index)}"
+        @click="selectColour(index)"
       >
         <div v-if="colour"
           class="slider-track"
@@ -114,7 +122,7 @@ function isSelected(i: number): boolean {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  flex: auto;
+  flex: 1 1 0;
 }
 
 .slider-track {
