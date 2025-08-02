@@ -106,6 +106,15 @@ export const usePaletteStore = defineStore("palette", () => {
     }
   }
 
+  function fgForColour(bg?: Color): PaletteMember {
+    const currentL = oklch(bg)?.l ?? 0;
+    if (currentL <= 0.6) {
+      return theme.lightfg;
+    } else {
+      return theme.darkfg;
+    }
+  }
+
   const theme = reactive({
     lightfg: computed( () => getColourByTag.value("spate:lightfg") ?? {colour: {mode: 'oklch', l: 1, c: 0, h: 0} as const}),
     darkfg: computed( () => getColourByTag.value("spate:darkfg") ?? {colour: {mode: 'oklch', l: 0, c: 0, h: 0} as const}),
@@ -117,13 +126,9 @@ export const usePaletteStore = defineStore("palette", () => {
     border: computed( () => getColourByTag.value("spate:border") ?? {colour: {mode: 'oklch', l: 0.5, c: 0, h: 0} as const}),
 
     currentColourFg: computed( (): PaletteMember => {
-      const currentL = oklch(selectedColour.value?.colour)?.l ?? 0;
-      if(currentL <= 0.6) {
-        return theme.lightfg;
-      } else {
-        return theme.darkfg;
-      }
-    })
+      return fgForColour(selectedColour.value?.colour);
+    }),
+
   });
 
   return {
@@ -133,6 +138,7 @@ export const usePaletteStore = defineStore("palette", () => {
     colourModeConverter,
     deleteHue,
     deleteShade,
+    fgForColour,
     getColour,
     getColourByTag,
     getCurrentColourTags,

@@ -22,7 +22,7 @@ function getColours(): (PaletteMember | null)[] {
   }
 }
 
-const range = computed(() => {
+const range = computed<[number, number]>(() => {
   const definition = getMode(props.colourSpace);
   if( 'ranges' in definition ) {
     return definition.ranges[props.channel];
@@ -31,68 +31,113 @@ const range = computed(() => {
   }
 });
 
+function calcHeight(colour: Color): string {
+  const proportion = (colour[props.channel] - range.value[0]) / (range.value[1] - range.value[0]);
+  return proportion.toLocaleString(undefined, {style: 'percent'});
+}
+
+const fullNames = {
+  'h': 'Hue',
+  'c': 'Chroma',
+  'l': 'Luminance',
+  's': 'Saturation',
+  'v': 'Value',
+  'r': 'Red',
+  'g': 'Green',
+  'b': 'Blue'
+}
+
+const channelName = computed( () => {
+  return fullNames[props.channel];
+});
+
+const seriesName = computed( () => {
+  if(props.axis == 'hues') {
+    return paletteStore.palette.hues[props.hue];
+  } else {
+    return paletteStore.palette.shades[props.shade];
+  }
+});
+
+function isSelected(i: number): boolean {
+  if(props.axis == 'hues') {
+    return i == props.shade;
+  } else {
+    return i == props.hue;
+  }
+}
+  
+
 </script>
 
 <template>
-  <div class="slider-set">
-    <div v-for="(colour, index) in getColours()" :key="index" class="slider">
-      <input v-if="colour"
-        type="range" :min="range[0]" :max="range[1]" v-model="colour.colour[props.channel]"
-        step="0.001" orient="vertical"
-        class="colour-transition"
-        :style="{ '--slider-colour': formatCss(colour.colour) }"
-        />
+  <div class="container">
+    <div class="title">{{channelName}} vs. other {{seriesName}}s</div>
+    <div class="slider-set">
+      <div v-for="(colour, index) in getColours()" :key="index" class="slider"
+        :class="{'selected': isSelected(index)}"
+      >
+        <div v-if="colour"
+          class="slider-track"
+          :style="{
+            '--slider-colour': formatCss(colour.colour),
+            'height': calcHeight(colour.colour)
+            }"
+        >
+            <div v-if="isSelected(index)" class="slider-thumb" :style="{
+              '--slider-colour': formatCss(colour.colour),
+              '--fg-colour': formatCss(paletteStore.fgForColour(colour.colour).colour)
+            }" ></div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
 
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
 .slider-set {
   display: flex;
   flex-direction: row;
-  gap: 0.5rem;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  flex: auto;
 }
 
 .slider {
-  writing-mode: vertical-rl;
-  direction: rtl;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: auto;
 }
 
-input[type=range] {
-  border-style: none;
-  transition: all 150ms;
+.slider-track {
+  border-style: solid;
+  border-color: v-bind('formatCss(paletteStore.theme.fg.colour)');
+  border-width: 1px 0;
+  transition: height 150ms;
+  background: var(--slider-colour, #f0f);
+  width: 100%;
 }
 
- /* Special styling for WebKit/Blink */
-input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  border: 2px solid #000000;
-  height: 16px;
-  width: 16px;
-  border-radius: 10px;
+.slider-thumb {
+  border: 2px solid var(--fg-colour, #000);
+  height: 22px;
+  width: 22px;
+  border-radius: 12px;
+  position: relative;
+  top: -12px;
+  margin-left: auto;
+  margin-right: auto;
+
   background: var(--slider-colour, #f0f);
   cursor: pointer;
-  margin-top: -14px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
 }
 
-/* All the same stuff for Firefox */
-input[type=range]::-moz-range-thumb {
-  border: 2px solid #000000;
-  height: 16px;
-  width: 16px;
-  border-radius: 10px;
-  background: var(--slider-colour, #f0f);
-  cursor: pointer;
-  margin-top: -14px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
-    transition-property: all;
-    transition-duration: 1500ms;
-}
-
-input[type=range]::-moz-range-progress {
-  background-color: var(--slider-colour, #f0f);
-  width: 20px;
-    transition-property: all;
-    transition-duration: 1500ms;
-}
 </style>

@@ -54,7 +54,9 @@ const channels = computed( () => getMode(colourSpace.value).channels.filter( c =
 
 #slider-grid {
   display: grid;
-  grid-template: 1fr / 1fr 1fr;
+  grid-template: repeat(3, 1fr) / 1fr 1fr;
+  column-gap: 1rem;
+  flex: auto;
 }
 
 </style>
