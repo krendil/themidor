@@ -106,7 +106,8 @@ function stopDragging(event: PointerEvent) {
 
 function onDrag(event: PointerEvent) {
   if(dragContext) {
-    const proportion = (event.clientY - dragContext.top) / (dragContext.bottom - dragContext.top);
+    const proportion = 
+      Math.max(0, Math.min(1, (event.clientY - dragContext.top) / (dragContext.bottom - dragContext.top)));
     const newValue = range.value[0] + (1 - proportion) * (range.value[1] - range.value[0]);
     const colour = getColours()[dragContext.index]?.colour;
     if(colour) {
@@ -122,7 +123,7 @@ function onDrag(event: PointerEvent) {
 
 <template>
   <div class="container">
-    <div class="title">{{channelName}} vs. other {{seriesName}}s</div>
+    <div class="title"><span class="text-big">{{channelName}}</span> <i>vs. other {{seriesName}}s</i></div>
     <div class="slider-set">
       <div v-for="(colour, index) in getColours()" :key="index" class="slider"
         :class="{'selected': isSelected(index)}"

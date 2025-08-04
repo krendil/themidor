@@ -45,3 +45,11 @@ a {
     transition-property: color, background-color, border-color;
     transition-duration: 150ms;
 }
+
+.text-big {
+    font-size: 1.2rem;
+}
+
+.text-small {
+    font-size: 0.8333rem;
+}

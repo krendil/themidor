@@ -27,7 +27,7 @@ function isCurrentTab(tab: { url: string }): boolean {
       <input id="palette-name" class="invisible colour-transition" :value="paletteStore.palette.name"></input>
     </div>
     <div id="tabs">
-      <div v-for="tab in tabs" class="tab" :class="{selected: isCurrentTab(tab)}">
+      <div v-for="tab in tabs" class="tab text-big" :class="{selected: isCurrentTab(tab)}">
         <RouterLink :to="tab.url">{{tab.text}}</RouterLink>
       </div>
     </div>
@@ -58,7 +58,6 @@ header {
 }
 
 .tab {
-  font-size: 1.2rem;
   border-width: 1px;
   border-radius: 4px 4px 0 0;
 

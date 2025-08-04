@@ -56,6 +56,7 @@ const channels = computed( () => getMode(colourSpace.value).channels.filter( c =
   display: grid;
   grid-template: repeat(3, 1fr) / 1fr 1fr;
   column-gap: 1rem;
+  row-gap: 1rem;
   flex: auto;
 }
 
