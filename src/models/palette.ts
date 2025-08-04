@@ -25,7 +25,7 @@ export function defaultPalette(): Palette {
   return {
     name: 'New Palette',
     hues: ['White', 'Black', 'Red', 'Yellow', 'Green', 'Cyan', 'Blue', 'Purple'],
-    shades: ['Dim', 'Regular', 'Bright'],
+    shades: ['Dim', 'Medium', 'Bright'],
     colours: [
       [
         {
