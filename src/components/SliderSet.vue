@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PaletteMember } from '@/models/palette';
 import { usePaletteStore } from '@/stores/palette';
-import { formatCss, getMode, type Color, type Mode } from 'culori';
+import { formatCss, getMode, toGamut, type Color, type Mode } from 'culori';
 import { computed } from 'vue';
 
 interface DragContext {
@@ -40,8 +40,12 @@ const range = computed<[number, number]>(() => {
 });
 
 function calcHeight(colour: Color): string {
-  const proportion = (colour[props.channel] - range.value[0]) / (range.value[1] - range.value[0]);
-  return proportion.toLocaleString(undefined, {style: 'percent'});
+  if(colour) {
+    const proportion = ( toCurrentMode(colour)[props.channel] - range.value[0]) / (range.value[1] - range.value[0]);
+    return proportion.toLocaleString(undefined, {style: 'percent'});
+  } else {
+    return '0%';
+  }
 }
 
 const fullNames = {
@@ -66,6 +70,19 @@ const seriesName = computed( () => {
     return paletteStore.palette.shades[props.shade];
   }
 });
+
+function toCurrentMode(colour: Color) : Color;
+function toCurrentMode(colour: null | undefined): null;
+function toCurrentMode(colour: Color | null | undefined): Color | null;
+function toCurrentMode(colour: Color | null | undefined): Color | null  {
+  if(!colour) {
+    return null;
+  }
+  if(colour.mode === props.colourSpace) {
+    return colour;
+  }
+  return toGamut(props.colourSpace, colour.mode)(colour);
+}
 
 function isSelected(i: number): boolean {
   if(props.axis == 'hues') {
@@ -109,7 +126,7 @@ function onDrag(event: PointerEvent) {
     const proportion = 
       Math.max(0, Math.min(1, (event.clientY - dragContext.top) / (dragContext.bottom - dragContext.top)));
     const newValue = range.value[0] + (1 - proportion) * (range.value[1] - range.value[0]);
-    const colour = getColours()[dragContext.index]?.colour;
+    const colour = toCurrentMode(getColours()[dragContext.index]?.colour);
     if(colour) {
       colour[props.channel] = newValue;
       const hue = props.axis === 'hues' ? props.hue : dragContext.index;
@@ -129,6 +146,7 @@ function onDrag(event: PointerEvent) {
         :class="{'selected': isSelected(index)}"
         @click="selectColour(index)"
       >
+        <div class="slider-range"></div>
         <div v-if="colour"
           class="slider-track"
           :class="{'dragging': !!dragContext && dragContext.index === index}"
@@ -172,6 +190,16 @@ function onDrag(event: PointerEvent) {
   flex-direction: column;
   justify-content: flex-end;
   flex: 1 1 0;
+  position: relative;
+}
+
+.slider-range {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-style: solid;
+  border-color: v-bind('formatCss(paletteStore.theme.grey.colour)');
+  border-width: 1px 0;
 }
 
 .slider-track {
@@ -181,6 +209,7 @@ function onDrag(event: PointerEvent) {
   transition: height 150ms;
   background: var(--slider-colour, #f0f);
   width: 100%;
+  z-index: 1;
 }
 
 .slider-thumb {
