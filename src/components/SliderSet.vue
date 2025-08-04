@@ -4,6 +4,14 @@ import { usePaletteStore } from '@/stores/palette';
 import { formatCss, getMode, type Color, type Mode } from 'culori';
 import { computed } from 'vue';
 
+interface DragContext {
+  index: number;
+  top: number;
+  bottom: number;
+}
+
+var dragContext: DragContext | null = null;
+
 const props = defineProps<{
   channel: string,
   shade: number,
@@ -75,6 +83,41 @@ function selectColour(i: number) {
   }
 }
 
+function startDragging(event: PointerEvent, index: number) {
+  if(event.target instanceof HTMLElement) {
+    const parentBounds = event.target.parentElement?.parentElement?.getBoundingClientRect();
+    if(parentBounds) {
+      event.target.setPointerCapture(event.pointerId);
+      dragContext = {
+        index: index,
+        top: parentBounds?.top,
+        bottom: parentBounds?.bottom
+      };
+    }
+  }
+}
+
+function stopDragging(event: PointerEvent) {
+  if(event.target instanceof HTMLElement) {
+    event.target.releasePointerCapture(event.pointerId);
+  }
+  dragContext = null;
+}
+
+function onDrag(event: PointerEvent) {
+  if(dragContext) {
+    const proportion = (event.clientY - dragContext.top) / (dragContext.bottom - dragContext.top);
+    const newValue = range.value[0] + (1 - proportion) * (range.value[1] - range.value[0]);
+    const colour = getColours()[dragContext.index]?.colour;
+    if(colour) {
+      colour[props.channel] = newValue;
+      const hue = props.axis === 'hues' ? props.hue : dragContext.index;
+      const shade = props.axis === 'shades' ? props.shade : dragContext.index;
+      paletteStore.setColour(hue, shade, colour);
+    }
+  }
+}
+
 </script>
 
 <template>
@@ -87,6 +130,7 @@ function selectColour(i: number) {
       >
         <div v-if="colour"
           class="slider-track"
+          :class="{'dragging': !!dragContext && dragContext.index === index}"
           :style="{
             '--slider-colour': formatCss(colour.colour),
             'height': calcHeight(colour.colour)
@@ -95,7 +139,11 @@ function selectColour(i: number) {
             <div v-if="isSelected(index)" class="slider-thumb" :style="{
               '--slider-colour': formatCss(colour.colour),
               '--fg-colour': formatCss(paletteStore.fgForColour(colour.colour).colour)
-            }" ></div>
+            }" 
+            @pointerdown="startDragging($event, index)"
+            @pointerup="stopDragging"
+            @pointermove="onDrag"
+            ></div>
         </div>
       </div>
     </div>
@@ -146,6 +194,10 @@ function selectColour(i: number) {
 
   background: var(--slider-colour, #f0f);
   cursor: pointer;
+}
+
+.dragging {
+  transition-duration: 0ms;
 }
 
 </style>
