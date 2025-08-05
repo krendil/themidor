@@ -51,8 +51,10 @@ function calcHeight(colour: Color): string {
 function formatValue(colour: Color): string {
   if(colour) {
     return toCurrentMode(colour)[props.channel].toLocaleString(undefined, {
-      minimumSignificantDigits: 1,
       maximumSignificantDigits: 3,
+      maximumFractionDigits: 3,
+      roundingPriority: 'lessPrecision',
+      signDisplay: 'negative'
     });
   } else {
     return "0";
