@@ -48,6 +48,17 @@ function calcHeight(colour: Color): string {
   }
 }
 
+function formatValue(colour: Color): string {
+  if(colour) {
+    return toCurrentMode(colour)[props.channel].toLocaleString(undefined, {
+      minimumSignificantDigits: 1,
+      maximumSignificantDigits: 3,
+    });
+  } else {
+    return "0";
+  }
+}
+
 const fullNames = {
   'h': 'Hue',
   'c': 'Chroma',
@@ -142,28 +153,21 @@ function onDrag(event: PointerEvent) {
   <div class="container">
     <div class="title"><span class="text-big">{{channelName}}</span> <i>vs. other {{seriesName}}s</i></div>
     <div class="slider-set">
-      <div v-for="(colour, index) in getColours()" :key="index" class="slider"
-        :class="{'selected': isSelected(index)}"
-        @click="selectColour(index)"
-      >
-        <div class="slider-range"></div>
-        <div v-if="colour"
-          class="slider-track"
-          :class="{'dragging': !!dragContext && dragContext.index === index}"
-          :style="{
-            '--slider-colour': formatCss(colour.colour),
-            'height': calcHeight(colour.colour)
-            }"
-        >
+      <div v-for="(colour, index) in getColours()" :key="index" class="column">
+        <div class="slider" :class="{ 'selected': isSelected(index) }" @click="selectColour(index)">
+          <div class="slider-range"></div>
+          <div v-if="colour" class="slider-track" :class="{ 'dragging': !!dragContext && dragContext.index === index }"
+            :style="{
+              '--slider-colour': formatCss(colour.colour),
+              'height': calcHeight(colour.colour)
+            }">
             <div v-if="isSelected(index)" class="slider-thumb" :style="{
               '--slider-colour': formatCss(colour.colour),
               '--fg-colour': formatCss(paletteStore.fgForColour(colour.colour).colour)
-            }" 
-            @pointerdown="startDragging($event, index)"
-            @pointerup="stopDragging"
-            @pointermove="onDrag"
-            ></div>
+            }" @pointerdown="startDragging($event, index)" @pointerup="stopDragging" @pointermove="onDrag"></div>
+          </div>
         </div>
+        <div class="align-center">{{ formatValue(colour?.colour) }}</div>
       </div>
     </div>
   </div>
@@ -174,14 +178,19 @@ function onDrag(event: PointerEvent) {
 .container {
   display: flex;
   flex-direction: column;
+  gap: 0.2rem;
 }
 
 .slider-set {
   display: flex;
   flex-direction: row;
-  margin-top: 12px;
-  margin-bottom: 12px;
   flex: auto;
+}
+
+.column {
+  height: 100%;
+  flex: 1 1 0;
+  padding-bottom: 1em;
 }
 
 .slider {
@@ -189,7 +198,6 @@ function onDrag(event: PointerEvent) {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  flex: 1 1 0;
   position: relative;
 }
 
