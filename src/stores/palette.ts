@@ -50,6 +50,15 @@ export const usePaletteStore = defineStore("palette", () => {
     }
   );
 
+  function getNameForColour(hue: number, shade: number): string {
+    const givenName = palette.value?.colours[hue][shade]?.name;
+    if(!givenName) {
+      return palette.value.shades[shade] + ' ' + palette.value.hues[hue];
+    } else {
+      return givenName;
+    }
+  }
+
   function loadPalette(newPalette: Palette) {
     palette.value = newPalette;
   }
@@ -142,6 +151,7 @@ export const usePaletteStore = defineStore("palette", () => {
     getColour,
     getColourByTag,
     getCurrentColourTags,
+    getNameForColour,
     loadPalette,
     palette,
     selectedHue,

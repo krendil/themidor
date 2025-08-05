@@ -9,12 +9,7 @@ import { filter } from 'lodash';
 const paletteStore = usePaletteStore();
 
 const name = computed(() => {
-  const givenName = paletteStore.selectedColour?.name;
-  if(!givenName) {
-    return paletteStore.palette.shades[paletteStore.selectedShade] + ' ' + paletteStore.palette.hues[paletteStore.selectedHue];
-  } else {
-    return givenName;
-  }
+  return paletteStore.getNameForColour(paletteStore.selectedHue, paletteStore.selectedShade);
 });
 
 const hex = reactive({
