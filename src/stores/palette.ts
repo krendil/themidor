@@ -125,14 +125,14 @@ export const usePaletteStore = defineStore("palette", () => {
   }
 
   const theme = reactive({
-    lightfg: computed( () => getColourByTag.value("spate:lightfg") ?? {colour: {mode: 'oklch', l: 1, c: 0, h: 0} as const}),
-    darkfg: computed( () => getColourByTag.value("spate:darkfg") ?? {colour: {mode: 'oklch', l: 0, c: 0, h: 0} as const}),
-    fg: computed( () => getColourByTag.value("spate:fg") ?? {colour: {mode: 'oklch', l: 0, c: 0, h: 0} as const}),
-    bg: computed( () => getColourByTag.value("spate:bg") ?? {colour: {mode: 'oklch', l: 1, c: 0, h: 0} as const}),
-    hifg: computed( () => getColourByTag.value("spate:hifg") ?? {colour: {mode: 'oklch', l: 0, c: 0, h: 0} as const}),
-    hibg: computed( () => getColourByTag.value("spate:hibg") ?? {colour: {mode: 'oklch', l: 0.9, c: 0, h: 0} as const}),
-    grey: computed( () => getColourByTag.value("spate:grey") ?? {colour: {mode: 'oklch', l: 0.5, c: 0, h: 0} as const}),
-    border: computed( () => getColourByTag.value("spate:border") ?? {colour: {mode: 'oklch', l: 0.5, c: 0, h: 0} as const}),
+    lightfg: computed( () => getColourByTag.value("tmdr:lightfg") ?? {colour: {mode: 'oklch', l: 1, c: 0, h: 0} as const}),
+    darkfg: computed( () => getColourByTag.value("tmdr:darkfg") ?? {colour: {mode: 'oklch', l: 0, c: 0, h: 0} as const}),
+    fg: computed( () => getColourByTag.value("tmdr:fg") ?? {colour: {mode: 'oklch', l: 0, c: 0, h: 0} as const}),
+    bg: computed( () => getColourByTag.value("tmdr:bg") ?? {colour: {mode: 'oklch', l: 1, c: 0, h: 0} as const}),
+    hifg: computed( () => getColourByTag.value("tmdr:hifg") ?? {colour: {mode: 'oklch', l: 0, c: 0, h: 0} as const}),
+    hibg: computed( () => getColourByTag.value("tmdr:hibg") ?? {colour: {mode: 'oklch', l: 0.9, c: 0, h: 0} as const}),
+    grey: computed( () => getColourByTag.value("tmdr:grey") ?? {colour: {mode: 'oklch', l: 0.5, c: 0, h: 0} as const}),
+    border: computed( () => getColourByTag.value("tmdr:border") ?? {colour: {mode: 'oklch', l: 0.5, c: 0, h: 0} as const}),
 
     currentColourFg: computed( (): PaletteMember => {
       return fgForColour(selectedColour.value?.colour);

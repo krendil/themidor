@@ -5,7 +5,7 @@ import SliderSet from '@/components/SliderSet.vue';
 import { usePaletteStore } from '@/stores/palette';
 
 const paletteStore = usePaletteStore();
-const colourSpace = defineModel<Mode>({default: "oklch"});
+const colourSpace = defineModel<Mode>({default: "oklch", required: true});
 
 const channels = computed( () => getMode(colourSpace.value).channels.filter( c => c !== 'alpha' ) );
 

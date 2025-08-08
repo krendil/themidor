@@ -60,13 +60,13 @@ function selectColour() {
 
     border-style: dashed;
     border-width: 1px;
-    border-color: var(--spate-border);
+    border-color: var(--tmdr-border);
     border-radius: 4px;
     margin: 2px;
 }
 
 .empty:hover {
-  background-color: var(--spate-hibg);
+  background-color: var(--tmdr-hibg);
 }
 
 </style>

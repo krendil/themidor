@@ -37,14 +37,14 @@ const defineVars = computed<{ [key: string]: string }>(() => {
   flex-grow: 1;
   min-height: 0;
 
-  background-color: var(--spate-bg);
-  color: var(--spate-fg);
+  background-color: var(--tmdr-bg);
+  color: var(--tmdr-fg);
 }
 
 input {
-    background-color: var(--spate-bg);
-    color: var(--spate-fg);
-    border-color: var(--spate-border);
+    background-color: var(--tmdr-bg);
+    color: var(--tmdr-fg);
+    border-color: var(--tmdr-border);
     border-width: 1px;
     border-style: solid;
     border-radius: 2px;

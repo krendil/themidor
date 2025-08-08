@@ -50,7 +50,7 @@ defineExpose({
 .backdrop {
 
   /* Note we can't use variables here because we aren't inside main
-    otherwise, this could be: color(from var(--spate-grey) srgb r g b / 50%); */
+    otherwise, this could be: color(from var(--tmdr-grey) srgb r g b / 50%); */
   background-color: v-bind('formatCss({...paletteStore.theme.grey.colour, alpha: 0.5})');
 
 

@@ -117,14 +117,14 @@ export function defaultPalette(): Palette {
       ],
     ],
     tags: {
-      "spate:fg": [1, 1],
-      "spate:bg": [0, 2],
-      "spate:lightfg": [0, 2], // A Foreground that is light, not light-mode foreground
-      "spate:darkfg": [1, 1], // A Foreground that is dark, not dark-mode foreground
-      "spate:hifg": [1, 0],
-      "spate:hibg": [0, 1],
-      "spate:grey": [0, 0],
-      "spate:border": [0, 0]
+      "tmdr:fg": [1, 1],
+      "tmdr:bg": [0, 2],
+      "tmdr:lightfg": [0, 2], // A Foreground that is light, not light-mode foreground
+      "tmdr:darkfg": [1, 1], // A Foreground that is dark, not dark-mode foreground
+      "tmdr:hifg": [1, 0],
+      "tmdr:hibg": [0, 1],
+      "tmdr:grey": [0, 0],
+      "tmdr:border": [0, 0]
     }
   };
 }

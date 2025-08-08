@@ -61,8 +61,8 @@ header {
   border-width: 1px;
   border-radius: 4px 4px 0 0;
 
-  background-color: var(--spate-fg);
-  color: var(--spate-bg);
+  background-color: var(--tmdr-fg);
+  color: var(--tmdr-bg);
 
   border-color: v-bind('formatCss(paletteStore.theme.currentColourFg.colour)');
   border-style: solid solid none;
@@ -70,8 +70,8 @@ header {
 }
 
 .tab.selected {
-  background-color: var(--spate-bg);
-  color: var(--spate-fg);
+  background-color: var(--tmdr-bg);
+  color: var(--tmdr-fg);
   /* background-color: v-bind('formatCss(paletteStore.theme.currentColourFg.colour)');
   color: v-bind('formatCss(paletteStore.selectedColour?.colour)'); */
 }

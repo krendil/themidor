@@ -214,7 +214,7 @@ function onDrag(event: PointerEvent) {
 
 .slider-track {
   border-style: solid;
-  border-color: var(--spate-fg);
+  border-color: var(--tmdr-fg);
   border-width: 1px 0;
   transition: height 150ms;
   background: var(--slider-colour, #f0f);
