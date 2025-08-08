@@ -61,7 +61,7 @@ const setChannel = function(channel: string, text: string) {
   <div class="sample colour-transition align-center align-middle">
     {{ name }}
     <div class="tags">
-      <div v-for="tag in paletteStore.getCurrentColourTags" class="tag monospace">#{{tag.namespace}}:{{tag.value}}</div>
+      <div v-for="tag in paletteStore.getCurrentColourTags" class="tag monospace">#{{tag.value}}</div>
     </div>
   </div>
   <div class="values">

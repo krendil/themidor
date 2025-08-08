@@ -48,16 +48,23 @@ defineExpose({
 <style scoped>
 
 .backdrop {
+
+  /* Note we can't use variables here because we aren't inside main
+    otherwise, this could be: color(from var(--spate-grey) srgb r g b / 50%); */
   background-color: v-bind('formatCss({...paletteStore.theme.grey.colour, alpha: 0.5})');
+
 
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+
+  z-index: 100;
 }
 
 .modal {
+  color: v-bind('formatCss(paletteStore.theme.fg.colour)');
   background-color: v-bind('formatCss(paletteStore.theme.bg.colour)');
   border-radius: 8px;
   padding: 2em;

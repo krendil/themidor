@@ -214,7 +214,7 @@ function onDrag(event: PointerEvent) {
 
 .slider-track {
   border-style: solid;
-  border-color: v-bind('formatCss(paletteStore.theme.fg.colour)');
+  border-color: var(--spate-fg);
   border-width: 1px 0;
   transition: height 150ms;
   background: var(--slider-colour, #f0f);

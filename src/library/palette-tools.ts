@@ -1,6 +1,6 @@
 import type { Palette } from "@/models/palette";
 import { oklch, type Color } from "culori";
-import { chain, mean, nth } from "lodash";
+import { chain, mean, } from "lodash";
 
 export function guessNewColour(palette: Palette, hue: number, shade: number): Color {
   // Lightness is mean lightness of other hues of that shade

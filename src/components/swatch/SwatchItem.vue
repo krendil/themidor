@@ -60,13 +60,13 @@ function selectColour() {
 
     border-style: dashed;
     border-width: 1px;
-    border-color: v-bind('formatCss(paletteStore.theme.border.colour)');
+    border-color: var(--spate-border);
     border-radius: 4px;
     margin: 2px;
 }
 
 .empty:hover {
-  background-color: v-bind('formatCss(paletteStore.theme.hibg.colour)');
+  background-color: var(--spate-hibg);
 }
 
 </style>

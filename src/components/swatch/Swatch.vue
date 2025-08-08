@@ -86,7 +86,7 @@ function renameHue(index: number, name: string) {
 .row-header {
   position: sticky;
   left: 0;
-  background-color: v-bind('formatCss(paletteStore.theme.bg.colour)');
+  background-color: var(--spate-bg);
   input {
     padding: 0.1em 1em;
   }
@@ -95,7 +95,7 @@ function renameHue(index: number, name: string) {
 .column-header {
   position: sticky;
   top: 0;
-  background-color: v-bind('formatCss(paletteStore.theme.bg.colour)');
+  background-color: var(--spate-bg);
 
   input {
     padding: 0.1em;
@@ -103,8 +103,8 @@ function renameHue(index: number, name: string) {
 }
 
 .selectedHeader {
-  color: v-bind('formatCss(paletteStore.theme.hifg.colour)');
-  background-color: v-bind('formatCss(paletteStore.theme.hibg.colour)');
+  color: var(--spate-hifg);
+  background-color: var(--spate-hibg);
 }
 
 .add {
@@ -133,7 +133,7 @@ function renameHue(index: number, name: string) {
 }
 
 .delete-button:hover {
-  background-color: v-bind('formatCss(paletteStore.theme.hibg.colour)');
+  background-color: var(--spate-hibg);
   clip-path: circle(closest-side);
 }
 

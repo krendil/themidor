@@ -26,7 +26,7 @@ export const usePaletteStore = defineStore("palette", () => {
   const getColourByTag = computed(
     () => (tag: Tag | string): PaletteMember | null => {
       if(typeof tag !== 'string') {
-        tag = `${tag.namespace}:${tag.value}`;
+        tag = tag.value;
       }
       const tagIndex = palette.value.tags[tag];
       if(!tagIndex) {

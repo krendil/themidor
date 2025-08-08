@@ -5,16 +5,23 @@ import TabContainer from './components/TabContainer.vue';
 import Header from './components/Header.vue';
 import { usePaletteStore } from './stores/palette';
 import { formatCss, } from 'culori';
+import { computed } from 'vue';
+import _ from 'lodash';
 
 
 const paletteStore = usePaletteStore();
 
+const defineVars = computed<{ [key: string]: string }>(() => {
+  return _.transform( paletteStore.palette.tags,  (accum, [hue, shade], tagValue) => {
+    accum[ '--' + tagValue.replace(":","-") ] = formatCss(paletteStore.palette.colours[hue][shade]?.colour) ?? "unset";
+  });
+})
 
 </script>
 
 <template>
-  <Header></Header>
-  <main id="main" class="colour-transition">
+  <Header :style="defineVars"></Header>
+  <main id="main" class="colour-transition" :style="defineVars">
     <CommonPane></CommonPane>
     <TabContainer>
       <RouterView />
@@ -30,14 +37,14 @@ const paletteStore = usePaletteStore();
   flex-grow: 1;
   min-height: 0;
 
-  background-color: v-bind('formatCss(paletteStore.theme.bg.colour)');
-  color: v-bind('formatCss(paletteStore.theme.fg.colour)');
+  background-color: var(--spate-bg);
+  color: var(--spate-fg);
 }
 
 input {
-    background-color: v-bind('formatCss(paletteStore.theme.bg.colour)');
-    color: v-bind('formatCss(paletteStore.theme.fg.colour)');
-    border-color: v-bind('formatCss(paletteStore.theme.border.colour)');
+    background-color: var(--spate-bg);
+    color: var(--spate-fg);
+    border-color: var(--spate-border);
     border-width: 1px;
     border-style: solid;
     border-radius: 2px;
