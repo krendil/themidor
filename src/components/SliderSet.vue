@@ -48,7 +48,7 @@ function calcHeight(colour: Color): string {
   }
 }
 
-function formatValue(colour: Color): string {
+function formatValue(colour?: Color): string {
   if(colour) {
     return toCurrentMode(colour)[props.channel].toLocaleString(undefined, {
       maximumSignificantDigits: 3,
@@ -208,7 +208,7 @@ function onDrag(event: PointerEvent) {
   height: 100%;
   width: 100%;
   border-style: solid;
-  border-color: v-bind('formatCss(paletteStore.theme.grey.colour)');
+  border-color: var(--tmdr-border);
   border-width: 1px 0;
 }
 

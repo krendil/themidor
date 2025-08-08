@@ -2,7 +2,6 @@ import { ref, computed, reactive } from 'vue'
 import { defineStore } from 'pinia'
 import { defaultPalette, type PaletteMember, type Palette } from '@/models/palette';
 import { converter, oklch, type Color } from 'culori';
-import type { Tag } from '@/models/tag';
 import { chain, split } from 'lodash';
 
 export const usePaletteStore = defineStore("palette", () => {
@@ -24,28 +23,22 @@ export const usePaletteStore = defineStore("palette", () => {
   );
 
   const getColourByTag = computed(
-    () => (tag: Tag | string): PaletteMember | null => {
-      if(typeof tag !== 'string') {
-        tag = tag.value;
-      }
+    () => (tag: string): PaletteMember | null => {
       const tagIndex = palette.value.tags[tag];
       if(!tagIndex) {
         return null;
       } else {
-        return getColour.value(...palette.value.tags[tag]);
+        return getColour.value(...tagIndex);
       }
     }
   );
 
   const getCurrentColourTags = computed(
-    (): Tag[] => {
+    (): string[] => {
       return chain( palette.value.tags )
         .toPairs()
-        .filter( ([_, [hue, shade]]) => hue == selectedHue.value && shade == selectedShade.value )
-        .map( ([key, _]) => {
-          const parts = split(key, ':');
-          return { namespace: parts[0], value: parts[1] }
-        })
+        .filter( ([_, hs]) => !!hs && hs[0] == selectedHue.value && hs[1] == selectedShade.value )
+        .map( ([key, _]) => key)
         .value();
     }
   );

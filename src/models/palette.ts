@@ -1,4 +1,3 @@
-import type { Tag } from "./tag";
 import { oklch } from "culori";
 import type { Color } from "culori";
 
@@ -11,7 +10,7 @@ export interface Palette {
   // Indexed by hues first, then shades
   colours: (PaletteMember | null)[][];
 
-  tags: { [key: string]: [number, number] }
+  tags: { [key: string]: [number, number] | null }
 }
 
 export interface PaletteMember {

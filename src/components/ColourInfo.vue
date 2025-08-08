@@ -4,9 +4,11 @@ import { computed, reactive } from 'vue';
 import { formatCss, formatHex, getMode, parse, type Color } from 'culori';
 import LabelledInput from './LabelledInput.vue';
 import { filter } from 'lodash';
+import { useLibrary } from '@/stores/library';
 
 
 const paletteStore = usePaletteStore();
+const library = useLibrary();
 
 const name = computed(() => {
   return paletteStore.getNameForColour(paletteStore.selectedHue, paletteStore.selectedShade);
@@ -61,7 +63,7 @@ const setChannel = function(channel: string, text: string) {
   <div class="sample colour-transition align-center align-middle">
     {{ name }}
     <div class="tags">
-      <div v-for="tag in paletteStore.getCurrentColourTags" class="tag monospace">#{{tag.value}}</div>
+      <div v-for="tag in paletteStore.getCurrentColourTags" class="tag monospace" :title="library.descriptions[tag] ?? ''">#{{tag}}</div>
     </div>
   </div>
   <div class="values">
