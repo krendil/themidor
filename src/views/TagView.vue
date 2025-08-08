@@ -4,12 +4,14 @@ import { useLibrary as useLibrary } from '@/stores/library';
 import { formatCss, type Color } from 'culori';
 import _ from 'lodash';
 import { computed } from 'vue';
+import { onDrag, onDragLeave, onDragOver, onDrop } from '@/library/drag-utils';
 
 const paletteStore = usePaletteStore();
 const library = useLibrary();
 
 interface TagData {
   name: string,
+  hueshade: [number, number] | null,
   fg: string, bg: string, 
   tags: { tag: string, description: string }[]
 }
@@ -25,6 +27,7 @@ const tagGroups = computed<TagData[]>( () =>
         const colour = hueshade ? paletteStore.palette.colours[hueshade[0]][hueshade[1]]?.colour : undefined;
         acc[sortOrder] = {
           name,
+          hueshade,
           fg: formatCss(paletteStore.fgForColour(colour).colour) ?? "var(--tmdr-fg)",
           bg: colour ? formatCss(colour) : "var(--tmdr-bg)",
           tags: []
@@ -38,6 +41,7 @@ const tagGroups = computed<TagData[]>( () =>
     .value()
 );
 
+
 </script>
 
 <template>
@@ -46,10 +50,14 @@ const tagGroups = computed<TagData[]>( () =>
       <input></input>
     </div>
     <div id="tag-tray" class="tray">
-      <div v-for="group in tagGroups" :key="group.name" class="tag-group">
+      <div v-for="group in tagGroups" :key="group.name" class="tag-group colour-transition"
+        @dragover="onDragOver" @dragleave="onDragLeave" @drop="onDrop($event, paletteStore, group.hueshade)"
+      >
         <div><span class="group-title">{{ group.name }}</span></div>
         <div class="group-chips">
-          <div v-for="tag in group.tags" class="tag-chip colour-transition" :style="{color: group.fg, backgroundColor: group.bg}" :title="tag.description">#{{tag.tag}}</div>
+          <div v-for="tag in group.tags" :key="tag.tag" class="tag-chip colour-transition"
+            :style="{ color: group.fg, backgroundColor: group.bg }" :title="tag.description" draggable="true"
+            @dragstart="onDrag($event, tag.tag)">#{{ tag.tag }}</div>
         </div>
       </div>
     </div>
@@ -72,6 +80,11 @@ const tagGroups = computed<TagData[]>( () =>
   padding: 0.5rem;
 }
 
+.drag-over {
+  background-color: var(--tmdr-hibg);
+  color: var(--tmdr-hifg);
+}
+
 .tag-chip {
   display: inline-block;
 
@@ -84,6 +97,8 @@ const tagGroups = computed<TagData[]>( () =>
   border-color: currentColor;
 
   margin: 0.2em;
+
+  cursor: grab;
 }
 
 #tag-tray {

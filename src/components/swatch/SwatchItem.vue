@@ -3,6 +3,7 @@ import { guessNewColour } from '@/library/palette-tools';
 import { usePaletteStore } from '@/stores/palette';
 import { formatCss } from 'culori';
 import { computed } from 'vue';
+import { onDragLeave, onDragOver, onDrop } from '@/library/drag-utils';
 
 
 const props = defineProps({
@@ -19,7 +20,7 @@ const props = defineProps({
 const paletteStore = usePaletteStore();
 const paletteItem = computed(() => paletteStore.getColour(props.hue, props.shade));
 const cssColour = computed(() => formatCss(paletteItem.value?.colour));
-const borderColour = computed(() => formatCss(paletteStore.theme.currentColourFg.colour));
+const borderColour = computed(() => formatCss(paletteStore.fgForColour(paletteItem.value?.colour).colour));
 
 const selected = computed(() => paletteStore.selectedHue == props.hue && paletteStore.selectedShade == props.shade);
 
@@ -38,7 +39,9 @@ function selectColour() {
     <div v-if="paletteItem === null" class="empty" @click="createColour">
         ➕
     </div>
-    <div v-else class="full" :class="{ selected }" @click="selectColour">
+    <div v-else class="full" :class="{ selected }" @click="selectColour"
+        @dragover="onDragOver" @dragleave="onDragLeave" @drop="onDrop($event, paletteStore, [ props.hue, props.shade] )"
+    >
         
     </div>
 </template>
@@ -46,12 +49,23 @@ function selectColour() {
 <style scope>
 .full {
     background-color: v-bind('cssColour');
+    border-width: 0;
+    /* Selection border should appear gradually but disappear instantly */
+    border-style: none;
+
+    border-color: v-bind('borderColour');
+    transition-property: color,border-colour,background-color,border-width;
+    transition-duration: 150ms;
 }
 
 .full.selected {
-    border: 4px;
-    border-color: v-bind('borderColour');
     border-style: solid;
+    border-width: 4px;
+}
+
+.full.drag-over {
+    border-style: solid;
+    border-width: 4px;
 }
 
 .empty {

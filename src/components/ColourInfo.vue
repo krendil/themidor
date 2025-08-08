@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { usePaletteStore } from '@/stores/palette';
 import { computed, reactive } from 'vue';
-import { formatCss, formatHex, getMode, parse, type Color } from 'culori';
+import { formatCss, formatHex, getMode} from 'culori';
 import LabelledInput from './LabelledInput.vue';
 import { filter } from 'lodash';
 import { useLibrary } from '@/stores/library';
+import { onDrag, onDragLeave, onDragOver, onDrop } from '@/library/drag-utils';
 
 
 const paletteStore = usePaletteStore();
@@ -60,15 +61,18 @@ const setChannel = function(channel: string, text: string) {
 
 
 <template>
-  <div class="sample colour-transition align-center align-middle">
+  <div class="sample colour-transition align-center align-middle" @dragover="onDragOver" @dragleave="onDragLeave"
+    @drop="onDrop($event, paletteStore, [ paletteStore.selectedHue, paletteStore.selectedShade] )">
     {{ name }}
     <div class="tags">
-      <div v-for="tag in paletteStore.getCurrentColourTags" class="tag monospace" :title="library.descriptions[tag] ?? ''">#{{tag}}</div>
+      <div v-for="tag in paletteStore.getCurrentColourTags" class="tag monospace" :title="library.descriptions[tag] ?? ''"
+      @dragstart="onDrag($event, tag)" draggable="true">#{{ tag }}</div>
     </div>
   </div>
   <div class="values">
     <LabelledInput size="7" :value="hex.get" @input="hex.set($event.target.value)">HEX</LabelledInput>
-    <LabelledInput v-for="channel of channels" size="3" :value="getChannel(channel)" @input="setChannel(channel, $event.target.value)">{{  channel.toUpperCase() }}</LabelledInput>
+    <LabelledInput v-for="channel of channels" size="3" :value="getChannel(channel)"
+      @input="setChannel(channel, $event.target.value)">{{ channel.toUpperCase() }}</LabelledInput>
   </div>
 </template>
 
@@ -79,6 +83,15 @@ const setChannel = function(channel: string, text: string) {
   color: v-bind('formatCss(paletteStore.theme.currentColourFg.colour)');
 
   position: relative;
+  border-style: solid;
+  border-width: 0;
+  transition-duration: 150ms;
+  transition-property: border-width, border-style;
+}
+
+.sample.drag-over {
+  border-color: v-bind('formatCss(paletteStore.theme.currentColourFg.colour)');
+  border-width: 4px;
 }
 
 .tags {
@@ -109,4 +122,5 @@ const setChannel = function(channel: string, text: string) {
   gap: 0.5em;
   padding: 0 0.5em;
 }
+
 </style>
