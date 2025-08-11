@@ -12,8 +12,11 @@ import _ from 'lodash';
 const paletteStore = usePaletteStore();
 
 const defineVars = computed<{ [key: string]: string }>(() => {
-  return _.transform( paletteStore.palette.tags,  (accum, [hue, shade], tagValue) => {
-    accum[ '--' + tagValue.replace(":","-") ] = formatCss(paletteStore.palette.colours[hue][shade]?.colour) ?? "unset";
+  return _.transform( paletteStore.palette.tags,  (accum, hueshade, tagValue) => {
+    if(hueshade) {
+      const [hue, shade] = hueshade;
+      accum[ '--' + tagValue.replace(":","-") ] = formatCss(paletteStore.palette.colours[hue][shade]?.colour) ?? "unset";
+    }
   });
 })
 

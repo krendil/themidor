@@ -34,7 +34,7 @@ const tagGroups = computed<TagData[]>( () =>
         }
       }
       acc[sortOrder].tags.push( { tag, description: library.descriptions[tag] ?? "" } );
-    })
+    }, {[-1]: { name: "Unassigned", hueshade: null, fg: "var(--tmdr-fg)", bg: "var(--tmdr-bg)", tags: [] } as TagData} )
     .toPairs()
     .orderBy( ([k, v]) => k)
     .map( ([_, v]) => v )
@@ -53,9 +53,9 @@ const tagGroups = computed<TagData[]>( () =>
       <div v-for="group in tagGroups" :key="group.name" class="tag-group colour-transition"
         @dragover="onDragOver" @dragleave="onDragLeave" @drop="onDrop($event, paletteStore, group.hueshade)"
       >
-        <div><span class="group-title">{{ group.name }}</span></div>
+        <div class="group-title"><span>{{ group.name }}</span></div>
         <div class="group-chips">
-          <div v-for="tag in group.tags" :key="tag.tag" class="tag-chip colour-transition"
+          <div v-for="tag in group.tags" :key="tag.tag" class="tag-chip monospace colour-transition"
             :style="{ color: group.fg, backgroundColor: group.bg }" :title="tag.description" draggable="true"
             @dragstart="onDrag($event, tag.tag)">#{{ tag.tag }}</div>
         </div>
@@ -80,6 +80,14 @@ const tagGroups = computed<TagData[]>( () =>
   padding: 0.5rem;
 }
 
+#tag-tray {
+  padding: 0.5rem;
+}
+
+.group-chips {
+  padding-bottom: 0.2rem;
+}
+
 .drag-over {
   background-color: var(--tmdr-hibg);
   color: var(--tmdr-hifg);
@@ -96,13 +104,9 @@ const tagGroups = computed<TagData[]>( () =>
 
   border-color: currentColor;
 
-  margin: 0.2em;
+  margin: 0.1rem;
 
   cursor: grab;
-}
-
-#tag-tray {
-  padding: 0.5rem;
 }
 
 .tray {
