@@ -64,10 +64,10 @@ const setChannel = function(channel: string, text: string) {
   <div class="sample colour-transition align-center align-middle" @dragover="onDragOver" @dragleave="onDragLeave"
     @drop="onDrop($event, paletteStore, [ paletteStore.selectedHue, paletteStore.selectedShade] )">
     {{ name }}
-    <div class="tags">
-      <div v-for="tag in paletteStore.getCurrentColourTags" class="tag monospace" :title="library.descriptions[tag] ?? ''"
+    <transition-group name="chips" tag="div" class="tags">
+      <div v-for="tag in paletteStore.getCurrentColourTags" :key="tag" class="tag monospace" :title="library.descriptions[tag] ?? ''"
       @dragstart="onDrag($event, tag)" draggable="true">#{{ tag }}</div>
-    </div>
+    </transition-group>
   </div>
   <div class="values">
     <LabelledInput size="7" :value="hex.get" @input="hex.set($event.target.value)">HEX</LabelledInput>
@@ -125,4 +125,15 @@ const setChannel = function(channel: string, text: string) {
   padding: 0 0.5em;
 }
 
+.chips-move, /* apply transition to moving elements */
+.chips-enter-active,
+.chips-leave-active {
+  transition: all 150ms;
+}
+
+.chips-enter-from,
+.chips-leave-to {
+  opacity: 0;
+  transform: translateY(-50%);
+}
 </style>

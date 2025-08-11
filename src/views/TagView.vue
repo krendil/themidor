@@ -81,33 +81,34 @@ function onAddTag(event: Event) {
 <template>
   <div id="tag-view">
     <div class="tag-controls">
-        <label style="flex-grow: 1">Filter tags: <input type="text" v-model="tagFilter" placeholder="This is a regex..."></input></label>
-        <label style="flex-grow: 0; position: relative" @change="onAddTag">Add tag: 
-          <input type="text" placeholder="namespace:value" pattern="[^ ]"></input>
-          <span class="validation"></span>
-        </label>
-        <select style="flex-grow: 0" @change="onAddCollection">
-          <option value="">Add collection</option>
-          <option v-for="collection in library.collectionList" :value="collection">{{collection}}</option>
-        </select>
-        <div @dragover="onDragOver" @dragleave="onDragLeave" @drop="onDropDelete($event, paletteStore)"
-        title="Drag tags here to delete them" style="align-content: last baseline;"
-        ><span class="large">♻</span></div>
+      <label style="flex-grow: 1">Filter tags: <input type="text" v-model="tagFilter"
+          placeholder="This is a regex..."></input></label>
+      <label style="flex-grow: 0; position: relative" @change="onAddTag">Add tag:
+        <input type="text" placeholder="namespace:value" pattern="[^ ]"></input>
+        <span class="validation"></span>
+      </label>
+      <select style="flex-grow: 0" @change="onAddCollection">
+        <option value="">Add collection</option>
+        <option v-for="collection in library.collectionList" :value="collection">{{collection}}</option>
+      </select>
+      <div @dragover="onDragOver" @dragleave="onDragLeave" @drop="onDropDelete($event, paletteStore)"
+        title="Drag tags here to delete them" style="align-content: last baseline;"><span class="large">♻</span></div>
     </div>
     <div id="tag-tray" class="tray">
-      <div v-for="group in tagGroups" :key="group.name" class="tag-group colour-transition"
-        @dragover="onDragOver" @dragleave="onDragLeave" @drop="onDrop($event, paletteStore, group.hueshade)"
-      >
-        <div class="group-title"><span>{{ group.name }}</span></div>
-        <div class="group-chips">
-          <div v-for="tag in group.tags" :key="tag.tag" class="tag-chip monospace colour-transition"
-            :style="{ color: group.fg, backgroundColor: group.bg }" :title="tag.description" draggable="true"
-            @dragstart="onDrag($event, tag.tag)">#{{ tag.tag }}</div>
+      <transition-group name="groups">
+        <div v-for="group in tagGroups" :key="group.name" class="tag-group colour-transition" @dragover="onDragOver"
+          @dragleave="onDragLeave" @drop="onDrop($event, paletteStore, group.hueshade)">
+          <div class="group-title"><span>{{ group.name }}</span></div>
+          <transition-group name="chips" tag="div" class="group-chips">
+            <div v-for="tag in group.tags" :key="tag.tag" class="tag-chip monospace colour-transition"
+              :style="{ color: group.fg, backgroundColor: group.bg }" :title="tag.description" draggable="true"
+              @dragstart="onDrag($event, tag.tag)">#{{ tag.tag }}</div>
+          </transition-group>
         </div>
-      </div>
+      </transition-group>
     </div>
     <div class="tag-controls">
-      <label>Preview: 
+      <label>Preview:
         <select v-model="selectedPreview">
           <option v-for="preview in library.previewList" :value="preview">{{preview}}</option>
         </select>
@@ -164,6 +165,33 @@ function onAddTag(event: Event) {
   margin: 0.1rem;
 
   cursor: grab;
+}
+
+.chips-move, /* apply transition to moving elements */
+.chips-enter-active,
+.chips-leave-active {
+  transition: all 150ms;
+}
+
+.chips-enter-from,
+.chips-leave-to {
+  opacity: 0;
+  transform: translateY(-50%);
+}
+
+.groups-enter-from,
+.groups-leave-to {
+  opacity: 0;
+}
+
+.groups-enter-active,
+.groups-leave-active,
+.groups-move {
+  transition: all 150ms;
+}
+
+.groups-leave-active {
+  position: absolute;
 }
 
 .tray {
