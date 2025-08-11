@@ -126,6 +126,7 @@ export const usePaletteStore = defineStore("palette", () => {
     hibg: computed( () => getColourByTag.value("tmdr:hibg") ?? {colour: {mode: 'oklch', l: 0.9, c: 0, h: 0} as const}),
     grey: computed( () => getColourByTag.value("tmdr:grey") ?? {colour: {mode: 'oklch', l: 0.5, c: 0, h: 0} as const}),
     border: computed( () => getColourByTag.value("tmdr:border") ?? {colour: {mode: 'oklch', l: 0.5, c: 0, h: 0} as const}),
+    bad: computed( () => getColourByTag.value("tmdr:bad") ?? {colour: {mode: 'oklch', l: 0.5, c: 0.3, h: 30} as const}),
 
     currentColourFg: computed( (): PaletteMember => {
       return fgForColour(selectedColour.value?.colour);

@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 
 import terminal_ls from "@/previews/terminal-ls.html?raw";
+import _ from "lodash";
+import { computed } from "vue";
 
 export interface Collection {
   tags: string[],
@@ -120,5 +122,11 @@ export const useLibrary = defineStore("library", () => {
     "Terminal Ls": terminal_ls
   };
 
-  return { collections, previews, descriptions };
+  const collectionList = computed(() =>
+    _.chain(collections)
+      .toPairs()
+      .sortBy(([name, _]) => name)
+      .value());
+
+  return { collections, previews, descriptions, collectionList };
 });

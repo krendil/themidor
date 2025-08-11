@@ -3,7 +3,7 @@ import { usePaletteStore } from '@/stores/palette';
 import { useLibrary as useLibrary } from '@/stores/library';
 import { formatCss, type Color } from 'culori';
 import _ from 'lodash';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { onDrag, onDragLeave, onDragOver, onDrop } from '@/library/drag-utils';
 
 const paletteStore = usePaletteStore();
@@ -21,6 +21,7 @@ const selectedPreview = computed(() => library.previews["Terminal Ls"]);
 const tagGroups = computed<TagData[]>( () => 
   _.chain(paletteStore.palette.tags)
     .transform( (acc: { [key: number]: TagData }, hueshade, tag) => {
+      if(!matchesFilter(tag)) return;
       const sortOrder = hueshade ? hueshade[0] * 1000 + hueshade[1] : -1;
       if( ! (sortOrder in acc) ) {
         const name = !!hueshade ? paletteStore.getNameForColour(hueshade[0], hueshade[1]) : "Unassigned";
@@ -41,13 +42,54 @@ const tagGroups = computed<TagData[]>( () =>
     .value()
 );
 
+const tagFilter = ref("");
+const tagFilterRegex = computed(() => new RegExp(tagFilter.value, 'i'));
+
+function matchesFilter(tag: string): boolean {
+  if(tagFilter.value === "") return true;
+  return tagFilterRegex.value.test(tag);
+}
+
+function onAddCollection(event: Event) {
+  const select = event.target as HTMLSelectElement;
+  const collectionName = select.value;
+  if (!!collectionName) {
+    const collection = library.collections[collectionName];
+    for( const tag of collection.tags ) {
+      if(! (tag in paletteStore.palette.tags)) {
+        paletteStore.palette.tags[tag] = null;
+      }
+    }
+    select.value = ""; // Reset the select box
+  }
+}
+
+function onAddTag(event: Event) {
+  const input = event.target as HTMLInputElement;
+  if(!input.validityState.valid) return;
+  input.value.split("\n").forEach(tagValue => {
+    tagValue = tagValue.trim();
+    if(tagValue && ! (tagValue in paletteStore.palette.tags)) {
+      paletteStore.palette.tags[tagValue] = null;
+    }
+  });
+  input.value = ""; // Reset the input box
+}
 
 </script>
 
 <template>
   <div id="tag-view">
-    <div>
-      <input></input>
+    <div id="tag-controls">
+        <label style="flex-grow: 1">Filter tags: <input type="text" v-model="tagFilter" placeholder="This is a regex..."></input></label>
+        <label style="flex-grow: 0; position: relative" @change="onAddTag">Add tag: 
+          <input type="text" placeholder="namespace:value" pattern="[^ ]"></input>
+          <span class="validation"></span>
+        </label>
+        <select style="flex-grow: 0" @change="onAddCollection">
+          <option value="">Add collection</option>
+          <option v-for="coll in library.collectionList" :value="coll[0]">{{coll[0]}}</option>
+        </select>
     </div>
     <div id="tag-tray" class="tray">
       <div v-for="group in tagGroups" :key="group.name" class="tag-group colour-transition"
@@ -78,6 +120,14 @@ const tagGroups = computed<TagData[]>( () =>
   flex-direction: column;
 
   padding: 0.5rem;
+}
+
+#tag-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.2rem;
+  gap: 0.5rem;
 }
 
 #tag-tray {
@@ -124,7 +174,15 @@ const tagGroups = computed<TagData[]>( () =>
     height: 100%;
     width: 100%;
     margin: 0;
-  }
+}
+
+.validation {
+  position: absolute;
+  height: 100%;
+  right: 0.2rem;
+  padding: 1px; /* To align with 1px border of input */
+}
+
 </style>
 
 <style>

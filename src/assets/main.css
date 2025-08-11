@@ -57,3 +57,13 @@ a {
 .text-small {
     font-size: 0.8333rem;
 }
+
+input:invalid {
+    outline: 2px solid var(--tmdr-bad);
+    border-color: var(--tmdr-bad);
+}
+
+input:invalid + span::before {
+    content: "✖";
+    color: var(--tmdr-bad);
+}

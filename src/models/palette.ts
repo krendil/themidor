@@ -123,7 +123,8 @@ export function defaultPalette(): Palette {
       "tmdr:hifg": [1, 0],
       "tmdr:hibg": [0, 1],
       "tmdr:grey": [0, 0],
-      "tmdr:border": [0, 0]
+      "tmdr:border": [0, 0],
+      "tmdr:bad": [2, 1]
     }
   };
 }
