@@ -33,3 +33,15 @@ export function onDrop(e: DragEvent, paletteStore: ReturnType<typeof usePaletteS
     e.currentTarget.classList.remove("drag-over");
   }
 }
+
+
+export function onDropDelete(e: DragEvent, paletteStore: ReturnType<typeof usePaletteStore>) {
+  if(e.dataTransfer?.types.includes("application/tag")) {
+    const tag = e.dataTransfer.getData("application/tag");
+    delete paletteStore.palette.tags[tag];
+  }
+  if( e.currentTarget instanceof HTMLElement ) {
+    e.currentTarget.classList.remove("drag-over");
+  }
+}
+

@@ -51,24 +51,24 @@ function renameHue(index: number, name: string) {
 
     <div v-for="(shade, shadeIndex) in palette.shades" class="column-header align-middle colour-transition sticky-top" :class="{ selectedHeader: paletteStore.selectedShade == shadeIndex }">
       <input class="align-center colour-transition invisible"  :value="shade" @input="renameShade(shadeIndex, $event?.target?.value)" ></input>
-      <div class="delete-button" @click="deleteShade(shadeIndex)">➖</div>
+      <div class="delete-button" @click="deleteShade(shadeIndex)">🞬</div>
     </div>
 
     <template v-for="(row, hueIndex) in palette.colours">
       <div class="row-header align-middle colour-transition sticky-left" :class="{ selectedHeader: paletteStore.selectedHue == hueIndex }">
         <input class="align-right colour-transition invisible ghost-scale" :value="palette.hues[hueIndex]" @input="renameHue(hueIndex, $event?.target?.value)" size="1"></input>
         <div class="ghost-measure">{{palette.hues[hueIndex]}}</div>
-        <div class="delete-button" @click="deleteHue(hueIndex)">➖</div>
+        <div class="delete-button" @click="deleteHue(hueIndex)">🞬</div>
       </div>
       <SwatchItem v-for="(item, shadeIndex) in row" :hue="hueIndex" :shade="shadeIndex" class="colour-transition"></SwatchItem>
     </template>
 
     <div class="add column-header sticky-top" style="grid-row: 1; grid-column: -1">
-      <button @click="addShade">➕</button>
+      <button @click="addShade">✚</button>
     </div>
     <div style="grid-row: 2 / -1; grid-column: -1"></div>
     <div class="add row-header sticky-left" style="grid-row: -1; grid-column: 1">
-      <button @click="addHue">➕</button>
+      <button @click="addHue">✚</button>
     </div>
   </div>
 

@@ -4,7 +4,7 @@ import { useLibrary as useLibrary } from '@/stores/library';
 import { formatCss, type Color } from 'culori';
 import _ from 'lodash';
 import { computed, ref } from 'vue';
-import { onDrag, onDragLeave, onDragOver, onDrop } from '@/library/drag-utils';
+import { onDrag, onDragLeave, onDragOver, onDrop, onDropDelete } from '@/library/drag-utils';
 
 const paletteStore = usePaletteStore();
 const library = useLibrary();
@@ -90,6 +90,9 @@ function onAddTag(event: Event) {
           <option value="">Add collection</option>
           <option v-for="coll in library.collectionList" :value="coll[0]">{{coll[0]}}</option>
         </select>
+        <div @dragover="onDragOver" @dragleave="onDragLeave" @drop="onDropDelete($event, paletteStore)"
+        title="Drag tags here to delete them"
+        >♻</div>
     </div>
     <div id="tag-tray" class="tray">
       <div v-for="group in tagGroups" :key="group.name" class="tag-group colour-transition"
