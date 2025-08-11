@@ -120,14 +120,20 @@ export const useLibrary = defineStore("library", () => {
   };
 
   const previews: { [key: string]: string } = {
-    "Terminal Ls": terminal_ls
+    "Terminal: ls": terminal_ls
   };
 
   const collectionList = computed(() =>
     _.chain(collections)
-      .toPairs()
-      .sortBy(([name, _]) => name)
+      .keys()
+      .sort()
+      .value());
+  
+  const previewList = computed(() =>
+    _.chain(previews)
+      .keys()
+      .sort()
       .value());
 
-  return { collections, previews, descriptions, collectionList };
+  return { collections, previews, descriptions, collectionList, previewList };
 });

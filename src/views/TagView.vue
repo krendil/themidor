@@ -16,7 +16,7 @@ interface TagData {
   tags: { tag: string, description: string }[]
 }
 
-const selectedPreview = computed(() => library.previews["Terminal Ls"]);
+const selectedPreview = ref(library.previewList[0]);
 
 const tagGroups = computed<TagData[]>( () => 
   _.chain(paletteStore.palette.tags)
@@ -80,7 +80,7 @@ function onAddTag(event: Event) {
 
 <template>
   <div id="tag-view">
-    <div id="tag-controls">
+    <div class="tag-controls">
         <label style="flex-grow: 1">Filter tags: <input type="text" v-model="tagFilter" placeholder="This is a regex..."></input></label>
         <label style="flex-grow: 0; position: relative" @change="onAddTag">Add tag: 
           <input type="text" placeholder="namespace:value" pattern="[^ ]"></input>
@@ -88,7 +88,7 @@ function onAddTag(event: Event) {
         </label>
         <select style="flex-grow: 0" @change="onAddCollection">
           <option value="">Add collection</option>
-          <option v-for="coll in library.collectionList" :value="coll[0]">{{coll[0]}}</option>
+          <option v-for="collection in library.collectionList" :value="collection">{{collection}}</option>
         </select>
         <div @dragover="onDragOver" @dragleave="onDragLeave" @drop="onDropDelete($event, paletteStore)"
         title="Drag tags here to delete them"
@@ -106,10 +106,14 @@ function onAddTag(event: Event) {
         </div>
       </div>
     </div>
-    <div>
-      <!-- Preview selector -->
+    <div class="tag-controls">
+      <label>Preview: 
+        <select v-model="selectedPreview">
+          <option v-for="preview in library.previewList" :value="preview">{{preview}}</option>
+        </select>
+      </label>
     </div>
-    <div id="preview" class="tray" v-html="selectedPreview">
+    <div id="preview" class="tray" v-html="library.previews[selectedPreview]">
     </div>
   </div>
 </template>
@@ -122,14 +126,14 @@ function onAddTag(event: Event) {
   display: flex;
   flex-direction: column;
 
+  gap: 0.2rem;
+
   padding: 0.5rem;
 }
 
-#tag-controls {
+.tag-controls {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.2rem;
   gap: 0.5rem;
 }
 
