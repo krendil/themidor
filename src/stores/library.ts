@@ -45,6 +45,7 @@ export const useLibrary = defineStore("library", () => {
   const collections: { [key: string]: Collection } = {
     Terminal: {
       tags: [
+        "term:cursor",
         "term:bg",
         "term:fg",
         "term:0",
