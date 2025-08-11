@@ -6,13 +6,13 @@ import Header from './components/Header.vue';
 import { usePaletteStore } from './stores/palette';
 import { formatCss, } from 'culori';
 import { computed } from 'vue';
-import _ from 'lodash';
+import { transform } from 'lodash-es';
 
 
 const paletteStore = usePaletteStore();
 
 const defineVars = computed<{ [key: string]: string }>(() => {
-  return _.transform( paletteStore.palette.tags,  (accum, hueshade, tagValue) => {
+  return transform( paletteStore.palette.tags,  (accum, hueshade, tagValue) => {
     if(hueshade) {
       const [hue, shade] = hueshade;
       accum[ '--' + tagValue.replace(":","-") ] = formatCss(paletteStore.palette.colours[hue][shade]?.colour) ?? "unset";

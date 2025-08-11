@@ -2,7 +2,7 @@
 import { usePaletteStore } from '@/stores/palette';
 import { useLibrary as useLibrary } from '@/stores/library';
 import { formatCss, type Color } from 'culori';
-import _ from 'lodash';
+import { chain } from 'lodash-es';
 import { computed, ref } from 'vue';
 import { onDrag, onDragLeave, onDragOver, onDrop, onDropDelete } from '@/library/drag-utils';
 
@@ -19,7 +19,7 @@ interface TagData {
 const selectedPreview = ref(library.previewList[0]);
 
 const tagGroups = computed<TagData[]>( () => 
-  _.chain(paletteStore.palette.tags)
+  chain(paletteStore.palette.tags)
     .transform( (acc: { [key: number]: TagData }, hueshade, tag) => {
       if(!matchesFilter(tag)) return;
       const sortOrder = hueshade ? hueshade[0] * 1000 + hueshade[1] : -1;
@@ -66,7 +66,7 @@ function onAddCollection(event: Event) {
 
 function onAddTag(event: Event) {
   const input = event.target as HTMLInputElement;
-  if(!input.validityState.valid) return;
+  if(!input.validity.valid) return;
   input.value.split("\n").forEach(tagValue => {
     tagValue = tagValue.trim();
     if(tagValue && ! (tagValue in paletteStore.palette.tags)) {
@@ -91,8 +91,8 @@ function onAddTag(event: Event) {
           <option v-for="collection in library.collectionList" :value="collection">{{collection}}</option>
         </select>
         <div @dragover="onDragOver" @dragleave="onDragLeave" @drop="onDropDelete($event, paletteStore)"
-        title="Drag tags here to delete them"
-        >♻</div>
+        title="Drag tags here to delete them" style="align-content: last baseline;"
+        ><span class="large">♻</span></div>
     </div>
     <div id="tag-tray" class="tray">
       <div v-for="group in tagGroups" :key="group.name" class="tag-group colour-transition"

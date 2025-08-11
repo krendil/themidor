@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 
 import terminal_ls from "@/previews/terminal-ls.html?raw";
-import _ from "lodash";
+import { chain } from "lodash-es";
 import { computed } from "vue";
 
 export interface Collection {
@@ -124,13 +124,13 @@ export const useLibrary = defineStore("library", () => {
   };
 
   const collectionList = computed(() =>
-    _.chain(collections)
+    chain(collections)
       .keys()
       .sort()
       .value());
   
   const previewList = computed(() =>
-    _.chain(previews)
+    chain(previews)
       .keys()
       .sort()
       .value());

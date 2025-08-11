@@ -2,7 +2,7 @@ import { ref, computed, reactive } from 'vue'
 import { defineStore } from 'pinia'
 import { defaultPalette, type PaletteMember, type Palette } from '@/models/palette';
 import { converter, oklch, type Color } from 'culori';
-import { chain, split } from 'lodash';
+import { chain, split } from 'lodash-es';
 
 export const usePaletteStore = defineStore("palette", () => {
   const palette = ref(defaultPalette() as Palette);

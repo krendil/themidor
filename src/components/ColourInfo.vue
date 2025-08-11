@@ -3,7 +3,7 @@ import { usePaletteStore } from '@/stores/palette';
 import { computed, reactive } from 'vue';
 import { formatCss, formatHex, getMode} from 'culori';
 import LabelledInput from './LabelledInput.vue';
-import { filter } from 'lodash';
+import { filter } from 'lodash-es';
 import { useLibrary } from '@/stores/library';
 import { onDrag, onDragLeave, onDragOver, onDrop } from '@/library/drag-utils';
 
@@ -114,6 +114,8 @@ const setChannel = function(channel: string, text: string) {
   border-radius: 2px;
   padding: 0.1em;
   color: v-bind('formatCss(paletteStore.theme.currentColourFg.colour)');
+
+  cursor: grab;
 }
 
 .values {
