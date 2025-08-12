@@ -11,6 +11,7 @@ const tabs = [
   { url: "/contrast", text: "Contrast" },
   { url: "/tag", text: "Tag" },
   { url: "/export", text: "Export" },
+  { url: "/import", text: "Import" },
 ];
 
 function isCurrentTab(tab: { url: string }): boolean {

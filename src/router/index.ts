@@ -3,6 +3,7 @@ import ContrastView from '../views/ContrastView.vue'
 import EditView from '../views/EditView.vue'
 import TagView from '../views/TagView.vue'
 import ExportView from '../views/ExportView.vue'
+import ImportView from '../views/ImportView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,6 +31,11 @@ const router = createRouter({
       path: '/export',
       name: 'export',
       component: ExportView,
+    },
+    {
+      path: '/import',
+      name: 'import',
+      component: ImportView,
     },
   ],
 })

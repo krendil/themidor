@@ -1,5 +1,6 @@
 import { oklch } from "culori";
 import type { Color } from "culori";
+import { toPairs } from "lodash-es";
 
 export interface Palette {
   name: string;
@@ -128,4 +129,90 @@ export function defaultPalette(): Palette {
       "tmdr:good": [4, 1],
     }
   };
+}
+
+export function isPalette(obj: any): obj is Palette {
+  if( typeof obj !== "object" ) {
+    return false;
+  }
+
+  if( typeof obj["name"] !== "string" ) {
+    return false;
+  }
+
+  if( !Array.isArray(obj["hues"])) {
+    return false;
+  }
+  if( obj.hues.some( h => typeof h !== "string" ) ) {
+    return false;
+  }
+
+  if( !Array.isArray(obj["shades"])) {
+    return false;
+  }
+  if( obj.shades.some( h => typeof h !== "string" ) ) {
+    return false;
+  }
+
+  if( !Array.isArray(obj["colours"])) {
+    return false;
+  }
+  if( obj.colours.length != obj.hues.length ) {
+    return false;
+  }
+  if( obj.colours.some( row => {
+    if( !Array.isArray(row) ) {
+      return true;
+    }
+    if( row.length != obj.shades.length ) {
+      return true;
+    }
+    if( row.some( member => {
+      if( member === null ) {
+        return false; // Null is OK!
+      }
+      if( typeof member !== "object" ) {
+        return true;
+      }
+      if( "name" in member && typeof member.name !== "string" ) {
+        return true;
+      }
+      if( typeof member["colour"] !== "object" ) {
+        return true;
+      }
+      // TODO: further validate that colour objects are valid colours
+    }) ) {
+      return true;
+    }
+  }) ) {
+    return false;
+  }
+
+  if( typeof obj["tags"] !== "object" ) {
+    return false;
+  }
+  if( toPairs(obj.tags).some( ([tag, hueshade]) => {
+    if(typeof tag !== "string") {
+      return true;
+    }
+    if(hueshade === null) {
+      return false; // Null is OK
+    }
+    if(!Array.isArray(hueshade)) {
+      return true;
+    }
+    if(hueshade.length != 2) {
+      return true;
+    }
+    if(hueshade[0] < 0 || hueshade[0] >= obj.hues.length) {
+      return true;
+    }
+    if(hueshade[1] < 0 || hueshade[1] >= obj.shades.length) {
+      return true;
+    }
+  })) {
+    return false;
+  }
+
+  return true;
 }
