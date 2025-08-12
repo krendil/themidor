@@ -155,4 +155,6 @@ export const usePaletteStore = defineStore("palette", () => {
     setColour,
     theme
   };
+}, {
+  persist: true
 });
