@@ -4,6 +4,7 @@ import terminal_ls from "@/previews/terminal-ls.html?raw";
 import { chain } from "lodash-es";
 import { computed, markRaw, type Component } from "vue";
 import Urxvt from "@/components/exporters/Urxvt.vue";
+import Themidor from "@/components/exporters/Themidor.vue";
 
 export interface Collection {
   tags: string[],
@@ -125,7 +126,8 @@ export const useLibrary = defineStore("library", () => {
   };
 
   const exporters: { [key: string]: Component } = {
-    "urxvt": markRaw(Urxvt)
+    "urxvt": markRaw(Urxvt),
+    "Themidor": markRaw(Themidor)
   };
 
   const collectionList = computed(() =>

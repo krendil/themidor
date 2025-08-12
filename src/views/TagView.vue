@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { usePaletteStore } from '@/stores/palette';
 import { useLibrary as useLibrary } from '@/stores/library';
-import { formatCss, type Color } from 'culori';
+import { formatCss, } from 'culori';
 import { chain } from 'lodash-es';
 import { computed, ref } from 'vue';
 import { onDrag, onDragLeave, onDragOver, onDrop, onDropDelete } from '@/library/drag-utils';
