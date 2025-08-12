@@ -16,7 +16,10 @@
     "analyse": "vite-bundle-visualizer"
   },
   "dependencies": {
+    "@types/file-saver": "^2.0.7",
     "culori": "^4.0.2",
+    "file-saver": "^2.0.5",
+    "liquidjs": "^10.21.1",
     "lodash-es": "^4.17.21",
     "normalize.css": "^8.0.1",
     "pinia": "^3.0.3",

@@ -2,7 +2,8 @@ import { defineStore } from "pinia";
 
 import terminal_ls from "@/previews/terminal-ls.html?raw";
 import { chain } from "lodash-es";
-import { computed } from "vue";
+import { computed, markRaw, type Component } from "vue";
+import Urxvt from "@/components/exporters/Urxvt.vue";
 
 export interface Collection {
   tags: string[],
@@ -123,6 +124,10 @@ export const useLibrary = defineStore("library", () => {
     "Terminal: ls": terminal_ls
   };
 
+  const exporters: { [key: string]: Component } = {
+    "urxvt": markRaw(Urxvt)
+  };
+
   const collectionList = computed(() =>
     chain(collections)
       .keys()
@@ -135,5 +140,20 @@ export const useLibrary = defineStore("library", () => {
       .sort()
       .value());
 
-  return { collections, previews, descriptions, collectionList, previewList };
+  const exporterList = computed(() =>
+    chain(exporters)
+      .keys()
+      .sort()
+      .value());
+
+
+  return {
+    collectionList,
+    collections,
+    descriptions,
+    exporterList,
+    exporters,
+    previewList,
+    previews,
+  };
 });

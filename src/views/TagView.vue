@@ -138,10 +138,6 @@ function onAddTag(event: Event) {
   gap: 0.5rem;
 }
 
-#tag-tray {
-  padding: 0.5rem;
-}
-
 .group-chips {
   padding-bottom: 0.2rem;
 }
@@ -196,13 +192,6 @@ function onAddTag(event: Event) {
 
 .tray {
   flex: 1 1 0%;
-
-  overflow-y: scroll;
-
-  border-radius: 4px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: var(--tmdr-border);
 }
 
 #preview :deep(> *) {
