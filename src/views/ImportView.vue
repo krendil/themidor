@@ -64,13 +64,13 @@ async function importFile(e: Event) {
 .warning::before {
   content: "!";
   font-weight: bold;
-  color: var(--tmdr-bad);
+  color: var(--theme-bad);
   margin-right: 0.5rem;
 }
 
 .valid::before {
   content: "✔";
-  color: var(--tmdr-good);
+  color: var(--theme-good);
   margin-right: 0.5rem;
 }
 

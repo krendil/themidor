@@ -20,7 +20,7 @@ const props = defineProps({
 const paletteStore = usePaletteStore();
 const paletteItem = computed(() => paletteStore.getColour(props.hue, props.shade));
 const cssColour = computed(() => formatCss(paletteItem.value?.colour));
-const borderColour = computed(() => formatCss(paletteStore.fgForColour(paletteItem.value?.colour).colour));
+const borderColour = computed(() => formatCss(paletteStore.fgForColour(paletteItem.value?.colour)));
 
 const selected = computed(() => paletteStore.selectedHue == props.hue && paletteStore.selectedShade == props.shade);
 
@@ -74,13 +74,13 @@ function selectColour() {
 
     border-style: dashed;
     border-width: 1px;
-    border-color: var(--tmdr-border);
+    border-color: var(--theme-border);
     border-radius: 4px;
     margin: 2px;
 }
 
 .empty:hover {
-  background-color: var(--tmdr-hibg);
+  background-color: var(--theme-hibg);
 }
 
 </style>

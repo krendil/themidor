@@ -79,8 +79,8 @@ const setChannel = function(channel: string, text: string) {
 <style scoped>
 
 .sample {
-  background-color: v-bind('formatCss(paletteStore.selectedColour?.colour)');
-  color: v-bind('formatCss(paletteStore.theme.currentColourFg.colour)');
+  background-color: var(--theme-selected);
+  color: var(--theme-currentfg);
 
   position: relative;
   border-style: solid;
@@ -90,7 +90,7 @@ const setChannel = function(channel: string, text: string) {
 }
 
 .sample.drag-over {
-  border-color: v-bind('formatCss(paletteStore.theme.currentColourFg.colour)');
+  border-color: var(--theme-currentfg);
   border-width: 4px;
 }
 
@@ -113,7 +113,7 @@ const setChannel = function(channel: string, text: string) {
   border-width: 1px;
   border-radius: 2px;
   padding: 0.1em;
-  color: v-bind('formatCss(paletteStore.theme.currentColourFg.colour)');
+  color: var(--theme-currentfg);
 
   cursor: grab;
 }

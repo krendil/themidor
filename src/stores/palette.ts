@@ -3,8 +3,11 @@ import { defineStore } from 'pinia'
 import { defaultPalette, type PaletteMember, type Palette } from '@/models/palette';
 import { converter, oklch, type Color } from 'culori';
 import { chain, split } from 'lodash-es';
+import { useOptions } from './options';
 
 export const usePaletteStore = defineStore("palette", () => {
+  const options = useOptions();
+
   const palette = ref(defaultPalette() as Palette);
 
   const selectedHue = ref(0);
@@ -108,37 +111,52 @@ export const usePaletteStore = defineStore("palette", () => {
     }
   }
 
-  function fgForColour(bg?: Color): PaletteMember {
+  function fgForColour(bg?: Color): Color {
     const currentL = oklch(bg)?.l ?? 0;
     if (currentL <= 0.6) {
-      return theme.lightfg;
+      return getThemeColour('lightfg');
     } else {
-      return theme.darkfg;
+      return getThemeColour('darkfg');
     }
   }
 
-  const theme = reactive({
-    lightfg: computed( () => getColourByTag.value("tmdr:lightfg") ?? {colour: {mode: 'oklch', l: 1, c: 0, h: 0} as const}),
-    darkfg: computed( () => getColourByTag.value("tmdr:darkfg") ?? {colour: {mode: 'oklch', l: 0, c: 0, h: 0} as const}),
-    fg: computed( () => getColourByTag.value("tmdr:fg") ?? {colour: {mode: 'oklch', l: 0, c: 0, h: 0} as const}),
-    bg: computed( () => getColourByTag.value("tmdr:bg") ?? {colour: {mode: 'oklch', l: 1, c: 0, h: 0} as const}),
-    hifg: computed( () => getColourByTag.value("tmdr:hifg") ?? {colour: {mode: 'oklch', l: 0, c: 0, h: 0} as const}),
-    hibg: computed( () => getColourByTag.value("tmdr:hibg") ?? {colour: {mode: 'oklch', l: 0.9, c: 0, h: 0} as const}),
-    grey: computed( () => getColourByTag.value("tmdr:grey") ?? {colour: {mode: 'oklch', l: 0.5, c: 0, h: 0} as const}),
-    border: computed( () => getColourByTag.value("tmdr:border") ?? {colour: {mode: 'oklch', l: 0.5, c: 0, h: 0} as const}),
-    bad: computed( () => getColourByTag.value("tmdr:bad") ?? {colour: {mode: 'oklch', l: 0.5, c: 0.3, h: 30} as const}),
-
-    currentColourFg: computed( (): PaletteMember => {
-      return fgForColour(selectedColour.value?.colour);
-    }),
-
+  const currentColourFg = computed( (): Color => {
+    return fgForColour(selectedColour.value?.colour);
   });
+
+  const themeFallbacks = {
+    lightfg: {mode: 'oklch', l: 1, c: 0, h: 0} as const,
+    darkfg: {mode: 'oklch', l: 0.3, c: 0, h: 0} as const,
+    fg: {mode: 'oklch', l: 0.3, c: 0, h: 0} as const,
+    bg: {mode: 'oklch', l: 1, c: 0, h: 0} as const,
+    hifg: {mode: 'oklch', l: 0, c: 0, h: 0} as const,
+    hibg: {mode: 'oklch', l: 0.9, c: 0, h: 0} as const,
+    grey: {mode: 'oklch', l: 0.7, c: 0, h: 0} as const,
+    border: {mode: 'oklch', l: 0.7, c: 0, h: 0} as const,
+    bad: {mode: 'oklch', l: 0.5, c: 0.3, h: 30} as const,
+    good: {mode: 'oklch', l: 0.5, c: 0.3, h: 120} as const,
+  };
+
+  function getThemeColour(colour: keyof typeof themeFallbacks): Color {
+    if(options.dynamicTheming) {
+      return getColourByTag.value("tmdr:" + colour)?.colour ?? themeFallbacks[colour];
+    } else {
+      return themeFallbacks[colour];
+    }
+  }
+
+  function $reset() {
+    palette.value = defaultPalette();
+    selectedHue.value = 0;
+    selectedShade.value = 0;
+  }
 
   return {
     addHue,
     addShade,
     colourMode,
     colourModeConverter,
+    currentColourFg,
     deleteHue,
     deleteShade,
     fgForColour,
@@ -146,14 +164,16 @@ export const usePaletteStore = defineStore("palette", () => {
     getColourByTag,
     getCurrentColourTags,
     getNameForColour,
+    getThemeColour,
     loadPalette,
     palette,
+    selectColour,
+    selectedColour,
     selectedHue,
     selectedShade,
-    selectedColour,
-    selectColour,
     setColour,
-    theme
+    themeFallbacks,
+    $reset
   };
 }, {
   persist: true

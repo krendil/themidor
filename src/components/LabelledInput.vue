@@ -28,9 +28,9 @@ const paletteStore = usePaletteStore();
 .label {
     flex-grow: 0;
     padding: 0.2em 0.5em;
-    background-color: var(--tmdr-hibg);
-    color: var(--tmdr-hifg);
-    border-color: var(--tmdr-border);
+    background-color: var(--theme-hibg);
+    color: var(--theme-hifg);
+    border-color: var(--theme-border);
     border-width: 1px 0 1px 1px;
     border-style: solid;
     border-radius: 2px 0 0 2px; /* Top left and bottom left */

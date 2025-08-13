@@ -2,7 +2,6 @@
 import { usePaletteStore } from '@/stores/palette';
 import { computed, reactive, useTemplateRef } from 'vue';
 import SwatchItem from './SwatchItem.vue';
-import { formatCss } from 'culori';
 import ConfirmModal from '../ConfirmModal.vue';
 
 const paletteStore = usePaletteStore();
@@ -86,7 +85,7 @@ function renameHue(index: number, name: string) {
 .row-header {
   position: sticky;
   left: 0;
-  background-color: var(--tmdr-bg);
+  background-color: var(--theme-bg);
   input {
     padding: 0.1em 1em;
   }
@@ -95,7 +94,7 @@ function renameHue(index: number, name: string) {
 .column-header {
   position: sticky;
   top: 0;
-  background-color: var(--tmdr-bg);
+  background-color: var(--theme-bg);
 
   input {
     padding: 0.1em;
@@ -103,8 +102,8 @@ function renameHue(index: number, name: string) {
 }
 
 .selectedHeader {
-  color: var(--tmdr-hifg);
-  background-color: var(--tmdr-hibg);
+  color: var(--theme-hifg);
+  background-color: var(--theme-hibg);
 }
 
 .add {
@@ -133,7 +132,7 @@ function renameHue(index: number, name: string) {
 }
 
 .delete-button:hover {
-  background-color: var(--tmdr-hibg);
+  background-color: var(--theme-hibg);
   clip-path: circle(closest-side);
 }
 

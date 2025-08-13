@@ -165,7 +165,7 @@ function onDrag(event: PointerEvent) {
             }">
             <div v-if="isSelected(index)" class="slider-thumb" :style="{
               '--slider-colour': formatCss(colour.colour),
-              '--fg-colour': formatCss(paletteStore.fgForColour(colour.colour).colour)
+              '--fg-colour': formatCss(paletteStore.fgForColour(colour.colour))
             }" @pointerdown="startDragging($event, index)" @pointerup="stopDragging" @pointermove="onDrag"></div>
           </div>
         </div>
@@ -208,13 +208,13 @@ function onDrag(event: PointerEvent) {
   height: 100%;
   width: 100%;
   border-style: solid;
-  border-color: var(--tmdr-border);
+  border-color: var(--theme-border);
   border-width: 1px 0;
 }
 
 .slider-track {
   border-style: solid;
-  border-color: var(--tmdr-fg);
+  border-color: var(--theme-fg);
   border-width: 1px 0;
   transition: height 150ms;
   background: var(--slider-colour, #f0f);

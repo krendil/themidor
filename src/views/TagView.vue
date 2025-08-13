@@ -2,7 +2,7 @@
 import { usePaletteStore } from '@/stores/palette';
 import { useLibrary as useLibrary } from '@/stores/library';
 import { formatCss, } from 'culori';
-import { chain } from 'lodash-es';
+import { chain, transform } from 'lodash-es';
 import { computed, ref } from 'vue';
 import { onDrag, onDragLeave, onDragOver, onDrop, onDropDelete } from '@/library/drag-utils';
 
@@ -29,13 +29,13 @@ const tagGroups = computed<TagData[]>( () =>
         acc[sortOrder] = {
           name,
           hueshade,
-          fg: formatCss(paletteStore.fgForColour(colour).colour) ?? "var(--tmdr-fg)",
-          bg: colour ? formatCss(colour) : "var(--tmdr-bg)",
+          fg: formatCss(paletteStore.fgForColour(colour)) ?? "var(--theme-fg)",
+          bg: colour ? formatCss(colour) : "var(--theme-bg)",
           tags: []
         }
       }
       acc[sortOrder].tags.push( { tag, description: library.descriptions[tag] ?? "" } );
-    }, {[-1]: { name: "Unassigned", hueshade: null, fg: "var(--tmdr-fg)", bg: "var(--tmdr-bg)", tags: [] } as TagData} )
+    }, {[-1]: { name: "Unassigned", hueshade: null, fg: "var(--theme-fg)", bg: "var(--theme-bg)", tags: [] } as TagData} )
     .toPairs()
     .orderBy( ([k, v]) => k)
     .map( ([_, v]) => v )
@@ -76,6 +76,16 @@ function onAddTag(event: Event) {
   input.value = ""; // Reset the input box
 }
 
+const tagVars = computed<{ [key: string]: string }>(() =>
+  transform( paletteStore.palette.tags,  (accum, hueshade, tagValue) => {
+    if(hueshade) {
+      const [hue, shade] = hueshade;
+      accum[ '--' + tagValue.replace(":","-") ] = formatCss(paletteStore.palette.colours[hue][shade]?.colour) ?? "unset";
+    }
+  })
+);
+
+
 </script>
 
 <template>
@@ -114,7 +124,7 @@ function onAddTag(event: Event) {
         </select>
       </label>
     </div>
-    <div id="preview" class="tray" v-html="library.previews[selectedPreview]">
+    <div id="preview" class="tray" v-html="library.previews[selectedPreview]" :style="tagVars">
     </div>
   </div>
 </template>
@@ -143,8 +153,8 @@ function onAddTag(event: Event) {
 }
 
 .drag-over {
-  background-color: var(--tmdr-hibg);
-  color: var(--tmdr-hifg);
+  background-color: var(--theme-hibg);
+  color: var(--theme-hifg);
 }
 
 .tag-chip {

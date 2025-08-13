@@ -22,6 +22,14 @@ a {
     color: inherit;
 }
 
+h1,h2,h3,h4,h5,h6 {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+h1:first-child,h2:first-child,h3:first-child,h4:first-child,h5:first-child,h6:first-child {
+    margin-top: 0;
+}
+
 .monospace {
     font-family: 'Courier New', Courier, monospace;
 }
@@ -59,13 +67,13 @@ a {
 }
 
 input:invalid {
-    outline: 2px solid var(--tmdr-bad);
-    border-color: var(--tmdr-bad);
+    outline: 2px solid var(--theme-bad);
+    border-color: var(--theme-bad);
 }
 
 input:invalid + span::before {
     content: "✖";
-    color: var(--tmdr-bad);
+    color: var(--theme-bad);
 }
 
 .tray {
@@ -74,7 +82,7 @@ input:invalid + span::before {
   border-radius: 4px;
   border-width: 1px;
   border-style: solid;
-  border-color: var(--tmdr-border);
+  border-color: var(--theme-border);
 
   padding: 0.5rem;
 }

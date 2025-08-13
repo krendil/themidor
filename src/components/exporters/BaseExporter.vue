@@ -122,12 +122,12 @@ function download() {
 .warning::before {
     content: "!";
     font-weight: bold;
-    color: var(--tmdr-bad);
+    color: var(--theme-bad);
 }
 
 .valid::before {
     content: "✔";
-    color: var(--tmdr-good);
+    color: var(--theme-good);
 }
 
 .warning {

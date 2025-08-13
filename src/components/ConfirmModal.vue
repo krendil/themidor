@@ -33,7 +33,7 @@ defineExpose({
 
 <template>
   <Teleport to="body">
-    <div class="backdrop" v-show="shown" @click="resolveNo">
+    <div class="backdrop" v-show="shown" @click.self="resolveNo">
       <div class="modal">
         <div class="message">{{message}}</div>
         <div class="button-container">
@@ -50,8 +50,8 @@ defineExpose({
 .backdrop {
 
   /* Note we can't use variables here because we aren't inside main
-    otherwise, this could be: color(from var(--tmdr-grey) srgb r g b / 50%); */
-  background-color: v-bind('formatCss({...paletteStore.theme.grey.colour, alpha: 0.5})');
+    otherwise, this could be: color(from var(--theme-grey) srgb r g b / 50%); */
+  background-color: color(from var(--theme-grey) srgb r g b / 50%);
 
 
   position: fixed;
@@ -64,8 +64,8 @@ defineExpose({
 }
 
 .modal {
-  color: v-bind('formatCss(paletteStore.theme.fg.colour)');
-  background-color: v-bind('formatCss(paletteStore.theme.bg.colour)');
+  color: var(--theme-fg);
+  background-color: var(--theme-bg);
   border-radius: 8px;
   padding: 2em;
 
