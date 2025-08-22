@@ -12,7 +12,7 @@ const exporterComponent = computed(() => library.exporters[exporterName.value]);
 <template>
   <div id="export-view">
     <div class="selector">
-      <select>
+      <select v-model="exporterName">
         <option v-for="exporter in library.exporterList" :value="exporter">{{exporter}}</option>
       </select>
     </div>

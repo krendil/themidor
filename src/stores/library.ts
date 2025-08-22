@@ -5,10 +5,10 @@ import { chain } from "lodash-es";
 import { computed, markRaw, type Component } from "vue";
 import Urxvt from "@/components/exporters/Urxvt.vue";
 import Themidor from "@/components/exporters/Themidor.vue";
+import Vim from "@/components/exporters/Vim.vue";
 
 export interface Collection {
   tags: string[],
-  previews: string[]
 }
 
 export const useLibrary = defineStore("library", () => {
@@ -67,57 +67,21 @@ export const useLibrary = defineStore("library", () => {
         "term:14",
         "term:15",
       ],
-      previews: ["Terminal Ls"],
     },
     "Vim syntax highlighting": {
       tags: [],
-      previews: [
-        "Vim Typescript",
-        "Vim Python",
-        "Vim C",
-        "Vim Rust",
-        "Vim Zig",
-        "Vim Bash",
-      ],
     },
     "Vim editor decorations": {
       tags: [],
-      previews: [
-        "Vim Typescript",
-        "Vim Python",
-        "Vim C",
-        "Vim Rust",
-        "Vim Zig",
-        "Vim Bash",
-      ],
     },
     Treesitter: {
       tags: [],
-      previews: [
-        "TS Typescript",
-        "TS Python",
-        "TS C",
-        "TS Rust",
-        "TS Zig",
-        "TS Bash",
-        "TS Markdown",
-      ],
     },
     Textmate: {
       tags: [],
-      previews: [
-        "TM Typescript",
-        "TM Python",
-        "TM C",
-        "TM Rust",
-        "TM Zig",
-        "TM Bash",
-        "TM Markdown",
-      ],
     },
     "Visual Studio Code editor decorations": {
       tags: [],
-      previews: ["VS Code"],
     },
   };
 

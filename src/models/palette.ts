@@ -11,7 +11,9 @@ export interface Palette {
   // Indexed by hues first, then shades
   colours: (PaletteMember | null)[][];
 
-  tags: { [key: string]: [number, number] | null }
+  tags: { [key: string]: [number, number] | null };
+
+  exportOptions: { [key: string]: object };
 }
 
 export interface PaletteMember {
@@ -127,6 +129,8 @@ export function defaultPalette(): Palette {
       "tmdr:border": [0, 0],
       "tmdr:bad": [2, 1],
       "tmdr:good": [4, 1],
+    },
+    exportOptions: {
     }
   };
 }
@@ -208,6 +212,17 @@ export function isPalette(obj: any): obj is Palette {
       return true;
     }
     if(hueshade[1] < 0 || hueshade[1] >= obj.shades.length) {
+      return true;
+    }
+  })) {
+    return false;
+  }
+
+  if( typeof obj["exportOptions"] !== "object" ) {
+    return false;
+  }
+  if( Object.values(obj.exportOptions).some( opt => {
+    if(typeof opt !== "object") {
       return true;
     }
   })) {
