@@ -16,7 +16,7 @@ const required = [
 ];
 
 const recommended = [
-    "term:bg", "term:fg", "term:cursor",
+    "term:bg", "term:fg", "term:cursor", "term:selectionbg"
 ];
 
 const output = computed(() => {

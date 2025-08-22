@@ -1,6 +1,9 @@
 URxvt.cursorColor:  {{ "term:cursor" | or: "term:fg" | or: "term:7" | hex }}
 URxvt.background:   {{ "term:bg" | or: "term:0" | hex }}
 URxvt.foreground:   {{ "term:fg" | or: "term:7" | hex }}
+{% if "term:selectionbg" | isTagged %}
+URxvt.colorHighlight:   {{ "term:selectionbg" | hex }}
+{% endif %}
 
 URxvt.color0:       {{ "term:0" | hex }}
 URxvt.color1:       {{ "term:1" | hex }}

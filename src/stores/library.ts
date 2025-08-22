@@ -5,7 +5,6 @@ import { chain } from "lodash-es";
 import { computed, markRaw, type Component } from "vue";
 import Urxvt from "@/components/exporters/Urxvt.vue";
 import Themidor from "@/components/exporters/Themidor.vue";
-import Vim from "@/components/exporters/Vim.vue";
 
 export interface Collection {
   tags: string[],
@@ -33,6 +32,9 @@ export const useLibrary = defineStore("library", () => {
     "term:bg":"Terminal background",
     "term:cursor":"Terminal cursor",
     "term:fg":"Terminal foreground",
+    "term:selectionbg":"Terminal background colour of selected text",
+    "term:selectionfg":"Terminal colour of selected text",
+    "term:cursorfg":"Terminal colour of text under the cursor",
 
     "tmdr:fg": "Themidor main foreground",
     "tmdr:bg": "Themidor main background",
@@ -66,6 +68,10 @@ export const useLibrary = defineStore("library", () => {
         "term:13",
         "term:14",
         "term:15",
+
+        "term:selectionbg",
+        "term:selectionfg",
+        "term:cursorfg",
       ],
     },
     "Vim syntax highlighting": {

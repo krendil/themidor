@@ -24,6 +24,7 @@ export function makeLiquidEngine(paletteStore: ReturnType<typeof usePaletteStore
       }
   });
 
+  engine.registerFilter('isTagged', (tag: string) => !!paletteStore.getColourByTag(tag) );
 
   return engine;
 }
