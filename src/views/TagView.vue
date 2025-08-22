@@ -93,8 +93,8 @@ const tagVars = computed<{ [key: string]: string }>(() =>
     <div class="tag-controls">
       <label style="flex-grow: 1">Filter tags: <input type="text" v-model="tagFilter"
           placeholder="This is a regex..."></input></label>
-      <label style="flex-grow: 0; position: relative" @change="onAddTag">Add tag:
-        <input type="text" placeholder="namespace:value" pattern="[^ ]"></input>
+      <label style="flex-grow: 0; position: relative">Add tag:
+        <input type="text" placeholder="namespace:value" pattern="[^ ]*" @change="onAddTag"></input>
         <span class="validation"></span>
       </label>
       <select style="flex-grow: 0" @change="onAddCollection">
