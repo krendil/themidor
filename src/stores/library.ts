@@ -5,6 +5,7 @@ import { chain } from "lodash-es";
 import { computed, markRaw, type Component } from "vue";
 import Urxvt from "@/components/exporters/Urxvt.vue";
 import Themidor from "@/components/exporters/Themidor.vue";
+import Ghostty from "@/components/exporters/Ghostty.vue";
 
 export interface Collection {
   tags: string[],
@@ -97,7 +98,8 @@ export const useLibrary = defineStore("library", () => {
 
   const exporters: { [key: string]: Component } = {
     "urxvt": markRaw(Urxvt),
-    "Themidor": markRaw(Themidor)
+    "Themidor": markRaw(Themidor),
+    "Ghostty": markRaw(Ghostty),
   };
 
   const collectionList = computed(() =>
