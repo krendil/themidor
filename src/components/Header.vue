@@ -32,8 +32,8 @@ function showHelp() {
 <template>
   <header class="colour-transition">
     <div id="titles">
-      <span>Themidor – </span>
-      <input id="palette-name" class="invisible colour-transition" v-model="paletteStore.palette.name"></input>
+      <span>Themidor – <input id="palette-name" class="invisible colour-transition" v-model="paletteStore.palette.name"></input>
+      </span>
     </div>
     <div id="tabs">
       <div v-for="tab in tabs" class="tab text-big" :class="{selected: isCurrentTab(tab)}">
