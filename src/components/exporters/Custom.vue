@@ -36,7 +36,7 @@ const output = computed(() => {
 </script>
 
 <template>
-    <BaseExporter :output="output" :filename="slugify(paletteStore.palette.name)" :required :recommended>
+    <BaseExporter :output="output" :filename="slugify(paletteStore.palette.name) + '.txt'" :required :recommended>
         <textarea class="custom-template tray monospace" v-model="opts.template" spellcheck="false"></textarea>
     </BaseExporter>
 </template>

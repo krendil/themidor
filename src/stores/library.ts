@@ -6,10 +6,11 @@ import { computed, markRaw, type Component } from "vue";
 import terminal_ls from "@/previews/terminal-ls.html?raw";
 
 // Exporters
-import Urxvt from "@/components/exporters/Urxvt.vue";
-import Themidor from "@/components/exporters/Themidor.vue";
-import Ghostty from "@/components/exporters/Ghostty.vue";
 import Custom from "@/components/exporters/Custom.vue";
+import Ghostty from "@/components/exporters/Ghostty.vue";
+import Simple from "@/components/exporters/Simple.vue";
+import Themidor from "@/components/exporters/Themidor.vue";
+import Urxvt from "@/components/exporters/Urxvt.vue";
 
 export interface Collection {
   tags: string[],
@@ -105,6 +106,7 @@ export const useLibrary = defineStore("library", () => {
     "Themidor": markRaw(Themidor),
     "Ghostty": markRaw(Ghostty),
     "Custom": markRaw(Custom),
+    "Simple": markRaw(Simple),
   };
 
   const collectionList = computed(() =>
