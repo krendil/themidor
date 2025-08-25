@@ -5,11 +5,30 @@ import { converter, oklch, type Color } from 'culori';
 import { chain, split } from 'lodash-es';
 import { useOptions } from './options';
 import { moveInArray } from '@/library/array-utils';
+import { useRefHistory } from '@vueuse/core';
 
 export const usePaletteStore = defineStore("palette", () => {
   const options = useOptions();
 
-  const palette = ref(defaultPalette() as Palette);
+  const palette = ref(defaultPalette() as Palette)
+
+  const history = useRefHistory(palette,
+    { capacity: 16, deep: true,
+      parse: (pal) => {
+        if(selectedHue.value >= pal.hues.length) {
+          selectedHue.value = 0;
+        }
+        if(selectedShade.value >= pal.shades.length) {
+          selectedShade.value = 0;
+        }
+        if( !pal.colours[selectedHue.value][selectedShade.value] ) {
+          selectedHue.value = 0;
+          selectedShade.value = 0;
+        }
+        return pal;
+      }
+     }
+  );
 
   const selectedHue = ref(0);
   const selectedShade = ref(0);
@@ -58,6 +77,12 @@ export const usePaletteStore = defineStore("palette", () => {
 
   function loadPalette(newPalette: Palette) {
     palette.value = newPalette;
+    if(selectedHue.value >= newPalette.hues.length) {
+      selectedHue.value = 0;
+    }
+    if(selectedShade.value >= newPalette.shades.length) {
+      selectedShade.value = 0;
+    }
   }
 
   function addHue(name: string, location?: number) {
@@ -86,12 +111,18 @@ export const usePaletteStore = defineStore("palette", () => {
   function deleteHue(index: number) {
     palette.value.hues.splice(index, 1);
     palette.value.colours.splice(index, 1);
+    if(selectedHue.value >= palette.value.hues.length) {
+      selectedHue.value = palette.value.hues.length - 1;
+    }
   }
   
   function deleteShade(index: number) {
     palette.value.shades.splice(index, 1);
     for(let row of palette.value.colours) {
       row.splice(index, 1);
+    }
+    if(selectedShade.value >= palette.value.shades.length) {
+      selectedShade.value = palette.value.shades.length - 1;
     }
   }
 
@@ -194,6 +225,7 @@ export const usePaletteStore = defineStore("palette", () => {
 
   function $reset() {
     palette.value = defaultPalette();
+    history.clear();
     selectedHue.value = 0;
     selectedShade.value = 0;
   }
@@ -212,6 +244,7 @@ export const usePaletteStore = defineStore("palette", () => {
     getCurrentColourTags,
     getNameForColour,
     getThemeColour,
+    history,
     loadPalette,
     moveHue,
     moveShade,
@@ -225,5 +258,9 @@ export const usePaletteStore = defineStore("palette", () => {
     $reset
   };
 }, {
-  persist: true
+  persist: {
+    afterHydrate: (context) => {
+      context.store["history"].clear();
+    }
+  }
 });

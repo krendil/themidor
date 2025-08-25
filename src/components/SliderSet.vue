@@ -123,6 +123,7 @@ function startDragging(event: PointerEvent, index: number) {
         top: parentBounds?.top,
         bottom: parentBounds?.bottom
       };
+      paletteStore.history.pause();
     }
   }
 }
@@ -131,6 +132,8 @@ function stopDragging(event: PointerEvent) {
   if(event.target instanceof HTMLElement) {
     event.target.releasePointerCapture(event.pointerId);
   }
+  paletteStore.history.resume();
+  paletteStore.history.commit();
   dragContext = null;
 }
 

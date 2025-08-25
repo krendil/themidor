@@ -8,11 +8,10 @@ import { onDragLeave } from '@/library/drag-utils';
 type Dim = "hue" | "shade";
 
 const paletteStore = usePaletteStore();
-const palette = paletteStore.palette;
 
 const gridStyle = reactive({
-  gridTemplateRows: computed(() => `2em repeat(${palette.hues.length}, minmax(2em, 1fr))`),
-  gridTemplateColumns: computed(() => `auto repeat(${palette.shades.length}, minmax(3em, 1fr))`)
+  gridTemplateRows: computed(() => `2em repeat(${paletteStore.palette.hues.length}, minmax(2em, 1fr))`),
+  gridTemplateColumns: computed(() => `auto repeat(${paletteStore.palette.shades.length}, minmax(3em, 1fr))`)
 });
 
 const confirmModal = useTemplateRef("confirmModal");
@@ -26,12 +25,12 @@ function addHue(event: Event) {
 }
 
 function deleteHue(hueIndex: number) {
-  const hueName = palette.hues[hueIndex];
+  const hueName = paletteStore.palette.hues[hueIndex];
   confirmModal.value?.showConfirmModal(`Are you sure you want to delete the '${hueName}' hue?`, () => paletteStore.deleteHue(hueIndex) );
 }
 
 function deleteShade(shadeIndex: number) {
-  const shadeName = palette.shades[shadeIndex];
+  const shadeName = paletteStore.palette.shades[shadeIndex];
   confirmModal.value?.showConfirmModal(`Are you sure you want to delete the '${shadeName}' shade?`, () => paletteStore.deleteShade(shadeIndex) );
 }
 
@@ -90,7 +89,7 @@ function onDropDim(e: DragEvent, dim: Dim, targetId: number) {
 
     <div class="row-header column-header"><!--Empty space for top corner--></div>
 
-    <div v-for="(shade, shadeIndex) in palette.shades" class="column-header align-middle colour-transition sticky-top" :class="{ selectedHeader: paletteStore.selectedShade == shadeIndex }"
+    <div v-for="(shade, shadeIndex) in paletteStore.palette.shades" class="column-header align-middle colour-transition sticky-top" :class="{ selectedHeader: paletteStore.selectedShade == shadeIndex }"
       @dragover="onDragDimOver($event, 'shade', shadeIndex)" @dragleave="onDragLeave" @drop="onDropDim($event, 'shade', shadeIndex)"
     >
       <span class="grab-handle" draggable="true" @dragstart="onDragDim($event, 'shade', shadeIndex)">⫶</span>
@@ -98,14 +97,14 @@ function onDropDim(e: DragEvent, dim: Dim, targetId: number) {
       <div class="delete-button colour-transition" @click="deleteShade(shadeIndex)">⨯</div>
     </div>
 
-    <template v-for="(row, hueIndex) in palette.colours">
+    <template v-for="(row, hueIndex) in paletteStore.palette.colours">
       <div class="row-header align-middle colour-transition sticky-left" 
         :class="{ selectedHeader: paletteStore.selectedHue == hueIndex }"
         @dragover="onDragDimOver($event, 'hue', hueIndex)" @dragleave="onDragLeave" @drop="onDropDim($event, 'hue', hueIndex)"
       >
         <span class="grab-handle" draggable="true" @dragstart="onDragDim($event, 'hue', hueIndex)">⫶</span>
-        <input class="align-right colour-transition invisible ghost-scale" :value="palette.hues[hueIndex]" @input="renameHue(hueIndex, $event?.target?.value)" size="1"></input>
-        <div class="ghost-measure">{{palette.hues[hueIndex]}}</div>
+        <input class="align-right colour-transition invisible ghost-scale" :value="paletteStore.palette.hues[hueIndex]" @input="renameHue(hueIndex, $event?.target?.value)" size="1"></input>
+        <div class="ghost-measure">{{paletteStore.palette.hues[hueIndex]}}</div>
         <div class="delete-button colour-transition" @click="deleteHue(hueIndex)">⨯</div>
       </div>
       <SwatchItem v-for="(item, shadeIndex) in row" :hue="hueIndex" :shade="shadeIndex" class="colour-transition"></SwatchItem>

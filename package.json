@@ -16,6 +16,7 @@
     "analyse": "vite-bundle-visualizer"
   },
   "dependencies": {
+    "@vueuse/core": "^13.7.0",
     "culori": "^4.0.2",
     "file-saver": "^2.0.5",
     "liquidjs": "^10.21.1",

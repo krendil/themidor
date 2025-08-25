@@ -5,7 +5,7 @@ import TabContainer from './components/TabContainer.vue';
 import Header from './components/Header.vue';
 import { usePaletteStore } from './stores/palette';
 import { formatCss, } from 'culori';
-import { computed, watch } from 'vue';
+import { computed, onMounted, onUnmounted, watch } from 'vue';
 
 const paletteStore = usePaletteStore();
 
@@ -22,7 +22,27 @@ watch(themeVars, (vars) => {
   }
 }, {
   immediate: true
-  });
+});
+
+onMounted(() => document.addEventListener("keydown", globalShortcuts));
+onUnmounted(() => document.removeEventListener("keydown", globalShortcuts));
+
+function globalShortcuts(evt: KeyboardEvent) {
+  if( (evt.ctrlKey || evt.metaKey) && evt.key == "z" ) {
+    paletteStore.history.undo();
+    evt.preventDefault();
+  }
+
+  if( (evt.ctrlKey || evt.metaKey) && evt.shiftKey && evt.key == "z" ) {
+    paletteStore.history.redo();
+    evt.preventDefault();
+  }
+
+  if( (evt.ctrlKey || evt.metaKey) && evt.key == "y" ) {
+    paletteStore.history.redo();
+    evt.preventDefault();
+  }
+}
 
 </script>
 

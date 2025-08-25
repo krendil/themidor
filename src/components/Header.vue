@@ -40,7 +40,9 @@ function showHelp() {
         <RouterLink :to="tab.url">{{tab.text}}</RouterLink>
       </div>
     </div>
-    <div id="help" @click="showHelp">
+    <div id="undo" class="button" @click="paletteStore.history.undo" title="Undo" :class="{ disabled: !paletteStore.history.canUndo }"><span>↺</span></div>
+    <div id="redo" class="button" @click="paletteStore.history.redo" title="Redo" :class="{ disabled: !paletteStore.history.canRedo }"><span>↻</span></div>
+    <div id="help" class="button" @click="showHelp">
       <span>?</span>
     </div>
   </header>
@@ -96,13 +98,32 @@ header {
 }
 
 #help {
-  cursor: pointer;
   > span {
     color: #ffffff;
     background-color: #2e2e2e;
     clip-path: circle(closest-side);
     padding: 0 0.5em;
   }
+}
+
+#undo {
+  span {
+    display: inline-block;
+    rotate: -90deg;
+  }
+}
+#redo {
+  span {
+    display: inline-block;
+    rotate: 90deg;
+  }
+}
+
+.button {
+  cursor: pointer;
+}
+.disabled {
+  color: var(--theme-border);
 }
 
 </style>
