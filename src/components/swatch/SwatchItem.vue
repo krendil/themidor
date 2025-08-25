@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { guessNewColour } from '@/library/palette-tools';
+import { guessNewColour } from '@/library/palette-utils';
 import { usePaletteStore } from '@/stores/palette';
 import { formatCss } from 'culori';
 import { computed } from 'vue';
-import { onDragLeave, onDragOver, onDrop } from '@/library/drag-utils';
+import { onDragLeave, onDragTagOver, onDropTag } from '@/library/drag-utils';
 
 
 const props = defineProps({
@@ -40,7 +40,7 @@ function selectColour() {
         ➕
     </div>
     <div v-else class="full" :class="{ selected }" @click="selectColour"
-        @dragover="onDragOver" @dragleave="onDragLeave" @drop="onDrop($event, paletteStore, [ props.hue, props.shade] )"
+        @dragover="onDragTagOver" @dragleave="onDragLeave" @drop="onDropTag($event, paletteStore, [ props.hue, props.shade] )"
     >
         
     </div>

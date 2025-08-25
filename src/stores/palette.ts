@@ -4,6 +4,7 @@ import { defaultPalette, type PaletteMember, type Palette } from '@/models/palet
 import { converter, oklch, type Color } from 'culori';
 import { chain, split } from 'lodash-es';
 import { useOptions } from './options';
+import { moveInArray } from '@/library/array-utils';
 
 export const usePaletteStore = defineStore("palette", () => {
   const options = useOptions();
@@ -94,6 +95,52 @@ export const usePaletteStore = defineStore("palette", () => {
     }
   }
 
+  function moveHue(fromIndex: number, toIndex: number) {
+    moveInArray(palette.value.hues, fromIndex, toIndex);
+    moveInArray(palette.value.colours, fromIndex, toIndex);
+    for( var tag in palette.value.tags) {
+      const coords = palette.value.tags[tag]
+      if( coords === null) {
+        // Tag is unassigned, skip
+        continue;
+      } else if( coords[0] == fromIndex ) {
+        // Tag is for moved hue, move to new index
+        coords[0] = toIndex;
+      } else if( coords[0] > fromIndex && coords[0] <= toIndex ) {
+        // Hue got moved after this one, bump backwards
+        coords[0] -= 1;
+      } else if( coords[0] < fromIndex && coords[0] >= toIndex ) {
+        // Hue got moved before this one, bump forwards
+        coords[0] += 1;
+      }
+    }
+  }
+
+  function moveShade(fromIndex: number, toIndex: number) {
+    moveInArray(palette.value.shades, fromIndex, toIndex);
+    for( var row of palette.value.colours) {
+      moveInArray(row, fromIndex, toIndex);
+    }
+
+    for( var tag in palette.value.tags) {
+      const coords = palette.value.tags[tag]
+      if( coords === null) {
+        // Tag is unassigned, skip
+        continue;
+      } else if( coords[1] == fromIndex ) {
+        // Tag is for moved shade, move to new index
+        coords[1] = toIndex;
+      } else if( coords[1] > fromIndex && coords[1] <= toIndex ) {
+        // Shade got moved after this one, bump backwards
+        coords[1] -= 1;
+      } else if( coords[1] < fromIndex && coords[1] >= toIndex ) {
+        // Shade got moved before this one, bump forwards
+        coords[1] += 1;
+      }
+    }
+  }
+
+
   function selectColour(hue: number, shade: number) {
     selectedHue.value = hue;
     selectedShade.value = shade;
@@ -166,6 +213,8 @@ export const usePaletteStore = defineStore("palette", () => {
     getNameForColour,
     getThemeColour,
     loadPalette,
+    moveHue,
+    moveShade,
     palette,
     selectColour,
     selectedColour,

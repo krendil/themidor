@@ -2,7 +2,7 @@
 import { useLibrary } from '@/stores/library';
 import { usePaletteStore } from '@/stores/palette';
 import { computed } from 'vue';
-import { onDrag } from '@/library/drag-utils';
+import { onDragTag } from '@/library/drag-utils';
 import { saveAs } from 'file-saver';
 
 const paletteStore = usePaletteStore();
@@ -51,7 +51,7 @@ function download() {
                 <transition-group name="chips" tag="div" class="group-chips">
                     <div v-for="tag in missingRequired" :key="tag.tag" class="tag-chip monospace colour-transition"
                     :title="tag.description" draggable="true"
-                    @dragstart="onDrag($event, tag.tag)">#{{ tag.tag }}</div>
+                    @dragstart="onDragTag($event, tag.tag)">#{{ tag.tag }}</div>
                 </transition-group>
             </div>
             <div v-if="missingRecommended.length > 0" class="tag-group colour-transition">
@@ -59,7 +59,7 @@ function download() {
                 <transition-group name="chips" tag="div" class="group-chips">
                     <div v-for="tag in missingRecommended" :key="tag.tag" class="tag-chip monospace colour-transition"
                     :title="tag.description" draggable="true"
-                    @dragstart="onDrag($event, tag.tag)">#{{ tag.tag }}</div>
+                    @dragstart="onDragTag($event, tag.tag)">#{{ tag.tag }}</div>
                 </transition-group>
             </div>
             <div v-if="missingRecommended.length == 0 && missingRequired.length == 0" class="valid">

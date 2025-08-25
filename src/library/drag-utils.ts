@@ -1,6 +1,6 @@
 import type { usePaletteStore } from "@/stores/palette";
 
-export function onDrag(e: DragEvent, tag: string) {
+export function onDragTag(e: DragEvent, tag: string) {
   if(e.dataTransfer) {
     e.dataTransfer.setData("application/tag", tag);
     e.dataTransfer.effectAllowed = "move";
@@ -10,10 +10,12 @@ export function onDrag(e: DragEvent, tag: string) {
 export function onDragLeave(e: DragEvent) {
   if( e.currentTarget instanceof HTMLElement ) {
     e.currentTarget.classList.remove("drag-over");
+    e.currentTarget.classList.remove("drag-over-before");
+    e.currentTarget.classList.remove("drag-over-after");
   }
 }
 
-export function onDragOver(e: DragEvent) {
+export function onDragTagOver(e: DragEvent) {
   if(e.dataTransfer?.types.includes("application/tag")) {
     e.dataTransfer.dropEffect = "move";
     if( e.currentTarget instanceof HTMLElement ) {
@@ -24,7 +26,7 @@ export function onDragOver(e: DragEvent) {
 
 }
 
-export function onDrop(e: DragEvent, paletteStore: ReturnType<typeof usePaletteStore> , hueshade: [number, number] | null) {
+export function onDropTag(e: DragEvent, paletteStore: ReturnType<typeof usePaletteStore> , hueshade: [number, number] | null) {
   if(e.dataTransfer?.types.includes("application/tag")) {
     const tag = e.dataTransfer.getData("application/tag");
     paletteStore.palette.tags[tag] = hueshade;
@@ -35,7 +37,7 @@ export function onDrop(e: DragEvent, paletteStore: ReturnType<typeof usePaletteS
 }
 
 
-export function onDropDelete(e: DragEvent, paletteStore: ReturnType<typeof usePaletteStore>) {
+export function onDropDeleteTag(e: DragEvent, paletteStore: ReturnType<typeof usePaletteStore>) {
   if(e.dataTransfer?.types.includes("application/tag")) {
     const tag = e.dataTransfer.getData("application/tag");
     delete paletteStore.palette.tags[tag];

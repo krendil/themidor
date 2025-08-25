@@ -1,6 +1,6 @@
 import { expect, test, describe } from 'vitest'
 
-import { midpointOfBiggestGap } from './palette-tools'
+import { midpointOfBiggestGap } from './palette-utils'
 
 describe('midpointOfBiggestGap', () => {
 

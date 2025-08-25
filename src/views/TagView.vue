@@ -4,7 +4,7 @@ import { useLibrary as useLibrary } from '@/stores/library';
 import { formatCss, } from 'culori';
 import { chain, transform } from 'lodash-es';
 import { computed, ref } from 'vue';
-import { onDrag, onDragLeave, onDragOver, onDrop, onDropDelete } from '@/library/drag-utils';
+import { onDragTag, onDragLeave, onDragTagOver, onDropTag, onDropDeleteTag } from '@/library/drag-utils';
 
 const paletteStore = usePaletteStore();
 const library = useLibrary();
@@ -101,18 +101,18 @@ const tagVars = computed<{ [key: string]: string }>(() =>
         <option value="">Add collection</option>
         <option v-for="collection in library.collectionList" :value="collection">{{collection}}</option>
       </select>
-      <div @dragover="onDragOver" @dragleave="onDragLeave" @drop="onDropDelete($event, paletteStore)"
+      <div @dragover="onDragTagOver" @dragleave="onDragLeave" @drop="onDropDeleteTag($event, paletteStore)"
         title="Drag tags here to delete them" style="align-content: last baseline;"><span class="large">♻</span></div>
     </div>
     <div id="tag-tray" class="tray">
       <transition-group name="groups">
-        <div v-for="group in tagGroups" :key="group.name" class="tag-group colour-transition" @dragover="onDragOver"
-          @dragleave="onDragLeave" @drop="onDrop($event, paletteStore, group.hueshade)">
+        <div v-for="group in tagGroups" :key="group.name" class="tag-group colour-transition" @dragover="onDragTagOver"
+          @dragleave="onDragLeave" @drop="onDropTag($event, paletteStore, group.hueshade)">
           <div class="group-title"><span>{{ group.name }}</span></div>
           <transition-group name="chips" tag="div" class="group-chips">
             <div v-for="tag in group.tags" :key="tag.tag" class="tag-chip monospace colour-transition"
               :style="{ color: group.fg, backgroundColor: group.bg }" :title="tag.description" draggable="true"
-              @dragstart="onDrag($event, tag.tag)">#{{ tag.tag }}</div>
+              @dragstart="onDragTag($event, tag.tag)">#{{ tag.tag }}</div>
           </transition-group>
         </div>
       </transition-group>

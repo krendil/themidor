@@ -5,7 +5,7 @@ import { formatCss, formatHex, getMode} from 'culori';
 import LabelledInput from './LabelledInput.vue';
 import { filter } from 'lodash-es';
 import { useLibrary } from '@/stores/library';
-import { onDrag, onDragLeave, onDragOver, onDrop } from '@/library/drag-utils';
+import { onDragTag, onDragLeave, onDragTagOver, onDropTag } from '@/library/drag-utils';
 
 
 const paletteStore = usePaletteStore();
@@ -61,12 +61,12 @@ const setChannel = function(channel: string, text: string) {
 
 
 <template>
-  <div class="sample colour-transition align-center align-middle" @dragover="onDragOver" @dragleave="onDragLeave"
-    @drop="onDrop($event, paletteStore, [ paletteStore.selectedHue, paletteStore.selectedShade] )">
+  <div class="sample colour-transition align-center align-middle" @dragover="onDragTagOver" @dragleave="onDragLeave"
+    @drop="onDropTag($event, paletteStore, [ paletteStore.selectedHue, paletteStore.selectedShade] )">
     {{ name }}
     <transition-group name="chips" tag="div" class="tags">
       <div v-for="tag in paletteStore.getCurrentColourTags" :key="tag" class="tag monospace" :title="library.descriptions[tag] ?? ''"
-      @dragstart="onDrag($event, tag)" draggable="true">#{{ tag }}</div>
+      @dragstart="onDragTag($event, tag)" draggable="true">#{{ tag }}</div>
     </transition-group>
   </div>
   <div class="values">
