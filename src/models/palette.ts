@@ -13,7 +13,7 @@ export interface Palette {
 
   tags: { [key: string]: [number, number] | null };
 
-  exportOptions: { [key: string]: object };
+  exportOptions: { [key: string]: any };
 }
 
 export interface PaletteMember {

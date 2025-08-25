@@ -1,0 +1,35 @@
+This is a LiquidJS template.  You can find more info about LiquidJS here:
+https://liquidjs.com/tutorials/intro-to-liquid.html
+
+Themidor defines a few extra filters to help generate themes.  To fetch a colour
+by its tag and format it as a hex code, pass the tag as a string (without the
+leading #) to the hex filter, like this:
+
+background = {{ "tmdr:bg" | hex }}
+
+You can also format as an rgb triple, set a custom separator if you need it,
+or select the R G and B channels individually:
+
+good = {{ "tmdr:good" | rgb }}
+bad = {{ "tmdr:bad" | rgb: ":" }}
+red = {{ "tmdr:good" | r }}
+green = {{ "tmdr:good" | g }}
+blue = {{ "tmdr:good" | b }}
+
+Use the css filter to format a colour in its native colour space using CSS
+syntax.  Themidor uses the OKLch colour space by default, but you can edit
+colours in different spaces using the Edit tab:
+
+foreground = {{ "tmdr:fg" | css }}
+
+If a colour is not defined, you can set a fallback colour with the or filter:
+
+fallback = {{ "tmdr:bogus" | or: "tmdr:hibg" | hex }}
+
+You can check if a tag has an associated colour using the isTagged filter:
+
+{% if "term:cursorfg" | isTagged %}
+#term:cursorfg is defined.
+{% else %}
+#term:cursorfg is not defined!
+{% endif %}

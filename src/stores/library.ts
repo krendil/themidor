@@ -1,11 +1,15 @@
 import { defineStore } from "pinia";
-
-import terminal_ls from "@/previews/terminal-ls.html?raw";
 import { chain } from "lodash-es";
 import { computed, markRaw, type Component } from "vue";
+
+// Previews
+import terminal_ls from "@/previews/terminal-ls.html?raw";
+
+// Exporters
 import Urxvt from "@/components/exporters/Urxvt.vue";
 import Themidor from "@/components/exporters/Themidor.vue";
 import Ghostty from "@/components/exporters/Ghostty.vue";
+import Custom from "@/components/exporters/Custom.vue";
 
 export interface Collection {
   tags: string[],
@@ -97,9 +101,10 @@ export const useLibrary = defineStore("library", () => {
   };
 
   const exporters: { [key: string]: Component } = {
-    "urxvt": markRaw(Urxvt),
+    "Rxvt-Unicode": markRaw(Urxvt),
     "Themidor": markRaw(Themidor),
     "Ghostty": markRaw(Ghostty),
+    "Custom": markRaw(Custom),
   };
 
   const collectionList = computed(() =>

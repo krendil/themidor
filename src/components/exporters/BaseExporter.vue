@@ -40,9 +40,9 @@ function download() {
 </script>
 
 <template>
-    <div class="options"><slot></slot></div>
+    <slot></slot>
     <div class="warnings">
-        <div class="tray">
+        <div class="tray" v-if="required.length > 0 && recommended.length > 0">
             <div v-if="missingRequired.length > 0" class="warning">
                 Not all required tags are assigned. Exported theme may contain errors.
             </div>
@@ -68,7 +68,7 @@ function download() {
         </div>
     </div>
     <div class="preview">
-        <label>Preview:</label>
+        <label>Output:</label>
         <pre class="tray">{{props.output}}</pre>
     </div>
     <div class="buttons"><button @click="download">Download</button></div>
@@ -110,8 +110,10 @@ function download() {
 
 .preview {
     flex-grow: 1;
+    flex-basis: 50%;
     display: flex;
     flex-direction: column;
+    min-height: 3em;
 
     pre {
         margin: 0;
