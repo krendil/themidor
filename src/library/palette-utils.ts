@@ -1,5 +1,5 @@
 import type { Palette } from "@/models/palette";
-import { oklch, type Color } from "culori";
+import { differenceEuclidean, oklch, type Color } from "culori";
 import { chain, mean, } from "lodash-es";
 
 export function guessNewColour(palette: Palette, hue: number, shade: number): Color {
@@ -88,4 +88,37 @@ export function midpointOfBiggestGap(values: number[], maxValue: number, circula
   } else {
     return midpoint;
   }
+}
+
+export function shadeUpFrom(palette: Palette, tag: string): [number, number] | null {
+  const hs = palette.tags[tag];
+  if(hs) {
+    if(hs[1] + 1 < palette.shades.length) {
+      return [hs[0], hs[1] + 1];
+    }
+  }
+  return null;
+}
+
+export function closestTo(palette: Palette, target: string): [number, number] | null {
+  const diffOklch = differenceEuclidean('oklch');
+  const targetColour = oklch(target);
+  if(!targetColour) {
+    return null;
+  }
+  var minHue, minShade, minDist = Number.POSITIVE_INFINITY;
+  for(var h = 0; h < palette.hues.length; h++) {
+    for(var s = 0; s < palette.shades.length; s++) {
+      const m = palette.colours[h][s];
+      if(m) {
+        const dist = diffOklch(m.colour, targetColour)
+        if(dist < minDist) {
+          minDist = dist;
+          minHue = h;
+          minShade = s;
+        }
+      }
+    }
+  }
+  return [minHue, minShade];
 }

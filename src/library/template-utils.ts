@@ -6,12 +6,17 @@ export function makeLiquidEngine(paletteStore: ReturnType<typeof usePaletteStore
 
   const engine = new Liquid();
 
-  engine.registerFilter('hex', (tag: string) => {
+  engine.registerFilter('hex', (tag: string, includeHash = true) => {
       const member = paletteStore.getColourByTag(tag);
       if(!member) {
           return "";
       } else {
-          return formatHex(member.colour);
+          const hex = formatHex(member.colour);
+          if(!includeHash) {
+            return hex.substring(1);
+          } else {
+            return hex;
+          }
       }
   });
 

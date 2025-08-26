@@ -15,7 +15,7 @@ interface CustomOpts {
 const paletteStore = usePaletteStore();
 const engine = makeLiquidEngine(paletteStore);
 
-const opts = toRef(paletteStore.palette.exportOptions["Custom"]);
+const opts: Ref<CustomOpts> = toRef(paletteStore.palette.exportOptions, "Custom");
 
 const templateString = computed( () => (<CustomOpts>opts.value).template );
 

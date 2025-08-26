@@ -5,6 +5,7 @@ import { formatCss, } from 'culori';
 import { chain, transform } from 'lodash-es';
 import { computed, ref } from 'vue';
 import { onDragTag, onDragLeave, onDragTagOver, onDropTag, onDropDeleteTag } from '@/library/drag-utils';
+import type { ComputedRefSymbol, RefSymbol } from '@vue/reactivity';
 
 const paletteStore = usePaletteStore();
 const library = useLibrary();
@@ -85,6 +86,21 @@ const tagVars = computed<{ [key: string]: string }>(() =>
   })
 );
 
+const guesses = computed<[string, [number, number] | null][]>(() => 
+  tagGroups.value[0].tags.map<[string, ([number, number] | null)]>(
+    t => ([t.tag, (library.guesses[t.tag] ?? ((_) => null))(paletteStore.palette)])
+  ).filter( v => v[1] !== null)
+);
+
+const hasGuesses = computed(() => guesses.value.length != 0);
+
+function doGuess() {
+  do {
+    for(let [tag, guess] of guesses.value) {
+      paletteStore.palette.tags[tag] = guess;
+    }
+  } while (hasGuesses.value);
+}
 
 </script>
 
@@ -116,6 +132,7 @@ const tagVars = computed<{ [key: string]: string }>(() =>
           </transition-group>
         </div>
       </transition-group>
+      <button class="guess" :class="{ disabled: !hasGuesses }" @click="doGuess">Guess</button>
     </div>
     <div class="tag-controls">
       <label>Preview:
@@ -146,6 +163,20 @@ const tagVars = computed<{ [key: string]: string }>(() =>
   display: flex;
   justify-content: space-between;
   gap: 0.5rem;
+}
+
+#tag-tray {
+  position: relative;
+}
+
+.guess {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+}
+
+.guess.disabled {
+  display: none;
 }
 
 .group-chips {

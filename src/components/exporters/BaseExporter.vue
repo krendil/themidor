@@ -42,7 +42,7 @@ function download() {
 <template>
     <slot></slot>
     <div class="warnings">
-        <div class="tray" v-if="required.length > 0 && recommended.length > 0">
+        <div class="tray" v-if="required.length > 0 || recommended.length > 0">
             <div v-if="missingRequired.length > 0" class="warning">
                 Not all required tags are assigned. Exported theme may contain errors.
             </div>

@@ -6,6 +6,7 @@ by its tag and format it as a hex code, pass the tag as a string (without the
 leading #) to the hex filter, like this:
 
 background = {{ "tmdr:bg" | hex }}
+backgroundNoHash = {{ "tmdr:bg" | hex: false }}
 
 You can also format as an rgb triple, set a custom separator if you need it,
 or select the R G and B channels individually:
