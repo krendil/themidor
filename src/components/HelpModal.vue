@@ -65,13 +65,12 @@ defineExpose({
         </div>
         <h3 class="text-big">About</h3>
         <div class="about">
-          
           <p>Themidor was inspired by many other tools, but particularly by
             <a href="https://cielab.io">CIELab.io</a> and
             <a href="https://terminal.sexy">terminal.sexy</a>.
           </p>
           
-          <p>Source: <a href="">rad:z24KrBHvJvHTUkCHjTinWp7weQkwb</a></p>
+          <p><a href="http://github.com/krendil/themidor">Source code</a></p>
           <p>Last updated: {{ lastUpdate }}</p>
         </div>
         <h3 class="text-big">Options</h3>

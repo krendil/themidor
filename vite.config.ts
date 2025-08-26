@@ -23,7 +23,6 @@ export default defineConfig({
     },
   },
   define: {
-    "__LAST_UPDATE__": `"${buildDate.getUTCFullYear()}-${buildDate.getUTCMonth()+1}-${buildDate.getUTCDate()}"`,
-    "__TEST_DEFINE": '"aldkfa"'
+    "__LAST_UPDATE__": `"${buildDate.getUTCFullYear()}-${buildDate.getUTCMonth()+1}-${buildDate.getUTCDate()}"`
   }
 })
