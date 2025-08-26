@@ -21,6 +21,10 @@ const filename = computed(() => `themidor-${slugify(paletteStore.palette.name)}.
 
 <template>
     <BaseExporter :output :filename :required :recommended>
+        <div class="tray">
+            You can use this exporter to save a copy of your palette, then load
+            it again using the Import tab.
+        </div>
     </BaseExporter>
 </template>
 
