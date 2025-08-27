@@ -24,5 +24,6 @@ export default defineConfig({
   },
   define: {
     "__LAST_UPDATE__": `"${buildDate.getUTCFullYear()}-${buildDate.getUTCMonth()+1}-${buildDate.getUTCDate()}"`
-  }
+  },
+  base: "/"
 })
