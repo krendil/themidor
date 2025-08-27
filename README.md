@@ -17,3 +17,7 @@ Try it now at https://themidor.cc
   - Custom Liquid template
   - More to come!
   - Need a format that's not implemented? Create an issue (or better yet, a pull request)!
+
+## Thanks
+
+Themidor was inspired by many other tools, but particularly by [CIELab.io](https://cielab.io) and [terminal.sexy](https://terminal.sexy). 
