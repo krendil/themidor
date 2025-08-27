@@ -3,9 +3,9 @@ import { usePaletteStore } from '@/stores/palette';
 import { computed, reactive } from 'vue';
 import { formatCss, formatHex, getMode} from 'culori';
 import LabelledInput from './LabelledInput.vue';
-import { filter } from 'lodash-es';
 import { useLibrary } from '@/stores/library';
 import { onDragTag, onDragLeave, onDragTagOver, onDropTag } from '@/library/drag-utils';
+import { filter } from 'remeda';
 
 
 const paletteStore = usePaletteStore();

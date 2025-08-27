@@ -2,7 +2,7 @@ import { ref, computed, reactive } from 'vue'
 import { defineStore } from 'pinia'
 import { defaultPalette, type PaletteMember, type Palette } from '@/models/palette';
 import { converter, oklch, type Color } from 'culori';
-import { chain, split } from 'lodash-es';
+import { entries, filter, map, pipe, split } from 'remeda';
 import { useOptions } from './options';
 import { moveInArray } from '@/library/array-utils';
 import { useRefHistory } from '@vueuse/core';
@@ -58,11 +58,11 @@ export const usePaletteStore = defineStore("palette", () => {
 
   const getCurrentColourTags = computed(
     (): string[] => {
-      return chain( palette.value.tags )
-        .toPairs()
-        .filter( ([_, hs]) => !!hs && hs[0] == selectedHue.value && hs[1] == selectedShade.value )
-        .map( ([key, _]) => key)
-        .value();
+      return pipe( palette.value.tags,
+        entries(),
+        filter( ([_, hs]) => !!hs && hs[0] == selectedHue.value && hs[1] == selectedShade.value ),
+        map( ([key, _]) => key),
+      );
     }
   );
 

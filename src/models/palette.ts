@@ -1,6 +1,6 @@
 import { oklch } from "culori";
 import type { Color } from "culori";
-import { toPairs } from "lodash-es";
+import { entries } from "remeda";
 
 export interface Palette {
   name: string;
@@ -195,7 +195,7 @@ export function isPalette(obj: any): obj is Palette {
   if( typeof obj["tags"] !== "object" ) {
     return false;
   }
-  if( toPairs(obj.tags).some( ([tag, hueshade]) => {
+  if( entries(obj.tags).some( ([tag, hueshade]) => {
     if(typeof tag !== "string") {
       return true;
     }

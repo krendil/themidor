@@ -2,7 +2,7 @@
 import { usePaletteStore } from '@/stores/palette';
 import { useLibrary as useLibrary } from '@/stores/library';
 import { formatCss, } from 'culori';
-import { chain, transform } from 'lodash-es';
+import { entries, map, pipe, reduce, sortBy, } from 'remeda';
 import { computed, ref } from 'vue';
 import { onDragTag, onDragLeave, onDragTagOver, onDropTag, onDropDeleteTag } from '@/library/drag-utils';
 import type { ComputedRefSymbol, RefSymbol } from '@vue/reactivity';
@@ -20,9 +20,10 @@ interface TagData {
 const selectedPreview = ref(library.previewList[0]);
 
 const tagGroups = computed<TagData[]>( () => 
-  chain(paletteStore.palette.tags)
-    .transform( (acc: { [key: number]: TagData }, hueshade, tag) => {
-      if(!matchesFilter(tag)) return;
+  pipe(paletteStore.palette.tags, 
+    entries(),
+    reduce( (acc: { [key: number]: TagData }, [tag, hueshade]) => {
+      if(!matchesFilter(tag)) return acc;
       const sortOrder = hueshade ? hueshade[0] * 1000 + hueshade[1] : -1;
       if( ! (sortOrder in acc) ) {
         const name = !!hueshade ? paletteStore.getNameForColour(hueshade[0], hueshade[1]) : "Unassigned";
@@ -36,11 +37,12 @@ const tagGroups = computed<TagData[]>( () =>
         }
       }
       acc[sortOrder].tags.push( { tag, description: library.descriptions[tag] ?? "" } );
-    }, {[-1]: { name: "Unassigned", hueshade: null, fg: "var(--theme-fg)", bg: "var(--theme-bg)", tags: [] } as TagData} )
-    .toPairs()
-    .orderBy( ([k, v]) => k)
-    .map( ([_, v]) => v )
-    .value()
+      return acc;
+    }, {[-1]: { name: "Unassigned", hueshade: null, fg: "var(--theme-fg)", bg: "var(--theme-bg)", tags: [] } as TagData} ),
+    entries(),
+    sortBy( ([k, v]) => k),
+    map( ([_, v]) => v )
+  )
 );
 
 const tagFilter = ref("");
@@ -78,12 +80,13 @@ function onAddTag(event: Event) {
 }
 
 const tagVars = computed<{ [key: string]: string }>(() =>
-  transform( paletteStore.palette.tags,  (accum, hueshade, tagValue) => {
+  reduce( entries(paletteStore.palette.tags),  (accum, [tagValue, hueshade]) => {
     if(hueshade) {
       const [hue, shade] = hueshade;
       accum[ '--' + tagValue.replace(":","-") ] = formatCss(paletteStore.palette.colours[hue][shade]?.colour) ?? "unset";
     }
-  })
+    return accum;
+  }, {})
 );
 
 const guesses = computed<[string, [number, number] | null][]>(() => 

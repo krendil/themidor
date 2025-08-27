@@ -1,55 +1,63 @@
 import type { Palette } from "@/models/palette";
 import { differenceEuclidean, oklch, type Color } from "culori";
-import { chain, mean, } from "lodash-es";
+import { filter, map, mean, pipe, sort } from "remeda";
 
 export function guessNewColour(palette: Palette, hue: number, shade: number): Color {
   // Lightness is mean lightness of other hues of that shade
-  let l = chain(palette.colours)
-    .map( row => row[shade] )
-    .filter( pm => pm !== null )
-    .map( pm => oklch(pm.colour).l )
-    .mean()
-    .value();
-  
+  let l: number = pipe(palette.colours,
+    map( row => row[shade] ),
+    filter( pm => pm !== null ),
+    map( pm => oklch(pm.colour).l ),
+    mean()
+  ) ?? NaN;
+
   // Chroma is mean chroma of other shades of that hue
-  // Hue is mean hue of other shades of that hue
-  let [ c, h ] = chain(palette.colours[hue])
-    .filter( pm => pm !== null )
-    .map( pm => {
+  let c: number = pipe(palette.colours[hue]
+    .filter( pm => pm !== null ),
+    map( pm => {
       const ok = oklch(pm.colour);
-      return [ ok.c, ok.h];
-    })
-    .unzip()
-    .map( x => mean(x) )
-    .value();
+      return ok.c;
+    }),
+    mean(),
+  ) ?? NaN;
+
+  // Hue is mean hue of other shades of that hue
+  let h: number = pipe(palette.colours[hue]
+    .filter( pm => pm !== null ),
+    map( pm => {
+      const ok = oklch(pm.colour);
+      return ok.h ?? NaN;
+    }),
+    mean(),
+  ) ?? NaN;
 
   if( isNaN(l) ) {
     // Lightness fallback: look for the biggest gap in shades of the hue
-    let ls = chain(palette.colours[hue])
-      .filter( pm => pm !== null )
-      .map( pm => oklch(pm.colour).l )
-      .sort((a, b) => a - b)
-      .value();
+    let ls = pipe(palette.colours[hue],
+      filter( pm => pm !== null ),
+      map( pm => oklch(pm.colour).l ),
+      sort((a, b) => a - b),
+    );
 
     l = midpointOfBiggestGap(ls, 1, false);
   }
   if( isNaN(c) ) {
     // Chroma fallback: average chroma for hues of the shade
-    c = chain(palette.colours)
-      .map( row => row[shade] )
-      .filter( pm => pm !== null )
-      .map( pm => oklch(pm.colour).c )
-      .mean()
-      .value();
+    c = pipe(palette.colours,
+      map( row => row[shade] ),
+      filter( pm => pm !== null ),
+      map( pm => oklch(pm.colour).c ),
+      mean(),
+    ) ?? 0.2; // Sensible default fallback
   }
   if( isNaN(h) ) {
     // Hue fallback: look for the biggest gap in hues of the shade
-    const hs = chain(palette.colours)
-      .map( row => row[shade] )
-      .filter( pm => pm !== null )
-      .map( pm => oklch(pm.colour).h ?? 0 )
-      .sort((a, b) => a - b)
-      .value();
+    const hs = pipe(palette.colours,
+      map( row => row[shade] ),
+      filter( pm => pm !== null ),
+      map( pm => oklch(pm.colour).h ?? 0 ),
+      sort((a, b) => a - b),
+    );
     h = midpointOfBiggestGap(hs, 360, true);
   }
   return {mode: 'oklch', l, c, h };

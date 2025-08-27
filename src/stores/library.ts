@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { chain } from "lodash-es";
+import { keys, pipe, sort } from "remeda";
 import { computed, markRaw, type Component } from "vue";
 import type { Palette } from "@/models/palette";
 import { closestTo, shadeUpFrom } from "@/library/palette-utils";
@@ -220,22 +220,13 @@ export const useLibrary = defineStore("library", () => {
 
 
   const collectionList = computed(() =>
-    chain(collections)
-      .keys()
-      .sort()
-      .value());
+    keys(collections).sort());
   
   const previewList = computed(() =>
-    chain(previews)
-      .keys()
-      .sort()
-      .value());
+    keys(previews).sort());
 
   const exporterList = computed(() =>
-    chain(exporters)
-      .keys()
-      .sort()
-      .value());
+    keys(exporters).sort());
 
 
   return {
