@@ -93,7 +93,7 @@ function onDropDim(e: DragEvent, dim: Dim, targetId: number) {
       @dragover="onDragDimOver($event, 'shade', shadeIndex)" @dragleave="onDragLeave" @drop="onDropDim($event, 'shade', shadeIndex)"
     >
       <span class="grab-handle" draggable="true" @dragstart="onDragDim($event, 'shade', shadeIndex)">⫶</span>
-      <input class="align-center colour-transition invisible"  :value="shade" @input="renameShade(shadeIndex, $event?.target?.value)" ></input>
+      <input class="align-center colour-transition invisible"  :value="shade" @input="renameShade(shadeIndex, (<any>$event?.target)?.value)" ></input>
       <div class="delete-button colour-transition" @click="deleteShade(shadeIndex)">⨯</div>
     </div>
 
@@ -103,7 +103,7 @@ function onDropDim(e: DragEvent, dim: Dim, targetId: number) {
         @dragover="onDragDimOver($event, 'hue', hueIndex)" @dragleave="onDragLeave" @drop="onDropDim($event, 'hue', hueIndex)"
       >
         <span class="grab-handle" draggable="true" @dragstart="onDragDim($event, 'hue', hueIndex)">⫶</span>
-        <input class="align-right colour-transition invisible ghost-scale" :value="paletteStore.palette.hues[hueIndex]" @input="renameHue(hueIndex, $event?.target?.value)" size="1"></input>
+        <input class="align-right colour-transition invisible ghost-scale" :value="paletteStore.palette.hues[hueIndex]" @input="renameHue(hueIndex, (<any>$event?.target)?.value)" size="1"></input>
         <div class="ghost-measure">{{paletteStore.palette.hues[hueIndex]}}</div>
         <div class="delete-button colour-transition" @click="deleteHue(hueIndex)">⨯</div>
       </div>
