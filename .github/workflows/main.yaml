@@ -1,4 +1,4 @@
-name: Build and deploy to GH Pages
+name: Build and deploy to CF Pages
 
 on:
   # Runs on pushes targeting the default branch
@@ -8,10 +8,8 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
-  pages: write
   id-token: write
 
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
@@ -38,19 +36,10 @@ jobs:
         run: bun install
       - name: Build with vite
         run: bun run build
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3.1.0
         with:
-          path: ./dist
-
-  # Deployment job
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          # Your Cloudflare Account ID
+          accountId: 1b5dcebdf58947c5d7005c267ec2cc79
+          command: pages deploy dist --project-name=themidor --branch=${{ github.head_ref || github.ref_name }} 
