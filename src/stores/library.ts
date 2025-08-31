@@ -5,7 +5,8 @@ import type { Palette } from "@/models/palette";
 import { closestTo, shadeUpFrom } from "@/library/palette-utils";
 
 // Previews
-import terminal_ls from "@/previews/terminal-ls.html?raw";
+import TerminalLs from "@/components/previews/terminal-ls.vue";
+import DunstPreview from "@/components/previews/dunst.vue";
 
 // Exporters
 import Base24 from "@/components/exporters/Base24.vue";
@@ -46,6 +47,16 @@ export const useLibrary = defineStore("library", () => {
     "b24:15": "Base24 Bright Cyan",
     "b24:16": "Base24 Bright Blue",
     "b24:17": "Base24 Bright Magenta",
+
+    "dunst:low:bg": "Dunst background colour for low urgency notifications",
+    "dunst:low:fg": "Dunst text colour for low urgency notifications",
+    "dunst:low:frame": "Dunst border colour for low urgency notifications",
+    "dunst:normal:bg": "Dunst background colour for normal notifications",
+    "dunst:normal:fg": "Dunst text colour for normal notifications",
+    "dunst:normal:frame": "Dunst border colour for normal notifications",
+    "dunst:urgent:bg": "Dunst background colour for urgent notifications",
+    "dunst:urgent:fg": "Dunst text colour for urgent notifications",
+    "dunst:urgent:frame": "Dunst border colour for urgent notifications",
 
     "term:0":"Terminal Black",
     "term:1":"Terminal Red",
@@ -136,25 +147,24 @@ export const useLibrary = defineStore("library", () => {
         "b24:17",
       ],
     },
-    "Vim syntax highlighting": {
-      tags: [],
-    },
-    "Vim editor decorations": {
-      tags: [],
-    },
-    Treesitter: {
-      tags: [],
-    },
-    Textmate: {
-      tags: [],
-    },
-    "Visual Studio Code editor decorations": {
-      tags: [],
-    },
+    Dunst: {
+      tags: [
+        "dunst:low:bg",
+        "dunst:low:fg",
+        "dunst:low:frame",
+        "dunst:normal:bg",
+        "dunst:normal:fg",
+        "dunst:normal:frame",
+        "dunst:urgent:bg",
+        "dunst:urgent:fg",
+        "dunst:urgent:frame",
+      ]
+    }
   };
 
-  const previews: { [key: string]: string } = {
-    "Terminal: ls": terminal_ls
+  const previews: { [key: string]: Component } = {
+    "Dunst": markRaw(DunstPreview),
+    "Terminal: ls": markRaw(TerminalLs)
   };
 
   const exporters: { [key: string]: Component } = {
@@ -193,6 +203,16 @@ export const useLibrary = defineStore("library", () => {
     "b24:15": (palette) => palette.tags["term:14"] ?? shadeUpFrom(palette, "b24:0C") ?? null,
     "b24:16": (palette) => palette.tags["term:12"] ?? shadeUpFrom(palette, "b24:0D") ?? null,
     "b24:17": (palette) => palette.tags["term:13"] ?? shadeUpFrom(palette, "b24:0E") ?? null,
+
+    "dunst:low:bg": (palette) => palette.tags["tmdr:bg"] ?? null,
+    "dunst:low:fg": (palette) => palette.tags["tmdr:fg"] ?? null,
+    "dunst:low:frame": (palette) => palette.tags["tmdr:border"] ?? null,
+    "dunst:normal:bg": (palette) => palette.tags["tmdr:bg"] ?? null,
+    "dunst:normal:fg": (palette) => palette.tags["tmdr:fg"] ?? null,
+    "dunst:normal:frame": (palette) => palette.tags["tmdr:fg"] ?? null,
+    "dunst:urgent:bg": (palette) => palette.tags["tmdr:bg"] ?? null,
+    "dunst:urgent:fg": (palette) => palette.tags["tmdr:fg"] ?? null,
+    "dunst:urgent:frame": (palette) => palette.tags["tmdr:bad"] ?? null,
 
     "term:bg": (palette) => palette.tags["term:0"] ?? null,
     "term:fg": (palette) => palette.tags["term:7"] ?? null,

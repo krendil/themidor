@@ -83,7 +83,7 @@ const tagVars = computed<{ [key: string]: string }>(() =>
   reduce( entries(paletteStore.palette.tags),  (accum, [tagValue, hueshade]) => {
     if(hueshade) {
       const [hue, shade] = hueshade;
-      accum[ '--' + tagValue.replace(":","-") ] = formatCss(paletteStore.palette.colours[hue][shade]?.colour) ?? "unset";
+      accum[ '--' + tagValue.replaceAll(":","-",) ] = formatCss(paletteStore.palette.colours[hue][shade]?.colour) ?? "unset";
     }
     return accum;
   }, {})
@@ -144,7 +144,8 @@ function doGuess() {
         </select>
       </label>
     </div>
-    <div id="preview" class="tray" v-html="library.previews[selectedPreview]" :style="tagVars">
+    <div id="preview" class="tray" :style="tagVars">
+      <component :is="library.previews[selectedPreview]"></component>
     </div>
   </div>
 </template>
@@ -254,26 +255,6 @@ function doGuess() {
   height: 100%;
   right: 0.2rem;
   padding: 1px; /* To align with 1px border of input */
-}
-
-</style>
-
-<style>
-
-.blink {
-  animation: 0.5s step-end alternate infinite both blink;
-}
-
-@keyframes blink {
-  0% {
-    opacity: 100%;
-  }
-  50% {
-    opacity: 0%;
-  }
-  100% {
-    opacity: 0%;
-  }
 }
 
 </style>

@@ -1,3 +1,5 @@
+<template>
+
 <pre style="background-color: var(--term-bg); color: var(--term-fg)">[<span style="color: var(--term-6)">user</span>@<span style="color: var(--term-1)">hostname</span> <span style="color: var(--term-2)">~</span>]$ ./rows.sh
      <span style="color: var(--term-0)">┌──────────────────────────────────────────────────────────────────────────┐
 </span><span style="color: var(--term-7)"> DFT </span><span style="color: var(--term-0)">│   black  </span><span style="color: var(--term-1)">   red   </span><span style="color: var(--term-2)">  green  </span><span style="color: var(--term-3)">  yellow </span><span style="color: var(--term-4)">   blue  </span><span style="color: var(--term-5)"> magenta </span><span style="color: var(--term-6)">   cyan  </span><span style="color: var(--term-7)">  white  </span><span style="color: var(--term-0)"> │
@@ -38,3 +40,26 @@ drwxr-xrwx 2 user user 4096 Aug  7 20:55 <span style="color: var(--term-4); back
 srwxr-xr-x 1 user user    0 Aug  7 21:07 <span style="color: var(--term-13) ; font-weight: bold;">socket</span>
 [<span style="color: var(--term-6)">user</span>@<span style="color: var(--term-1)">hostname</span> <span style="color: var(--term-2)">~</span>]$ <span style="color: var(--term-cursor)" class="blink">█</span>
 </pre>
+
+
+</template>
+
+<style scoped>
+
+.blink {
+  animation: 0.5s step-end alternate infinite both blink;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 100%;
+  }
+  50% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 0%;
+  }
+}
+
+</style>
