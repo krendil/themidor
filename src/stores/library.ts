@@ -11,6 +11,7 @@ import DunstPreview from "@/components/previews/dunst.vue";
 // Exporters
 import Base24 from "@/components/exporters/Base24.vue";
 import Custom from "@/components/exporters/Custom.vue";
+import Dunst from "@/components/exporters/Dunst.vue";
 import Ghostty from "@/components/exporters/Ghostty.vue";
 import Simple from "@/components/exporters/Simple.vue";
 import Themidor from "@/components/exporters/Themidor.vue";
@@ -169,11 +170,12 @@ export const useLibrary = defineStore("library", () => {
 
   const exporters: { [key: string]: Component } = {
     "Base24": markRaw(Base24),
-    "Rxvt-Unicode": markRaw(Urxvt),
-    "Themidor": markRaw(Themidor),
-    "Ghostty": markRaw(Ghostty),
     "Custom": markRaw(Custom),
+    "Dunst": markRaw(Dunst),
+    "Ghostty": markRaw(Ghostty),
+    "Rxvt-Unicode": markRaw(Urxvt),
     "Simple": markRaw(Simple),
+    "Themidor": markRaw(Themidor),
   };
 
   type GuessFn = (palette: Palette) => ([number, number] | null) ;
