@@ -11,6 +11,7 @@ import FuzzelPreview from "@/components/previews/fuzzel.vue";
 
 // Exporters
 import Base24 from "@/components/exporters/Base24.vue";
+import Css from "@/components/exporters/Css.vue";
 import Custom from "@/components/exporters/Custom.vue";
 import Dunst from "@/components/exporters/Dunst.vue";
 import Fuzzel from "@/components/exporters/Fuzzel.vue";
@@ -200,6 +201,7 @@ export const useLibrary = defineStore("library", () => {
 
   const exporters: { [key: string]: Component } = {
     "Base24": markRaw(Base24),
+    "CSS Variables": markRaw(Css),
     "Custom": markRaw(Custom),
     "Dunst": markRaw(Dunst),
     "Fuzzel": markRaw(Fuzzel),
