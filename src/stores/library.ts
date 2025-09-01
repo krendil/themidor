@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { keys, pipe, sort } from "remeda";
+import { keys, } from "remeda";
 import { computed, markRaw, type Component } from "vue";
 import type { Palette } from "@/models/palette";
 import { closestTo, shadeUpFrom } from "@/library/palette-utils";
@@ -7,11 +7,13 @@ import { closestTo, shadeUpFrom } from "@/library/palette-utils";
 // Previews
 import TerminalLs from "@/components/previews/terminal-ls.vue";
 import DunstPreview from "@/components/previews/dunst.vue";
+import FuzzelPreview from "@/components/previews/fuzzel.vue";
 
 // Exporters
 import Base24 from "@/components/exporters/Base24.vue";
 import Custom from "@/components/exporters/Custom.vue";
 import Dunst from "@/components/exporters/Dunst.vue";
+import Fuzzel from "@/components/exporters/Fuzzel.vue";
 import Ghostty from "@/components/exporters/Ghostty.vue";
 import Simple from "@/components/exporters/Simple.vue";
 import Themidor from "@/components/exporters/Themidor.vue";
@@ -58,6 +60,18 @@ export const useLibrary = defineStore("library", () => {
     "dunst:urgent:bg": "Dunst background colour for urgent notifications",
     "dunst:urgent:fg": "Dunst text colour for urgent notifications",
     "dunst:urgent:frame": "Dunst border colour for urgent notifications",
+
+    "fuzzel:background": "Background colour",
+    "fuzzel:text": "Text colour of unselected entries",
+    "fuzzel:prompt": "Text colour of prompt character(s)",
+    "fuzzel:placeholder": "Text colour of the placeholder string",
+    "fuzzel:input": "Text colour of input string",
+    "fuzzel:match": "Text colour of the matched substring",
+    "fuzzel:selection": "Background colour of the selected entry",
+    "fuzzel:selection-text": "Text colour of the selected entry",
+    "fuzzel:selection-match": "Text colour of the matched substring of the selected entry",
+    "fuzzel:counter": "The colour of the match count stats printed at the right-hand side of the input prompt",
+    "fuzzel:border": "Border colour",
 
     "term:0":"Terminal Black",
     "term:1":"Terminal Red",
@@ -160,11 +174,27 @@ export const useLibrary = defineStore("library", () => {
         "dunst:urgent:fg",
         "dunst:urgent:frame",
       ]
+    },
+    Fuzzel: {
+      tags: [
+        "fuzzel:background",
+        "fuzzel:text",
+        "fuzzel:prompt",
+        "fuzzel:placeholder",
+        "fuzzel:input",
+        "fuzzel:match",
+        "fuzzel:selection",
+        "fuzzel:selection-text",
+        "fuzzel:selection-match",
+        "fuzzel:counter",
+        "fuzzel:border",
+      ]
     }
   };
 
   const previews: { [key: string]: Component } = {
     "Dunst": markRaw(DunstPreview),
+    "Fuzzel": markRaw(FuzzelPreview),
     "Terminal: ls": markRaw(TerminalLs)
   };
 
@@ -172,6 +202,7 @@ export const useLibrary = defineStore("library", () => {
     "Base24": markRaw(Base24),
     "Custom": markRaw(Custom),
     "Dunst": markRaw(Dunst),
+    "Fuzzel": markRaw(Fuzzel),
     "Ghostty": markRaw(Ghostty),
     "Rxvt-Unicode": markRaw(Urxvt),
     "Simple": markRaw(Simple),
@@ -216,6 +247,18 @@ export const useLibrary = defineStore("library", () => {
     "dunst:urgent:fg": (palette) => palette.tags["tmdr:fg"] ?? null,
     "dunst:urgent:frame": (palette) => palette.tags["tmdr:bad"] ?? null,
 
+    "fuzzel:background": (palette) => palette.tags["tmdr:bg"] ?? null,
+    "fuzzel:text": (palette) => palette.tags["tmdr:fg"] ?? null,
+    "fuzzel:prompt": (palette) => palette.tags["tmdr:fg"] ?? null,
+    "fuzzel:placeholder": (palette) => palette.tags["tmdr:border"] ?? null,
+    "fuzzel:input": (palette) => palette.tags["tmdr:fg"] ?? null,
+    "fuzzel:match": (palette) => palette.tags["tmdr:good"] ?? null,
+    "fuzzel:selection": (palette) => palette.tags["tmdr:hibg"] ?? null,
+    "fuzzel:selection-text": (palette) => palette.tags["tmdr:hifg"] ?? null,
+    "fuzzel:selection-match": (palette) => palette.tags["tmdr:hifg"] ?? null,
+    "fuzzel:counter": (palette) => palette.tags["tmdr:fg"] ?? null,
+    "fuzzel:border": (palette) => palette.tags["tmdr:border"] ?? null,
+
     "term:bg": (palette) => palette.tags["term:0"] ?? null,
     "term:fg": (palette) => palette.tags["term:7"] ?? null,
     "term:cursor": (palette) => palette.tags["tmdr:fg"] ?? null,
@@ -239,7 +282,6 @@ export const useLibrary = defineStore("library", () => {
     "term:14": (palette) => shadeUpFrom(palette, "term:6"),
     "term:15": (palette) => shadeUpFrom(palette, "term:7"),
   };
-
 
   const collectionList = computed(() =>
     keys(collections).sort());
