@@ -17,6 +17,7 @@ import Custom from "@/components/exporters/Custom.vue";
 import Dunst from "@/components/exporters/Dunst.vue";
 import Fuzzel from "@/components/exporters/Fuzzel.vue";
 import Ghostty from "@/components/exporters/Ghostty.vue";
+import Niri from "@/components/exporters/Niri.vue";
 import Simple from "@/components/exporters/Simple.vue";
 import Themidor from "@/components/exporters/Themidor.vue";
 import Urxvt from "@/components/exporters/Urxvt.vue";
@@ -248,6 +249,7 @@ export const useLibrary = defineStore("library", () => {
     "Dunst": markRaw(Dunst),
     "Fuzzel": markRaw(Fuzzel),
     "Ghostty": markRaw(Ghostty),
+    "Niri": markRaw(Niri),
     "Rxvt-Unicode": markRaw(Urxvt),
     "Simple": markRaw(Simple),
     "Themidor": markRaw(Themidor),

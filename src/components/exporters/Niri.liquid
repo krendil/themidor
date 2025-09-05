@@ -1,0 +1,72 @@
+layout {
+
+    background-color "{{"niri:background" | hex}}"
+
+    focus-ring {
+        {% if "niri:focus:active" | isTagged %}
+        active-color "{{"niri:focus:active" | hex}}"
+        {% if "niri:focus:inactive" | isTagged %}
+        inactive-color "{{"niri:focus:inactive" | hex}}"
+        {% endif %}{% if "niri:focus:urgent" | isTagged %}
+        urgent-color "{{"niri:focus:urgent" | hex}}"
+        {% endif %} {% else %}
+        off
+        {% endif %}
+    }
+
+    border {
+        {% if "niri:border:active" | isTagged %}
+        active-color "{{"niri:border:active" | hex}}"
+        {% if "niri:border:inactive" | isTagged %}
+        inactive-color "{{"niri:border:inactive" | hex}}"
+        {% endif %} {% if "niri:border:urgent" | isTagged %}
+        urgent-color "{{"niri:border:urgent" | hex}}"
+        {% endif %} {% else %}
+        off
+        {% endif %}
+    }
+
+    tab-indicator {
+        {% if "niri:tab:active" | isTagged %}
+        active-color "{{"niri:tab:active" | hex}}"
+        {% if "niri:tab:inactive" | isTagged %}
+        inactive-color "{{"niri:tab:inactive" | hex}}"
+        {% endif %} {% if "niri:tab:urgent" | isTagged %}
+        urgent-color "{{"niri:tab:urgent" | hex}}"
+        {% endif %} {% else %}
+        off
+        {% endif %}
+    }
+
+    insert-hint {
+        {% if "niri:insert-hint" | isTagged %}
+        color "{{"niri:insert-hint" | hex}}"
+        {% else %}
+        off
+        {% endif %}
+    } {% if "niri:shadow" | isTagged %}
+
+    shadow {
+
+        on
+
+        color "{{ "niri:shadow" | hex }}"
+        {% if "niri:shadow:inactive" | isTagged %}
+        inactive-color "{{"niri:shadow:inactive" | hex}}"
+        {% endif %}
+    } {% endif %}
+}
+
+overview {
+
+    backdrop-color "{{"niri:backdrop" | hex}}"
+    {% if "niri:workspace-shadow" | isTagged %}
+    workspace-shadow {
+
+        on
+
+        color "{{ "niri:workspace-shadow" | hex }}"
+
+    }
+    {% endif %}
+}
