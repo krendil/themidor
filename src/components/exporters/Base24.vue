@@ -46,6 +46,9 @@ const output = computed(() => {
 <template>
     <BaseExporter :output="output" :filename="slugify(paletteStore.palette.name)+'.yaml'" :required :recommended>
         <div class="tray">
+            Base24 themes can be used to generate colour themes for many different programs. See <a href="https://github.com/tinted-theming/home?tab=readme-ov-file#supported-applications">here</a> for more info.
+        </div>
+        <div class="tray">
             <label>Author: <input type="text" v-model="opts.author"></input></label>
         </div>
     </BaseExporter>
