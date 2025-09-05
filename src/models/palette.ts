@@ -129,6 +129,7 @@ export function defaultPalette(): Palette {
       "tmdr:border": [0, 0],
       "tmdr:bad": [2, 1],
       "tmdr:good": [4, 1],
+      "tmdr:accent": [6, 1]
     },
     exportOptions: {
     }

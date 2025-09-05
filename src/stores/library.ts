@@ -7,6 +7,7 @@ import { closestTo, shadeUpFrom } from "@/library/palette-utils";
 // Previews
 import TerminalLs from "@/components/previews/terminal-ls.vue";
 import DunstPreview from "@/components/previews/dunst.vue";
+import NiriPreview from "@/components/previews/niri.vue";
 import FuzzelPreview from "@/components/previews/fuzzel.vue";
 
 // Exporters
@@ -74,6 +75,22 @@ export const useLibrary = defineStore("library", () => {
     "fuzzel:counter": "The colour of the match count stats printed at the right-hand side of the input prompt",
     "fuzzel:border": "Border colour",
 
+    "niri:focus:active": "Colour of the focus ring around the active window",
+    "niri:focus:inactive": "Colour of the focus ring around the focused window on an inactive display",
+    "niri:focus:urgent": "Colour of the focus ring around an urgent window",
+    "niri:border:active": "Colour of the border around the active window",
+    "niri:border:inactive": "Colour of the border around inactive windows",
+    "niri:border:urgent": "Colour of the border around an urgent window",
+    "niri:tab:active": "Colour of the tab indicator for the active tab",
+    "niri:tab:inactive": "Colour of the tab indicator for inactive tabs",
+    "niri:tab:urgent": "Colour of the tab indicator for urgent tabs",
+    "niri:shadow": "Shadow colour for the active window",
+    "niri:shadow:inactive": "Shadow colour for inactive windows, if different to the active window",
+    "niri:insert-hint": "Colour of the insert location hint",
+    "niri:background": "Default workspace background when no wallpaper is set",
+    "niri:backdrop": "Backdrop colour for the overview when no backdrop wallpaper is set",
+    "niri:workspace-shadow": "Shadow colour for workspaces in the overview",
+
     "term:0":"Terminal Black",
     "term:1":"Terminal Red",
     "term:2":"Terminal Green",
@@ -97,14 +114,17 @@ export const useLibrary = defineStore("library", () => {
     "term:selectionfg":"Terminal colour of selected text",
     "term:cursorfg":"Terminal colour of text under the cursor",
 
-    "tmdr:fg": "Themidor main foreground",
+    "tmdr:accent": "Themidor accent colour",
+    "tmdr:bad": "Themidor 'bad' colour for failing validation",
     "tmdr:bg": "Themidor main background",
-    "tmdr:lightfg": "Themidor light foreground colour, for use on dark backgrounds", // A Foreground that is light, not light-mode foreground
-    "tmdr:darkfg": "Themidor dark foreground colour, for use on light backgrounds", // A Foreground that is dark, not dark-mode foreground
-    "tmdr:hifg": "Themidor highlighted foreground",
-    "tmdr:hibg": "Themidor highlighted background",
-    "tmdr:grey": "Themidor neutral grey",
     "tmdr:border": "Themidor border colour",
+    "tmdr:darkfg": "Themidor dark foreground colour, for use on light backgrounds", // A Foreground that is dark, not dark-mode foreground
+    "tmdr:fg": "Themidor main foreground",
+    "tmdr:good": "Themidor 'good' colour for passing validation",
+    "tmdr:grey": "Themidor neutral grey",
+    "tmdr:hibg": "Themidor highlighted background",
+    "tmdr:hifg": "Themidor highlighted foreground",
+    "tmdr:lightfg": "Themidor light foreground colour, for use on dark backgrounds", // A Foreground that is light, not light-mode foreground
   };
 
   const collections: { [key: string]: Collection } = {
@@ -190,13 +210,35 @@ export const useLibrary = defineStore("library", () => {
         "fuzzel:counter",
         "fuzzel:border",
       ]
-    }
+    },
+    Niri: {
+      tags: [
+
+        "niri:focus:active",
+        "niri:focus:inactive",
+        "niri:focus:urgent",
+        "niri:border:active",
+        "niri:border:inactive",
+        "niri:border:urgent",
+        "niri:tab:active",
+        "niri:tab:inactive",
+        "niri:tab:urgent",
+        "niri:shadow",
+        "niri:shadow:inactive",
+        "niri:insert-hint",
+        "niri:background",
+        "niri:backdrop",
+        "niri:workspace-shadow",
+
+      ]
+    },
   };
 
   const previews: { [key: string]: Component } = {
     "Dunst": markRaw(DunstPreview),
     "Fuzzel": markRaw(FuzzelPreview),
-    "Terminal: ls": markRaw(TerminalLs)
+    "Niri": markRaw(NiriPreview),
+    "Terminal": markRaw(TerminalLs)
   };
 
   const exporters: { [key: string]: Component } = {
@@ -260,6 +302,23 @@ export const useLibrary = defineStore("library", () => {
     "fuzzel:selection-match": (palette) => palette.tags["tmdr:hifg"] ?? null,
     "fuzzel:counter": (palette) => palette.tags["tmdr:fg"] ?? null,
     "fuzzel:border": (palette) => palette.tags["tmdr:border"] ?? null,
+
+
+    "niri:focus:active": (p) => p.tags["tmdr:accent"] ?? null,
+    "niri:focus:inactive": (p) => p.tags["tmdr:border"] ?? null,
+    "niri:focus:urgent": (p) => p.tags["tmdr:bad"] ?? null,
+    // "niri:border:active": (p) => null,
+    // "niri:border:inactive": (p) => null,
+    // "niri:border:urgent": (p) => null,
+    "niri:tab:active": (p) => p.tags["tmdr:accent"] ?? null,
+    "niri:tab:inactive": (p) => p.tags["tmdr:border"] ?? null,
+    "niri:tab:urgent": (p) => p.tags["tmdr:bad"] ?? null,
+    "niri:shadow": (p) => closestTo(p, "#000000"),
+    // "niri:shadow:inactive": (p) => null,
+    // "niri:insert-hint": (p) => null,
+    "niri:background": (p) => p.tags["tmdr:bg"] ?? null,
+    "niri:backdrop": (p) => p.tags["tmdr:grey"] ?? null,
+    "niri:workspace-shadow": (p) => p.tags["niri:shadow"] ?? closestTo(p, "#000000"),
 
     "term:bg": (palette) => palette.tags["term:0"] ?? null,
     "term:fg": (palette) => palette.tags["term:7"] ?? null,
