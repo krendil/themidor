@@ -17,7 +17,19 @@ interface TagData {
   tags: { tag: string, description: string }[]
 }
 
+interface NamespaceData {
+  name: string,
+  unassigned: {
+    tag: string, description: string
+  }[],
+  tags: {
+    tag: string, description: string, fg: string, bg: string
+  }[]
+}
+
 const selectedPreview = ref(library.previewList[0]);
+
+const groupBy = ref<"colour" | "namespace">("colour");
 
 const tagGroups = computed<TagData[]>( () => 
   pipe(paletteStore.palette.tags, 
@@ -39,6 +51,42 @@ const tagGroups = computed<TagData[]>( () =>
       acc[sortOrder].tags.push( { tag, description: library.descriptions[tag] ?? "" } );
       return acc;
     }, {[-1]: { name: "Unassigned", hueshade: null, fg: "var(--theme-fg)", bg: "var(--theme-bg)", tags: [] } as TagData} ),
+    entries(),
+    sortBy( ([k, v]) => k),
+    map( ([_, v]) => v )
+  )
+);
+
+const tagNamespaces = computed<NamespaceData[]>( () => 
+  pipe(paletteStore.palette.tags, 
+    entries(),
+    sortBy( ([t, _]) => t),
+    reduce( (acc: { [key: string]: NamespaceData }, [tag, hueshade]) => {
+      if(!matchesFilter(tag)) return acc;
+      const namespace = tag.split(":")[0];
+      const bg = paletteStore.getColourByTag(tag)?.colour;
+      if( ! (namespace in acc) ) {
+        acc[namespace] = {
+          name: namespace,
+          unassigned: [],
+          tags: [],
+        }
+      }
+      if(!!bg) {
+        acc[namespace].tags.push( { 
+          tag,
+          description: library.descriptions[tag] ?? "",
+          bg: formatCss(bg),
+          fg: formatCss(paletteStore.fgForColour(bg))
+        } );
+      } else {
+        acc[namespace].unassigned.push( { 
+          tag,
+          description: library.descriptions[tag] ?? "",
+        } );
+      }
+      return acc;
+    }, {} ),
     entries(),
     sortBy( ([k, v]) => k),
     map( ([_, v]) => v )
@@ -110,6 +158,10 @@ function doGuess() {
 <template>
   <div id="tag-view">
     <div class="tag-controls">
+      <label>Group by: <select v-model="groupBy">
+        <option value="colour">Assigned Colour</option>
+        <option value="namespace">Namespace</option>
+      </select></label>
       <label style="flex-grow: 1">Filter tags: <input type="text" v-model="tagFilter"
           placeholder="This is a regex..."></input></label>
       <label style="flex-grow: 0; position: relative">Add tag:
@@ -124,13 +176,28 @@ function doGuess() {
         title="Drag tags here to delete them" style="align-content: last baseline;"><span class="large">♻</span></div>
     </div>
     <div id="tag-tray" class="tray">
-      <transition-group name="groups">
+      <transition-group name="groups" v-if="groupBy == 'colour'">
         <div v-for="group in tagGroups" :key="group.name" class="tag-group colour-transition" @dragover="onDragTagOver"
           @dragleave="onDragLeave" @drop="onDropTag($event, paletteStore, group.hueshade)">
           <div class="group-title"><span>{{ group.name }}</span></div>
           <transition-group name="chips" tag="div" class="group-chips">
             <div v-for="tag in group.tags" :key="tag.tag" class="tag-chip monospace colour-transition"
               :style="{ color: group.fg, backgroundColor: group.bg }" :title="tag.description" draggable="true"
+              @dragstart="onDragTag($event, tag.tag)">#{{ tag.tag }}</div>
+          </transition-group>
+        </div>
+      </transition-group>
+      <transition-group name="groups" v-if="groupBy == 'namespace'">
+        <div v-for="group in tagNamespaces" :key="group.name" class="tag-group colour-transition" >
+          <div class="group-title"><span>{{ group.name }}</span></div>
+          <transition-group name="chips" tag="div" class="group-chips">
+            <div class="unassigned-tags" @dragover="onDragTagOver" @dragleave="onDragLeave" @drop="onDropTag($event, paletteStore, null)">
+              <div v-for="tag in group.unassigned" :key="tag.tag" class="tag-chip monospace colour-transition"
+                :title="tag.description" draggable="true"
+                @dragstart="onDragTag($event, tag.tag)">#{{ tag.tag }}</div>
+            </div>
+            <div v-for="tag in group.tags" :key="tag.tag" class="tag-chip monospace colour-transition"
+              :style="{ color: tag.fg, backgroundColor: tag.bg }" :title="tag.description" draggable="true"
               @dragstart="onDragTag($event, tag.tag)">#{{ tag.tag }}</div>
           </transition-group>
         </div>
@@ -206,6 +273,26 @@ function doGuess() {
   margin: 0.1rem;
 
   cursor: grab;
+}
+
+.unassigned-tags {
+  display: inline-block;
+}
+.unassigned-tags::after {
+  content: "|";
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  transition: all 150ms;
+}
+
+.unassigned-tags.drag-over {
+  background-color: unset;
+  color: inherit;
+}
+
+.unassigned-tags.drag-over::after {
+  content: "|";
+  padding-left: 1rem;
 }
 
 .chips-move, /* apply transition to moving elements */
