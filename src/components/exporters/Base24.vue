@@ -56,7 +56,7 @@ const output = computed(() => {
     });
 });
 
-const filename = computed(() => "base24-" + slugify(paletteStore.palette.name)+".yaml");
+const filename = computed(() => slugify(paletteStore.palette.name)+".yaml");
 
 </script>
 
