@@ -60,22 +60,22 @@ const hasWorkspaceShadow = computed( () => !!paletteStore.getColourByTag("niri:w
                </div>
                <div class="window mini-term" :class="{ windowShadow: hasWindowShadow }">
                     <div class="hbox">
-                         <div style="background-color: var(--term-2); width: 45px;"></div>
+                         <div style="background-color: var(--term-02); width: 45px;"></div>
                          <div style="width: 90px;"></div>
                     </div>
                     <div class="hbox">
                          <div style="width: 180px;"></div>
                     </div>
                     <div class="hbox">
-                         <div style="background-color: var(--term-2); width: 45px;"></div>
+                         <div style="background-color: var(--term-02); width: 45px;"></div>
                          <div style="width: 90px;"></div>
                     </div>
                     <div class="hbox">
-                         <div style="background-color: var(--term-2); width: 45px;"></div>
+                         <div style="background-color: var(--term-02); width: 45px;"></div>
                          <div style="width: 30px;"></div>
                     </div>
                     <div class="hbox">
-                         <div style="background-color: var(--term-2); width: 45px;"></div>
+                         <div style="background-color: var(--term-02); width: 45px;"></div>
                          <div style="width: 45px;"></div>
                          <div style="width: 60px;"></div>
                     </div>
@@ -86,7 +86,7 @@ const hasWorkspaceShadow = computed( () => !!paletteStore.getColourByTag("niri:w
                          <div style="width: 120px;"></div>
                     </div>
                     <div class="hbox">
-                         <div style="background-color: var(--term-2); width: 45px;"></div>
+                         <div style="background-color: var(--term-02); width: 45px;"></div>
                          <div style="width: 9px; background-color: var(--term-cursor, var(--term-fg));"></div>
                     </div>
                </div>
