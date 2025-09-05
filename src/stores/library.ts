@@ -5,6 +5,7 @@ import type { Palette } from "@/models/palette";
 import { closestTo, shadeUpFrom } from "@/library/palette-utils";
 
 // Previews
+import Base24Preview from "@/components/previews/base24.vue";
 import TerminalLs from "@/components/previews/terminal-ls.vue";
 import DunstPreview from "@/components/previews/dunst.vue";
 import NiriPreview from "@/components/previews/niri.vue";
@@ -236,6 +237,7 @@ export const useLibrary = defineStore("library", () => {
   };
 
   const previews: { [key: string]: Component } = {
+    "Base 24": markRaw(Base24Preview),
     "Dunst": markRaw(DunstPreview),
     "Fuzzel": markRaw(FuzzelPreview),
     "Niri": markRaw(NiriPreview),
