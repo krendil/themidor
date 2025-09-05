@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PaletteMember } from '@/models/palette';
 import { usePaletteStore } from '@/stores/palette';
-import { formatCss, getMode, toGamut, type Color, type Mode } from 'culori';
+import { converter, formatCss, getMode, toGamut, type Color, type Mode } from 'culori';
 import { computed } from 'vue';
 
 interface DragContext {
@@ -94,7 +94,10 @@ function toCurrentMode(colour: Color | null | undefined): Color | null  {
   if(colour.mode === props.colourSpace) {
     return colour;
   }
-  return toGamut(props.colourSpace, colour.mode)(colour);
+  if(colour.mode == "oklch") {
+    return toGamut(props.colourSpace, colour.mode)(colour);
+  }
+  return converter(props.colourSpace)(colour);
 }
 
 function isSelected(i: number): boolean {

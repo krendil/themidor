@@ -8,11 +8,15 @@ Try it now at https://themidor.cc
 
 ## Features
 
-- Edit colours in OKLch, OKHSV, OKHSL, HSV, HSL, sRGB colour spaces.
+- Edit colours in OKLch, HSL and sRGB colour spaces.
 - Check the WCAG contrast of your colours against eachother.
 - Tag your colours to assign them roles, and export your colour theme in various formats:
   - Base24
+  - CSS Variables
+  - Dunst
+  - Fuzzel
   - Ghostty
+  - Niri
   - Rxvt-unicode
   - Custom Liquid template
   - More to come!

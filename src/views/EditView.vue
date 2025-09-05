@@ -18,9 +18,6 @@ const channels = computed( () => getMode(colourSpace.value).channels.filter( c =
       <label>Colour space:
         <select v-model="colourSpace">
           <option value="oklch">OkLCH</option>
-          <option value="okhsv">OkHSV</option>
-          <option value="okhsl">OkHSl</option>
-          <option value="hsv">HSV</option>
           <option value="hsl">HSL</option>
           <option value="rgb">sRGB</option>
         </select>
