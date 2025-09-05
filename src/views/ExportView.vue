@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { useLibrary } from '@/stores/library';
-import { computed, ref } from 'vue';
+import { useOptions } from '@/stores/options';
+import { computed, ref, toRef } from 'vue';
 
 const library = useLibrary();
+const options = useOptions();
 
-const exporterName = ref(library.exporterList[0]);
+const exporterName = toRef(options.exportView, 'selectedExporter');
 const exporterComponent = computed(() => library.exporters[exporterName.value]);
 
 </script>

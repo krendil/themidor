@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { usePaletteStore } from '@/stores/palette';
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, ref, toRef } from 'vue';
 import { formatCss, wcagContrast, type Color } from 'culori';
+import { useOptions } from '@/stores/options';
 
 const paletteStore = usePaletteStore();
+const options = useOptions();
 
-const asForeground = ref(true);
+const asForeground = toRef(options.contrast, 'asForeground');
 
 const gridStyle = reactive({
   gridTemplateRows: computed(() => `repeat(${paletteStore.palette.hues.length}, 1fr)`),
@@ -56,7 +58,7 @@ function calcRating(colour: Color): string {
 </script>
 
 <template>
-  <div class="align-right">
+  <div id="contrast-view" class="align-right">
     <select v-model="asForeground">
       <option :value="true">As foreground</option>
       <option :value="false">As background</option>
@@ -79,13 +81,16 @@ function calcRating(colour: Color): string {
               <div>{{ colour.rating }}</div>
             </div>
           </div>
-
         </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+
+#contrast-view {
+  padding: 0.5rem;
+}
 
 #tile-grid {
   display: grid;
@@ -108,6 +113,5 @@ function calcRating(colour: Color): string {
   padding: 0.5rem;
   flex: 1 1 0;
 }
-
 
 </style>

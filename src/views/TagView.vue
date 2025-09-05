@@ -3,12 +3,14 @@ import { usePaletteStore } from '@/stores/palette';
 import { useLibrary as useLibrary } from '@/stores/library';
 import { formatCss, } from 'culori';
 import { entries, map, pipe, reduce, sortBy, } from 'remeda';
-import { computed, ref } from 'vue';
+import { computed, ref, toRef } from 'vue';
 import { onDragTag, onDragLeave, onDragTagOver, onDropTag, onDropDeleteTag } from '@/library/drag-utils';
 import type { ComputedRefSymbol, RefSymbol } from '@vue/reactivity';
+import { useOptions } from '@/stores/options';
 
 const paletteStore = usePaletteStore();
 const library = useLibrary();
+const options = useOptions();
 
 interface TagData {
   name: string,
@@ -27,9 +29,9 @@ interface NamespaceData {
   }[]
 }
 
-const selectedPreview = ref(library.previewList[0]);
-
-const groupBy = ref<"colour" | "namespace">("colour");
+const selectedPreview = toRef(options.tag, 'selectedPreview');
+const groupBy = toRef(options.tag, 'groupBy');
+const tagFilter = toRef(options.tag, 'tagFilter');
 
 const tagGroups = computed<TagData[]>( () => 
   pipe(paletteStore.palette.tags, 
@@ -93,7 +95,6 @@ const tagNamespaces = computed<NamespaceData[]>( () =>
   )
 );
 
-const tagFilter = ref("");
 const tagFilterRegex = computed(() => new RegExp(tagFilter.value, 'i'));
 
 function matchesFilter(tag: string): boolean {
