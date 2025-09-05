@@ -67,10 +67,14 @@ const filename = computed(() => "base24-" + slugify(paletteStore.palette.name)+"
         </div>
         <div class="tray">
             <label>Author: <input type="text" v-model="opts.author"></input></label>
-            <label>Description: <input type="text" v-model="opts.description"></input></label>
+            <label>Description: <input type="text" v-model="opts.description" size="50"></input></label>
         </div>
     </BaseExporter>
 </template>
 
 <style lang="css" scoped>
+
+label {
+    margin-right: 0.5rem;
+}
 </style>
