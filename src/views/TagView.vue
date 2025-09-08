@@ -3,9 +3,8 @@ import { usePaletteStore } from '@/stores/palette';
 import { useLibrary as useLibrary } from '@/stores/library';
 import { formatCss, } from 'culori';
 import { entries, map, pipe, reduce, sortBy, } from 'remeda';
-import { computed, ref, toRef } from 'vue';
+import { computed, toRef } from 'vue';
 import { onDragTag, onDragLeave, onDragTagOver, onDropTag, onDropDeleteTag } from '@/library/drag-utils';
-import type { ComputedRefSymbol, RefSymbol } from '@vue/reactivity';
 import { useOptions } from '@/stores/options';
 
 const paletteStore = usePaletteStore();
@@ -95,11 +94,24 @@ const tagNamespaces = computed<NamespaceData[]>( () =>
   )
 );
 
-const tagFilterRegex = computed(() => new RegExp(tagFilter.value, 'i'));
+const tagFilterRegex = computed<RegExp|null|undefined>((previous) => {
+  if(tagFilter.value == '') {
+    return null;
+  }
+  try {
+    return new RegExp(tagFilter.value, 'i');
+  } catch {
+    return previous;
+  }
+});
 
 function matchesFilter(tag: string): boolean {
-  if(tagFilter.value === "") return true;
-  return tagFilterRegex.value.test(tag);
+  const pat = tagFilterRegex.value;
+  if(pat) {
+    return pat.test(tag);
+  } else {
+    return true;
+  }
 }
 
 function onAddCollection(event: Event) {
