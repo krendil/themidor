@@ -2,12 +2,14 @@
 import type { PaletteMember } from '@/models/palette';
 import { usePaletteStore } from '@/stores/palette';
 import { converter, formatCss, getMode, toGamut, type Color, type Mode } from 'culori';
+import { prop } from 'remeda';
 import { computed } from 'vue';
 
 interface DragContext {
   index: number;
   top: number;
   bottom: number;
+  initialProportion: number;
 }
 
 var dragContext: DragContext | null = null;
@@ -124,7 +126,8 @@ function startDragging(event: PointerEvent, index: number) {
       dragContext = {
         index: index,
         top: parentBounds?.top,
-        bottom: parentBounds?.bottom
+        bottom: parentBounds?.bottom,
+        initialProportion: (paletteStore.selectedColour?.colour[props.channel] - range.value[0]) / range.value[1]
       };
       paletteStore.history.pause();
     }
@@ -142,9 +145,12 @@ function stopDragging(event: PointerEvent) {
 
 function onDrag(event: PointerEvent) {
   if(dragContext) {
-    const proportion = 
-      Math.max(0, Math.min(1, (event.clientY - dragContext.top) / (dragContext.bottom - dragContext.top)));
-    const newValue = range.value[0] + (1 - proportion) * (range.value[1] - range.value[0]);
+    let proportion = 1 - (event.clientY - dragContext.top) / (dragContext.bottom - dragContext.top);
+    if(event.shiftKey) {
+      proportion = dragContext.initialProportion + ( (proportion - dragContext.initialProportion) / 5);
+    }
+    proportion = Math.max(0, Math.min(1, proportion));
+    const newValue = range.value[0] + (proportion * (range.value[1] - range.value[0]));
     const colour = toCurrentMode(getColours()[dragContext.index]?.colour);
     if(colour) {
       colour[props.channel] = newValue;
