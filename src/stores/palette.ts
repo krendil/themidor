@@ -114,6 +114,20 @@ export const usePaletteStore = defineStore("palette", () => {
     if(selectedHue.value >= palette.value.hues.length) {
       selectedHue.value = palette.value.hues.length - 1;
     }
+    for(var tag in palette.value.tags) {
+      const coords = palette.value.tags[tag]
+      if(!coords) {
+        // Tag is unassigned, ignore
+        continue;
+      }
+      else if(coords[0] == index) {
+        // Tag points to deleted hue, unassign the tag
+        palette.value.tags[tag] = null;
+      } else if(coords[0] > index) {
+        // Tag points past the deleted hue, fix up the index
+        palette.value.tags[tag] = [coords[0]-1, coords[1]];
+      }
+    }
   }
   
   function deleteShade(index: number) {
@@ -123,6 +137,20 @@ export const usePaletteStore = defineStore("palette", () => {
     }
     if(selectedShade.value >= palette.value.shades.length) {
       selectedShade.value = palette.value.shades.length - 1;
+    }
+    for(var tag in palette.value.tags) {
+      const coords = palette.value.tags[tag]
+      if(!coords) {
+        // Tag is unassigned, ignore
+        continue;
+      }
+      else if(coords[1] == index) {
+        // Tag points to deleted shade, unassign the tag
+        palette.value.tags[tag] = null;
+      } else if(coords[1] > index) {
+        // Tag points past the deleted shade, fix up the index
+        palette.value.tags[tag] = [coords[0], coords[1]-1];
+      }
     }
   }
 
