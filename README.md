@@ -18,6 +18,7 @@ Try it now at https://themidor.cc
   - Ghostty
   - Niri
   - Rxvt-unicode
+  - Noctalia
   - Custom Liquid template
   - More to come!
   - Need a format that's not implemented? Create an issue (or better yet, a pull request)!
