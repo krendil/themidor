@@ -197,6 +197,9 @@ function doGuess() {
               @dragstart="onDragTag($event, tag.tag)">#{{ tag.tag }}</div>
           </transition-group>
         </div>
+        <div class="hint">
+          Drag and drop tags onto the colour swatches on the left, or onto the colour groups above.
+        </div>
       </transition-group>
       <transition-group name="groups" v-if="groupBy == 'namespace'">
         <div v-for="group in tagNamespaces" :key="group.name" class="tag-group colour-transition" >
@@ -211,6 +214,9 @@ function doGuess() {
               :style="{ color: tag.fg, backgroundColor: tag.bg }" :title="tag.description" draggable="true"
               @dragstart="onDragTag($event, tag.tag)">#{{ tag.tag }}</div>
           </transition-group>
+        </div>
+        <div class="hint">
+          Drag and drop tags onto the colour swatches on the left.
         </div>
       </transition-group>
       <div class="toolbox">
@@ -284,6 +290,10 @@ function doGuess() {
 
   width: 8rem;
   height: 8rem;
+}
+
+.hint {
+  color: var(--theme-border);
 }
 
 .tag-group {

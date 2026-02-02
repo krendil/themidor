@@ -111,11 +111,11 @@ function onDropDim(e: DragEvent, dim: Dim, targetId: number) {
     </template>
 
     <div class="add column-header sticky-top" style="grid-row: 1; grid-column: -1">
-      <button @click="addShade">✚</button>
+      <button @click="addShade" title="Add a new shade (column)">✚</button>
     </div>
     <div style="grid-row: 2 / -1; grid-column: -1"></div>
     <div class="add row-header sticky-left" style="grid-row: -1; grid-column: 1" >
-      <button @click="addHue">✚</button>
+      <button @click="addHue" title="Add a new hue (row)">✚</button>
     </div>
   </div>
 
