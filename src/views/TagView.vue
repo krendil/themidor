@@ -185,8 +185,6 @@ function doGuess() {
         <option value="">Add collection</option>
         <option v-for="collection in library.collectionList" :value="collection">{{collection}}</option>
       </select>
-      <div @dragover="onDragTagOver" @dragleave="onDragLeave" @drop="onDropDeleteTag($event, paletteStore)"
-        title="Drag tags here to delete them" style="align-content: last baseline;"><span class="large">♻</span></div>
     </div>
     <div id="tag-tray" class="tray">
       <transition-group name="groups" v-if="groupBy == 'colour'">
@@ -215,7 +213,18 @@ function doGuess() {
           </transition-group>
         </div>
       </transition-group>
-      <button class="guess" :class="{ disabled: !hasGuesses }" @click="doGuess">Guess</button>
+      <div class="toolbox">
+        <button :class="{ disabled: !hasGuesses }" @click="doGuess">Guess</button>
+        <div class="rubbish tray colour-transition"
+          @dragover="onDragTagOver" @dragleave="onDragLeave" @drop="onDropDeleteTag($event, paletteStore)"
+        >
+          <p class="align-middle align-center">
+          <span class="text-bigger">♻</span>
+          <br/>
+          Drag tags here to delete them.
+          </p>
+        </div>
+      </div>
     </div>
     <div class="tag-controls">
       <label>Preview:
@@ -253,14 +262,32 @@ function doGuess() {
   position: relative;
 }
 
-.guess {
+.toolbox {
   position: absolute;
   right: 0.5rem;
   top: 0.5rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: end;
 }
 
-.guess.disabled {
+.disabled {
   display: none;
+}
+
+.rubbish {
+  color: var(--theme-border);
+  border-color: var(--theme-border);
+  background-color: var(--theme-bg);
+
+  width: 8rem;
+  height: 8rem;
+}
+
+.tag-group {
+  margin-right: 8rem;
 }
 
 .group-chips {
