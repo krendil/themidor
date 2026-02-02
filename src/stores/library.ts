@@ -10,6 +10,8 @@ import TerminalLs from "@/components/previews/terminal-ls.vue";
 import DunstPreview from "@/components/previews/dunst.vue";
 import NiriPreview from "@/components/previews/niri.vue";
 import FuzzelPreview from "@/components/previews/fuzzel.vue";
+import NoctaliaLightPreview from "@/components/previews/noctalia-light.vue";
+import NoctaliaDarkPreview from "@/components/previews/noctalia-dark.vue";
 
 // Exporters
 import Base24 from "@/components/exporters/Base24.vue";
@@ -19,6 +21,7 @@ import Dunst from "@/components/exporters/Dunst.vue";
 import Fuzzel from "@/components/exporters/Fuzzel.vue";
 import Ghostty from "@/components/exporters/Ghostty.vue";
 import Niri from "@/components/exporters/Niri.vue";
+import Noctalia from "@/components/exporters/Noctalia.vue";
 import Simple from "@/components/exporters/Simple.vue";
 import Themidor from "@/components/exporters/Themidor.vue";
 import Urxvt from "@/components/exporters/Urxvt.vue";
@@ -314,8 +317,8 @@ export const useLibrary = defineStore("library", () => {
     "Fuzzel": markRaw(FuzzelPreview),
     "Niri": markRaw(NiriPreview),
     "Terminal": markRaw(TerminalLs),
-    // "Noctalia Dark": markRaw(NoctaliaDarkPreview),
-    // "Noctalia Light": markRaw(NoctaliaLightPreview),
+    "Noctalia Dark": markRaw(NoctaliaDarkPreview),
+    "Noctalia Light": markRaw(NoctaliaLightPreview),
   };
 
   const exporters: { [key: string]: Component } = {
@@ -326,10 +329,10 @@ export const useLibrary = defineStore("library", () => {
     "Fuzzel": markRaw(Fuzzel),
     "Ghostty": markRaw(Ghostty),
     "Niri": markRaw(Niri),
+    "Noctalia": markRaw(Noctalia),
     "Rxvt-Unicode": markRaw(Urxvt),
     "Simple": markRaw(Simple),
     "Themidor": markRaw(Themidor),
-    // "Noctalia": markRaw(Noctalia),
   };
 
   type GuessFn = (palette: Palette) => ([number, number] | null) ;
@@ -430,12 +433,12 @@ export const useLibrary = defineStore("library", () => {
     "noct:dark:ontertiary": (p) => p.tags["tmdr:lightfg"] ?? null,
     "noct:dark:error": (p) => p.tags["tmdr:bad"] ?? null,
     "noct:dark:onerror": (p) => p.tags["tmdr:lightfg"] ?? null,
-    "noct:dark:surface": (p) => darkestOf(p, "tmdr:bg:, tmdr:fg"),
-    "noct:dark:onsurface": (p) => lightestOf(p, "tmdr:bg:, tmdr:fg"),
-    "noct:dark:hover": (p) => darkestOf(p, "tmdr:hibg:, tmdr:hifg"),
-    "noct:dark:onhover": (p) => lightestOf(p, "tmdr:hibg:, tmdr:hifg"),
-    "noct:dark:surfacevariant": (p) => darkestOf(p, "tmdr:hibg:, tmdr:hifg"),
-    "noct:dark:onsurfacevariant": (p) => lightestOf(p, "tmdr:hibg:, tmdr:hifg"),
+    "noct:dark:surface": (p) => darkestOf(p, "tmdr:bg", "tmdr:fg"),
+    "noct:dark:onsurface": (p) => lightestOf(p, "tmdr:bg", "tmdr:fg"),
+    "noct:dark:hover": (p) => darkestOf(p, "tmdr:hibg", "tmdr:hifg"),
+    "noct:dark:onhover": (p) => lightestOf(p, "tmdr:hibg", "tmdr:hifg"),
+    "noct:dark:surfacevariant": (p) => darkestOf(p, "tmdr:hibg", "tmdr:hifg"),
+    "noct:dark:onsurfacevariant": (p) => lightestOf(p, "tmdr:hibg", "tmdr:hifg"),
     "noct:dark:outline": (p) => p.tags["tmdr:border"] ?? null,
     "noct:dark:shadow": (p) => closestTo(p, "#000000"),
 
@@ -447,12 +450,12 @@ export const useLibrary = defineStore("library", () => {
     "noct:light:ontertiary": (p) => p.tags["tmdr:darkfg"] ?? null,
     "noct:light:error": (p) => p.tags["tmdr:bad"] ?? null,
     "noct:light:onerror": (p) => p.tags["tmdr:darkfg"] ?? null,
-    "noct:light:surface": (p) => lightestOf(p, "tmdr:bg:, tmdr:fg"),
-    "noct:light:onsurface": (p) => darkestOf(p, "tmdr:bg:, tmdr:fg"),
-    "noct:light:hover": (p) => lightestOf(p, "tmdr:hibg:, tmdr:hifg"),
-    "noct:light:onhover": (p) => darkestOf(p, "tmdr:hibg:, tmdr:hifg"),
-    "noct:light:surfacevariant": (p) => lightestOf(p, "tmdr:hibg:, tmdr:hifg"),
-    "noct:light:onsurfacevariant": (p) => darkestOf(p, "tmdr:hibg:, tmdr:hifg"),
+    "noct:light:surface": (p) => lightestOf(p, "tmdr:bg", "tmdr:fg"),
+    "noct:light:onsurface": (p) => darkestOf(p, "tmdr:bg", "tmdr:fg"),
+    "noct:light:hover": (p) => lightestOf(p, "tmdr:hibg", "tmdr:hifg"),
+    "noct:light:onhover": (p) => darkestOf(p, "tmdr:hibg", "tmdr:hifg"),
+    "noct:light:surfacevariant": (p) => lightestOf(p, "tmdr:hibg", "tmdr:hifg"),
+    "noct:light:onsurfacevariant": (p) => darkestOf(p, "tmdr:hibg", "tmdr:hifg"),
     "noct:light:outline": (p) => p.tags["tmdr:border"] ?? null,
     "noct:light:shadow": (p) => closestTo(p, "#000000"),
   };
