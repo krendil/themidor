@@ -7,6 +7,7 @@ import { closestTo, darkestOf, lightestOf, shadeUpFrom } from "@/library/palette
 // Previews
 import Base24Preview from "@/components/previews/base24.vue";
 import TerminalLs from "@/components/previews/terminal-ls.vue";
+import TerminalLightPreview from "@/components/previews/terminal-light.vue";
 import DunstPreview from "@/components/previews/dunst.vue";
 import NiriPreview from "@/components/previews/niri.vue";
 import FuzzelPreview from "@/components/previews/fuzzel.vue";
@@ -119,6 +120,29 @@ export const useLibrary = defineStore("library", () => {
     "term:selectionfg":"Terminal colour of selected text",
     "term:cursorfg":"Terminal colour of text under the cursor",
 
+    "term:light:00":"Terminal Black",
+    "term:light:01":"Terminal Red",
+    "term:light:02":"Terminal Green",
+    "term:light:03":"Terminal Yellow",
+    "term:light:04":"Terminal Blue",
+    "term:light:05":"Terminal Purple",
+    "term:light:06":"Terminal Cyan",
+    "term:light:07":"Terminal White",
+    "term:light:08":"Terminal Bright black",
+    "term:light:09":"Terminal Bright red",
+    "term:light:10":"Terminal Bright green",
+    "term:light:11":"Terminal Bright yellow",
+    "term:light:12":"Terminal Bright blue",
+    "term:light:13":"Terminal Bright purple",
+    "term:light:14":"Terminal Bright cyan",
+    "term:light:15":"Terminal Bright white",
+    "term:light:bg":"Terminal background",
+    "term:light:cursor":"Terminal cursor",
+    "term:light:fg":"Terminal foreground",
+    "term:light:selectionbg":"Terminal background colour of selected text",
+    "term:light:selectionfg":"Terminal colour of selected text",
+    "term:light:cursorfg":"Terminal colour of text under the cursor",
+
     "tmdr:accent": "Themidor accent colour",
     "tmdr:bad": "Themidor 'bad' colour for failing validation",
     "tmdr:bg": "Themidor main background",
@@ -192,6 +216,33 @@ export const useLibrary = defineStore("library", () => {
         "term:selectionbg",
         "term:selectionfg",
         "term:cursorfg",
+      ],
+    },
+    "Terminal Light": {
+      tags: [
+        "term:light:cursor",
+        "term:light:bg",
+        "term:light:fg",
+        "term:light:00",
+        "term:light:01",
+        "term:light:02",
+        "term:light:03",
+        "term:light:04",
+        "term:light:05",
+        "term:light:06",
+        "term:light:07",
+        "term:light:08",
+        "term:light:09",
+        "term:light:10",
+        "term:light:11",
+        "term:light:12",
+        "term:light:13",
+        "term:light:14",
+        "term:light:15",
+
+        "term:light:selectionbg",
+        "term:light:selectionfg",
+        "term:light:cursorfg",
       ],
     },
     Base24: {
@@ -317,6 +368,7 @@ export const useLibrary = defineStore("library", () => {
     "Fuzzel": markRaw(FuzzelPreview),
     "Niri": markRaw(NiriPreview),
     "Terminal": markRaw(TerminalLs),
+    "Terminal Light": markRaw(TerminalLightPreview),
     "Noctalia Dark": markRaw(NoctaliaDarkPreview),
     "Noctalia Light": markRaw(NoctaliaLightPreview),
   };
@@ -404,8 +456,10 @@ export const useLibrary = defineStore("library", () => {
 
     "term:bg": (palette) => palette.tags["term:00"] ?? null,
     "term:fg": (palette) => palette.tags["term:07"] ?? null,
-    "term:cursor": (palette) => palette.tags["tmdr:fg"] ?? null,
+    "term:cursor": (palette) => palette.tags["term:fg"] ?? null,
+    "term:cursorfg": (palette) => palette.tags["term:bg"] ?? null,
     "term:selectionbg": (palette) => palette.tags["term:fg"] ?? null,
+    "term:selectionfg": (palette) => palette.tags["term:bg"] ?? null,
 
     "term:00": (palette) => closestTo(palette, "#000000"),
     "term:01": (palette) => closestTo(palette, "#FF0000"),
@@ -424,6 +478,31 @@ export const useLibrary = defineStore("library", () => {
     "term:13": (palette) => shadeUpFrom(palette, "term:05"),
     "term:14": (palette) => shadeUpFrom(palette, "term:06"),
     "term:15": (palette) => shadeUpFrom(palette, "term:07"),
+
+    "term:light:bg": (palette) => palette.tags["term:07"] ?? null,
+    "term:light:fg": (palette) => palette.tags["term:00"] ?? null,
+    "term:light:cursor": (palette) => palette.tags["term:fg"] ?? null,
+    "term:light:cursorfg": (palette) => palette.tags["term:bg"] ?? null,
+    "term:light:selectionbg": (palette) => palette.tags["term:fg"] ?? null,
+    "term:light:selectionfg": (palette) => palette.tags["term:bg"] ?? null,
+
+    "term:light:00": (palette) => closestTo(palette, "#000000"),
+    "term:light:01": (palette) => closestTo(palette, "#7F0000"),
+    "term:light:02": (palette) => closestTo(palette, "#007F00"),
+    "term:light:03": (palette) => closestTo(palette, "#7F7F00"),
+    "term:light:04": (palette) => closestTo(palette, "#00007F"),
+    "term:light:05": (palette) => closestTo(palette, "#7F007F"),
+    "term:light:06": (palette) => closestTo(palette, "#007F7F"),
+    "term:light:07": (palette) => closestTo(palette, "#ABABAB"),
+
+    "term:light:08": (palette) => shadeUpFrom(palette, "term:00"),
+    "term:light:09": (palette) => shadeUpFrom(palette, "term:01"),
+    "term:light:10": (palette) => shadeUpFrom(palette, "term:02"),
+    "term:light:11": (palette) => shadeUpFrom(palette, "term:03"),
+    "term:light:12": (palette) => shadeUpFrom(palette, "term:04"),
+    "term:light:13": (palette) => shadeUpFrom(palette, "term:05"),
+    "term:light:14": (palette) => shadeUpFrom(palette, "term:06"),
+    "term:light:15": (palette) => shadeUpFrom(palette, "term:07"),
 
     "noct:dark:primary": (p) => p.tags["tmdr:accent"] ?? null,
     "noct:dark:onprimary": (p) => p.tags["tmdr:lightfg"] ?? null,
