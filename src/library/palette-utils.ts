@@ -130,3 +130,65 @@ export function closestTo(palette: Palette, target: string): [number, number] | 
   }
   return [minHue, minShade];
 }
+
+export function lightestOf(palette: Palette, ...targets: string[]): [number, number] | null {
+  var result: [number, number] | null = null;
+  var lightness = -Infinity;
+
+  for(var target of targets) {
+    var candidate: [number, number] | null;
+    if(target.startsWith('#')) {
+      // It's a raw colour. Use closestTo
+      candidate = closestTo(palette, target);
+    } else {
+      candidate = palette.tags[target] ?? null;
+    }
+    if(!candidate) {
+      continue;
+    }
+
+    const member = palette.colours[candidate[0]][candidate[1]];
+    if(!member) {
+      continue;
+    }
+
+    var lch = oklch(member.colour)
+    if(lch.l > lightness) {
+      lightness = lch.l;
+      result = candidate;
+    }
+  }
+
+  return result;
+}
+
+export function darkestOf(palette: Palette, ...targets: string[]): [number, number] | null {
+  var result: [number, number] | null = null;
+  var lightness = Infinity;
+
+  for(var target of targets) {
+    var candidate: [number, number] | null;
+    if(target.startsWith('#')) {
+      // It's a raw colour. Use closestTo
+      candidate = closestTo(palette, target);
+    } else {
+      candidate = palette.tags[target] ?? null;
+    }
+    if(!candidate) {
+      continue;
+    }
+
+    const member = palette.colours[candidate[0]][candidate[1]];
+    if(!member) {
+      continue;
+    }
+
+    var lch = oklch(member.colour)
+    if(lch.l < lightness) {
+      lightness = lch.l;
+      result = candidate;
+    }
+  }
+
+  return result;
+}
