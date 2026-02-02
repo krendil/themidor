@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { keys, } from "remeda";
 import { computed, markRaw, type Component } from "vue";
 import type { Palette } from "@/models/palette";
-import { closestTo, shadeUpFrom } from "@/library/palette-utils";
+import { closestTo, darkestOf, lightestOf, shadeUpFrom } from "@/library/palette-utils";
 
 // Previews
 import Base24Preview from "@/components/previews/base24.vue";
@@ -127,6 +127,40 @@ export const useLibrary = defineStore("library", () => {
     "tmdr:hibg": "Themidor highlighted background",
     "tmdr:hifg": "Themidor highlighted foreground",
     "tmdr:lightfg": "Themidor light foreground colour, for use on dark backgrounds", // A Foreground that is light, not light-mode foreground
+
+
+    "noct:dark:primary": "Primary accent (buttons, links, highlights)",
+    "noct:dark:onprimary": "Text/icons on primary surfaces",
+    "noct:dark:secondary": "Secondary accent color",
+    "noct:dark:onsecondary": "Text/icons on secondary surfaces",
+    "noct:dark:tertiary": "Tertiary accent color",
+    "noct:dark:ontertiary": "Text/icons on tertiary surfaces",
+    "noct:dark:error": "Error/warning color",
+    "noct:dark:onerror": "Text/icons on error surfaces",
+    "noct:dark:surface": "Main background color",
+    "noct:dark:onsurface": "Primary text color",
+    "noct:dark:hover": "Hover state background",
+    "noct:dark:onhover": "Text on hover surfaces",
+    "noct:dark:surfacevariant": "Secondary background (cards, panels)",
+    "noct:dark:onsurfacevariant": "Text on surface variants",
+    "noct:dark:outline": "Borders and dividers",
+    "noct:dark:shadow": "Shadow color",
+    "noct:light:primary": "Primary accent (buttons, links, highlights)",
+    "noct:light:onprimary": "Text/icons on primary surfaces",
+    "noct:light:secondary": "Secondary accent color",
+    "noct:light:onsecondary": "Text/icons on secondary surfaces",
+    "noct:light:tertiary": "Tertiary accent color",
+    "noct:light:ontertiary": "Text/icons on tertiary surfaces",
+    "noct:light:error": "Error/warning color",
+    "noct:light:onerror": "Text/icons on error surfaces",
+    "noct:light:surface": "Main background color",
+    "noct:light:onsurface": "Primary text color",
+    "noct:light:hover": "Hover state background",
+    "noct:light:onhover": "Text on hover surfaces",
+    "noct:light:surfacevariant": "Secondary background (cards, panels)",
+    "noct:light:onsurfacevariant": "Text on surface variants",
+    "noct:light:outline": "Borders and dividers",
+    "noct:light:shadow": "Shadow color",
   };
 
   const collections: { [key: string]: Collection } = {
@@ -234,6 +268,44 @@ export const useLibrary = defineStore("library", () => {
 
       ]
     },
+    Noctalia: {
+      tags: [
+        "noct:dark:primary",
+        "noct:dark:onprimary",
+        "noct:dark:secondary",
+        "noct:dark:onsecondary",
+        "noct:dark:tertiary",
+        "noct:dark:ontertiary",
+        "noct:dark:error",
+        "noct:dark:onerror",
+        "noct:dark:surface",
+        "noct:dark:onsurface",
+        "noct:dark:hover",
+        "noct:dark:onhover",
+        "noct:dark:surfacevariant",
+        "noct:dark:onsurfacevariant",
+        "noct:dark:outline",
+        "noct:dark:shadow",
+        "noct:light:primary",
+        "noct:light:onprimary",
+        "noct:light:secondary",
+        "noct:light:onsecondary",
+        "noct:light:tertiary",
+        "noct:light:ontertiary",
+        "noct:light:error",
+        "noct:light:onerror",
+        "noct:light:surface",
+        "noct:light:onsurface",
+        "noct:light:hover",
+        "noct:light:onhover",
+        "noct:light:surfacevariant",
+        "noct:light:onsurfacevariant",
+        "noct:light:outline",
+        "noct:light:shadow",
+
+
+      ]
+    }
   };
 
   const previews: { [key: string]: Component } = {
@@ -241,7 +313,9 @@ export const useLibrary = defineStore("library", () => {
     "Dunst": markRaw(DunstPreview),
     "Fuzzel": markRaw(FuzzelPreview),
     "Niri": markRaw(NiriPreview),
-    "Terminal": markRaw(TerminalLs)
+    "Terminal": markRaw(TerminalLs),
+    // "Noctalia Dark": markRaw(NoctaliaDarkPreview),
+    // "Noctalia Light": markRaw(NoctaliaLightPreview),
   };
 
   const exporters: { [key: string]: Component } = {
@@ -255,6 +329,7 @@ export const useLibrary = defineStore("library", () => {
     "Rxvt-Unicode": markRaw(Urxvt),
     "Simple": markRaw(Simple),
     "Themidor": markRaw(Themidor),
+    // "Noctalia": markRaw(Noctalia),
   };
 
   type GuessFn = (palette: Palette) => ([number, number] | null) ;
@@ -346,6 +421,40 @@ export const useLibrary = defineStore("library", () => {
     "term:13": (palette) => shadeUpFrom(palette, "term:05"),
     "term:14": (palette) => shadeUpFrom(palette, "term:06"),
     "term:15": (palette) => shadeUpFrom(palette, "term:07"),
+
+    "noct:dark:primary": (p) => p.tags["tmdr:accent"] ?? null,
+    "noct:dark:onprimary": (p) => p.tags["tmdr:lightfg"] ?? null,
+    "noct:dark:secondary": (p) => p.tags["tmdr:good"] ?? null,
+    "noct:dark:onsecondary": (p) => p.tags["tmdr:lightfg"] ?? null,
+    "noct:dark:tertiary": (p) => p.tags["tmdr:grey"] ?? null,
+    "noct:dark:ontertiary": (p) => p.tags["tmdr:lightfg"] ?? null,
+    "noct:dark:error": (p) => p.tags["tmdr:bad"] ?? null,
+    "noct:dark:onerror": (p) => p.tags["tmdr:lightfg"] ?? null,
+    "noct:dark:surface": (p) => darkestOf(p, "tmdr:bg:, tmdr:fg"),
+    "noct:dark:onsurface": (p) => lightestOf(p, "tmdr:bg:, tmdr:fg"),
+    "noct:dark:hover": (p) => darkestOf(p, "tmdr:hibg:, tmdr:hifg"),
+    "noct:dark:onhover": (p) => lightestOf(p, "tmdr:hibg:, tmdr:hifg"),
+    "noct:dark:surfacevariant": (p) => darkestOf(p, "tmdr:hibg:, tmdr:hifg"),
+    "noct:dark:onsurfacevariant": (p) => lightestOf(p, "tmdr:hibg:, tmdr:hifg"),
+    "noct:dark:outline": (p) => p.tags["tmdr:border"] ?? null,
+    "noct:dark:shadow": (p) => closestTo(p, "#000000"),
+
+    "noct:light:primary": (p) => p.tags["tmdr:accent"] ?? null,
+    "noct:light:onprimary": (p) => p.tags["tmdr:darkfg"] ?? null,
+    "noct:light:secondary": (p) => p.tags["tmdr:good"] ?? null,
+    "noct:light:onsecondary": (p) => p.tags["tmdr:darkfg"] ?? null,
+    "noct:light:tertiary": (p) => p.tags["tmdr:grey"] ?? null,
+    "noct:light:ontertiary": (p) => p.tags["tmdr:darkfg"] ?? null,
+    "noct:light:error": (p) => p.tags["tmdr:bad"] ?? null,
+    "noct:light:onerror": (p) => p.tags["tmdr:darkfg"] ?? null,
+    "noct:light:surface": (p) => lightestOf(p, "tmdr:bg:, tmdr:fg"),
+    "noct:light:onsurface": (p) => darkestOf(p, "tmdr:bg:, tmdr:fg"),
+    "noct:light:hover": (p) => lightestOf(p, "tmdr:hibg:, tmdr:hifg"),
+    "noct:light:onhover": (p) => darkestOf(p, "tmdr:hibg:, tmdr:hifg"),
+    "noct:light:surfacevariant": (p) => lightestOf(p, "tmdr:hibg:, tmdr:hifg"),
+    "noct:light:onsurfacevariant": (p) => darkestOf(p, "tmdr:hibg:, tmdr:hifg"),
+    "noct:light:outline": (p) => p.tags["tmdr:border"] ?? null,
+    "noct:light:shadow": (p) => closestTo(p, "#000000"),
   };
 
   const collectionList = computed(() =>
