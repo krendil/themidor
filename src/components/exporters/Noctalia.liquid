@@ -23,22 +23,26 @@
             "cursorText": "{{ "term:cursorfg" | or: "term:bg" | hex }}",
             "selectionBackground": "{{ "term:selectionbg" | or: "term:fg" | hex }}",
             "selectionForeground": "{{ "term:selectionfg" | or: "term:bg" | hex }}",
-            "color0": "{{ "term:00" | hex }}",
-            "color1": "{{ "term:01" | hex }}",
-            "color2": "{{ "term:02" | hex }}",
-            "color3": "{{ "term:03" | hex }}",
-            "color4": "{{ "term:04" | hex }}",
-            "color5": "{{ "term:05" | hex }}",
-            "color6": "{{ "term:06" | hex }}",
-            "color7": "{{ "term:07" | hex }}",
-            "color8": "{{ "term:08" | hex }}",
-            "color9": "{{ "term:09" | hex }}",
-            "color10": "{{ "term:10" | hex }}",
-            "color11": "{{ "term:11" | hex }}",
-            "color12": "{{ "term:12" | hex }}",
-            "color13": "{{ "term:13" | hex }}",
-            "color14": "{{ "term:14" | hex }}",
-            "color15": "{{ "term:15" | hex }}"
+            "normal": {
+                "black": "{{ "term:00" | hex }}",
+                "red": "{{ "term:01" | hex }}",
+                "green": "{{ "term:02" | hex }}",
+                "yellow": "{{ "term:03" | hex }}",
+                "blue": "{{ "term:04" | hex }}",
+                "magenta": "{{ "term:05" | hex }}",
+                "cyan": "{{ "term:06" | hex }}",
+                "white": "{{ "term:07" | hex }}"
+            },
+            "bright": {
+                "black": "{{ "term:08" | hex }}",
+                "red": "{{ "term:09" | hex }}",
+                "green": "{{ "term:10" | hex }}",
+                "yellow": "{{ "term:11" | hex }}",
+                "blue": "{{ "term:12" | hex }}",
+                "magenta": "{{ "term:13" | hex }}",
+                "cyan": "{{ "term:14" | hex }}",
+                "white": "{{ "term:15" | hex }}"
+            }
         }
     },
     "light": {
@@ -65,22 +69,26 @@
             "cursorText": "{{ "term:light:cursorfg" | or: "term:light:bg" | or: "term:cursorfg" | or: "term:bg" | hex }}",
             "selectionBackground": "{{ "term:light:selectionbg" | or: "term:light:fg"| or: "term:selectionbg" | or: "term:fg" | hex }}",
             "selectionForeground": "{{ "term:light:selectionfg" | or: "term:light:bg"| or: "term:selectionfg" | or: "term:bg" | hex }}",
-            "color0": "{{ "term:light:00" | or: "term:00" | hex }}",
-            "color1": "{{ "term:light:01" | or: "term:01" | hex }}",
-            "color2": "{{ "term:light:02" | or: "term:02" | hex }}",
-            "color3": "{{ "term:light:03" | or: "term:03" | hex }}",
-            "color4": "{{ "term:light:04" | or: "term:04" | hex }}",
-            "color5": "{{ "term:light:05" | or: "term:05" | hex }}",
-            "color6": "{{ "term:light:06" | or: "term:06" | hex }}",
-            "color7": "{{ "term:light:07" | or: "term:07" | hex }}",
-            "color8": "{{ "term:light:08" | or: "term:08" | hex }}",
-            "color9": "{{ "term:light:09" | or: "term:09" | hex }}",
-            "color10": "{{ "term:light:10" | or: "term:10" | hex }}",
-            "color11": "{{ "term:light:11" | or: "term:11" | hex }}",
-            "color12": "{{ "term:light:12" | or: "term:12" | hex }}",
-            "color13": "{{ "term:light:13" | or: "term:13" | hex }}",
-            "color14": "{{ "term:light:14" | or: "term:14" | hex }}",
-            "color15": "{{ "term:light:15" | or: "term:15" | hex }}"
+            "normal": {
+                "black": "{{ "term:light:00" | or: "term:00" | hex }}",
+                "red": "{{ "term:light:01" | or: "term:01" | hex }}",
+                "green": "{{ "term:light:02" | or: "term:02" | hex }}",
+                "yellow": "{{ "term:light:03" | or: "term:03" | hex }}",
+                "blue": "{{ "term:light:04" | or: "term:04" | hex }}",
+                "magenta": "{{ "term:light:05" | or: "term:05" | hex }}",
+                "cyan": "{{ "term:light:06" | or: "term:06" | hex }}",
+                "white": "{{ "term:light:07" | or: "term:07" | hex }}"
+            },
+            "bright": {
+                "black": "{{ "term:light:08" | or: "term:08" | hex }}",
+                "red": "{{ "term:light:09" | or: "term:09" | hex }}",
+                "green": "{{ "term:light:10" | or: "term:10" | hex }}",
+                "yellow": "{{ "term:light:11" | or: "term:11" | hex }}",
+                "blue": "{{ "term:light:12" | or: "term:12" | hex }}",
+                "magenta": "{{ "term:light:13" | or: "term:13" | hex }}",
+                "cyan": "{{ "term:light:14" | or: "term:14" | hex }}",
+                "white": "{{ "term:light:15" | or: "term:15" | hex }}"
+            }
         }
     }
 }
