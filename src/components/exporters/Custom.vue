@@ -30,7 +30,11 @@ const required = [ ];
 const recommended = [ ];
 
 const output = computed(() => {
-    return engine.parseAndRenderSync(templateString.value, {});
+    try {
+        return engine.parseAndRenderSync(templateString.value, {});
+    } catch(ex) {
+        return `Error parsing template: ${ex}`
+    }
 });
 
 </script>
